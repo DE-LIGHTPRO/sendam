@@ -1,7 +1,7 @@
 // Which NEAR network and contracts this site talks to. `npm run deploy` fills these in.
 export const NETWORK = 'testnet';
-export const CONTRACT = 'sendam.example.testnet';
-export const USDC = 'usdc.example.testnet';
+export const CONTRACT = "sendam.sendam-delight.testnet";
+export const USDC = "usdc.sendam-delight.testnet";
 export const USDC_DECIMALS = 6;
 
 export const RPC_URLS = {

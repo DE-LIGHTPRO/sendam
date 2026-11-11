@@ -114,7 +114,7 @@ curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/near-cli-rs/releas
 2. Create a funded testnet account (the faucet pays for it):
 
 ```bash
-near account create-account sponsor-by-faucet-service your-name.testnet autogenerate-new-keypair save-to-legacy-keychain network-config testnet create
+near account create-account sponsor-by-faucet-service your-name.testnet autogenerate-new-keypair --signature-scheme ed25519 save-to-legacy-keychain network-config testnet create
 ```
 
 3. Deploy the contracts and write the settings:

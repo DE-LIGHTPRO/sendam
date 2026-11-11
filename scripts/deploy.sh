@@ -37,7 +37,7 @@ create() { # account, balance
   if near account view-account-summary "$1" $NET now >/dev/null 2>&1; then
     echo "    $1 already exists, keeping it"
   else
-    near account create-account fund-myself "$1" "$2" autogenerate-new-keypair save-to-legacy-keychain \
+    near account create-account fund-myself "$1" "$2" autogenerate-new-keypair --signature-scheme ed25519 save-to-legacy-keychain \
       sign-as "$OWNER" $NET sign-with-legacy-keychain send
   fi
 }
