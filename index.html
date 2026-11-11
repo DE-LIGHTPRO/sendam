@@ -88,40 +88,61 @@
         <p class="eyebrow">How it works</p>
         <h2>From a phone in London to a meter in Ibadan, <em>in minutes.</em></h2>
       </div>
-      <ol class="journey">
+      <div class="j-rail" id="j-rail" aria-hidden="true">
+        <div class="j-line"><i></i></div>
+        <div class="j-stop"><i></i><b>18:42</b><span>London</span></div>
+        <div class="j-stop"><i></i><b>18:47</b><span>Ibadan</span></div>
+        <div class="j-stop"><i></i><b>18:49</b><span>Home</span></div>
+      </div>
+      <ol class="journey" id="journey">
         <li class="j-step reveal">
           <div class="j-meta"><span class="j-n">01</span><span class="j-time">18:42 · London</span></div>
           <h3>Ada locks the money</h3>
           <p>She types her mother's meter, sees the name on it, and locks USDC in the NEAR contract.</p>
-          <div class="j-ui ui-receipt">
-            <span class="u-label">Electricity for</span>
-            <b class="u-name">ADEBAYO F. O.</b>
-            <span class="u-sub">Ibadan Electric · 111 •••• 111</span>
-            <span class="u-big">₦20,000</span>
-            <span class="u-row"><span>You pay</span><b>13.30 USDC</b></span>
+          <div class="phone" aria-hidden="true">
+            <div class="ph-bar"><b>18:42</b><span class="ph-sig"><i></i><i></i><i></i></span></div>
+            <div class="ph-app"><span class="ph-mark"></span>Pay a bill</div>
+            <div class="j-ui ui-send">
+              <span class="u-label">Ibadan Electric meter</span>
+              <span class="u-field">1111 1111 11111</span>
+              <b class="u-name"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>ADEBAYO F. O.</b>
+              <span class="u-label u-gap">They get</span>
+              <span class="u-big">₦20,000</span>
+              <span class="u-row"><span>You pay</span><b>13.30 USDC</b></span>
+              <span class="u-state"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Locked in the NEAR contract</span>
+            </div>
           </div>
         </li>
         <li class="j-step reveal">
           <div class="j-meta"><span class="j-n">02</span><span class="j-time">18:47 · Ibadan</span></div>
           <h3>Tunde pays the bill</h3>
           <p>A local agent takes the job, pays the electricity company in naira, and is paid once it is confirmed.</p>
-          <div class="j-ui ui-job">
-            <div class="u-job-top">
-              <div><span class="u-label">You pay</span><span class="u-mid">₦20,000</span></div>
-              <div class="u-earn"><span>You earn</span><b>≈ ₦615</b></div>
+          <div class="phone" aria-hidden="true">
+            <div class="ph-bar"><b>18:47</b><span class="ph-sig"><i></i><i></i><i></i></span></div>
+            <div class="ph-app"><span class="ph-mark"></span>Agent desk</div>
+            <div class="j-ui ui-job">
+              <div class="u-job-top">
+                <div><span class="u-label">You pay</span><span class="u-mid">₦20,000</span></div>
+                <div class="u-earn"><span>You earn</span><b>≈ ₦615</b></div>
+              </div>
+              <span class="u-row"><span>You get</span><b>13.30 USDC</b></span>
+              <span class="u-btn">Take this job</span>
             </div>
-            <span class="u-row"><span>You get</span><b>13.30 USDC</b></span>
-            <span class="u-btn">Take this job</span>
           </div>
         </li>
         <li class="j-step reveal">
           <div class="j-meta"><span class="j-n">03</span><span class="j-time">18:49 · Home</span></div>
           <h3>Mum gets the token</h3>
           <p>She opens a link, with no wallet and no app, and types the token into her meter.</p>
-          <div class="j-ui ui-token">
-            <span class="u-label">Electricity token</span>
-            <span class="u-token">4321 8765 2109 6543 0987</span>
-            <span class="u-row"><span>Units</span><b>64.5 kWh</b></span>
+          <div class="phone dark" aria-hidden="true">
+            <div class="ph-bar"><b>18:49</b><span class="ph-sig"><i></i><i></i><i></i></span></div>
+            <div class="ph-app"><span class="ph-mark"></span>Electricity for your home</div>
+            <div class="j-ui ui-token">
+              <span class="u-label">Electricity token</span>
+              <span class="u-token">4321 8765 2109 6543 0987</span>
+              <span class="u-row"><span>Units</span><b>64.5 kWh</b></span>
+              <span class="u-state"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Lights on at home</span>
+            </div>
           </div>
         </li>
       </ol>

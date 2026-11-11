@@ -13,8 +13,10 @@ const assert = require('node:assert/strict');
 
 const PORT = 4399;
 const BASE = `http://localhost:${PORT}`;
-const CONTRACT = 'sendam.example.testnet';
-const USDC = 'usdc.example.testnet';
+// The simulated chain answers to whatever contract names the site is configured with.
+const SITE_CONFIG = require('fs').readFileSync(require('path').join(__dirname, '..', 'js', 'config.js'), 'utf8');
+const CONTRACT = SITE_CONFIG.match(/export const CONTRACT = ['"]([^'"]+)['"]/)[1];
+const USDC = SITE_CONFIG.match(/export const USDC = ['"]([^'"]+)['"]/)[1];
 const MIN = 60_000;
 const sha = (s) => createHash('sha256').update(s, 'utf8').digest('hex');
 

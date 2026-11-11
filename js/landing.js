@@ -98,3 +98,124 @@ if (!calm && stage) {
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(stage);
   loop();
 }
+
+// How it works: the three cards act out one bill, in order, while they are on screen.
+const journey = document.getElementById('journey');
+if (!calm && journey) {
+  const [s1, s2, s3] = journey.querySelectorAll('.j-step');
+  const q = (el, sel) => el.querySelector(sel);
+  const name = q(s1, '.u-name'), big = q(s1, '.u-big'), row1 = q(s1, '.u-row'), lock = q(s1, '.u-state');
+  const earn = q(s2, '.u-earn'), row2 = q(s2, '.u-row'), btn = q(s2, '.u-btn');
+  const token = q(s3, '.u-token'), row3 = q(s3, '.u-row'), lights = q(s3, '.u-state');
+  const FINAL = token.textContent;
+  const NAME = name.innerHTML;
+  const line = document.querySelector('#j-rail .j-line');
+  const stops = [...document.querySelectorAll('#j-rail .j-stop')];
+  const rail = (p, ms, upTo) => {
+    line.style.setProperty('--dur', ms + 'ms');
+    line.style.setProperty('--p', p);
+    stops.forEach((st, i) => st.classList.toggle('on', i <= upTo));
+  };
+  let onScreen = false;
+  let started = false;
+  const pace = async (ms) => { await wait(ms); while (!onScreen || document.hidden) await wait(250); };
+  const hide = (...els) => els.forEach((e) => e.classList.add('hide'));
+  const reveal = (...els) => els.forEach((e) => e.classList.remove('hide'));
+  const turn = (step, ms) => { step.style.setProperty('--dur', ms + 'ms'); step.classList.add('active'); };
+  const finish = (step) => { step.classList.remove('active'); step.classList.add('done'); };
+
+  function countUp(el, to, ms) {
+    return new Promise((done) => {
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / ms);
+        el.textContent = '₦' + Math.round(to * (1 - Math.pow(1 - t, 3))).toLocaleString('en-NG');
+        if (t < 1) requestAnimationFrame(tick); else done();
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  async function settleToken() {
+    const chars = [...FINAL];
+    for (let i = 0; i <= chars.length; i++) {
+      for (let r = 0; r < 2; r++) {
+        token.innerHTML = chars.map((c, j) => (j < i || c === ' ' ? c : `<span class="settling">${Math.floor(Math.random() * 10)}</span>`)).join('');
+        await wait(28);
+      }
+    }
+    token.textContent = FINAL;
+  }
+
+  function reset() {
+    journey.classList.add('playing');
+    [s1, s2, s3].forEach((st) => st.classList.remove('active', 'done'));
+    name.textContent = 'Checking meter…';
+    name.classList.add('pending');
+    rail('0%', 0, -1);
+    big.textContent = '₦0';
+    hide(row1, lock, earn, row2, row3, lights);
+    btn.className = 'u-btn';
+    btn.textContent = 'Take this job';
+    token.textContent = '•••• •••• •••• •••• ••••';
+  }
+
+  async function play() {
+    for (;;) {
+      reset();
+      await pace(700);
+      // 01: the sender checks the meter and locks the money.
+      turn(s1, 3200);
+      rail('0%', 0, 0);
+      await pace(900);
+      name.innerHTML = NAME;
+      name.classList.remove('pending');
+      await pace(300);
+      await countUp(big, 20000, 900);
+      reveal(row1);
+      await pace(500);
+      reveal(lock);
+      await pace(700);
+      finish(s1);
+      rail('50%', 900, 0);
+      await pace(900);
+      stops[1].classList.add('on');
+      // 02: the agent sees the earnings, takes the job and pays.
+      turn(s2, 3600);
+      await pace(300);
+      reveal(earn, row2);
+      earn.classList.add('pop');
+      await pace(900);
+      earn.classList.remove('pop');
+      btn.classList.add('pressed');
+      await wait(160);
+      btn.classList.remove('pressed');
+      btn.classList.add('busy');
+      btn.innerHTML = '<span class="u-spin"></span>Paying ₦20,000…';
+      await pace(1400);
+      btn.className = 'u-btn ok';
+      btn.textContent = 'Paid · 13.30 USDC received';
+      await pace(800);
+      finish(s2);
+      rail('100%', 700, 1);
+      await pace(700);
+      stops[2].classList.add('on');
+      // 03: the family gets the token.
+      turn(s3, 2600);
+      await pace(400);
+      await settleToken();
+      reveal(row3);
+      await pace(400);
+      reveal(lights);
+      await pace(900);
+      finish(s3);
+      journey.classList.remove('playing');
+      await pace(6000);
+    }
+  }
+
+  new IntersectionObserver(([e]) => {
+    onScreen = e.isIntersecting;
+    if (onScreen && !started) { started = true; setTimeout(play, 900); }
+  }, { threshold: 0.35 }).observe(journey);
+}
