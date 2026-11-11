@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#033d2b">
+<title>Agent desk | Sendam</title>
+<meta name="description" content="Earn USDC by paying electricity bills in naira for families abroad.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="vendor/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+
+<link rel="stylesheet" href="vendor/wallet-modal.css">
+</head>
+<body>
+<header class="appbar">
+  <a class="logo" href="./" aria-label="Sendam home"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</a>
+  <span class="chip">Agent</span>
+  <span class="spacer"></span>
+  <span id="account"></span>
+  <details class="menu">
+    <summary aria-label="Switch view"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#grid"/></svg></summary>
+    <nav aria-label="Views">
+      <div class="group">Sendam</div>
+      <a href="send"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg>Send a bill</a>
+      <a href="agent" aria-current="page"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#handshake"/></svg>Agent desk</a>
+      <a href="./"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg>About Sendam</a>
+    </nav>
+  </details>
+</header>
+<main class="app">
+  <section data-view="connect">
+    <div class="page-head">
+      <h1>Agent desk</h1>
+      <p>Pay electricity bills for families abroad from your naira balance, and get paid in USDC the moment the payment is confirmed.</p>
+    </div>
+    <div class="card flush">
+      <ul class="plain-list">
+        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#list"/></svg><div><b>Pick a request</b><span>See the bill, the USDC offered and the rate it works out to.</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg><div><b>Pay the bill</b><span>Taking a request reserves it for you for 30 minutes.</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#shield"/></svg><div><b>Get paid automatically</b><span>Once the bill provider confirms it, the contract sends you the USDC.</span></div></li>
+      </ul>
+    </div>
+    <button class="btn primary block" id="connect" type="button"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg>Connect wallet</button>
+    <div class="note plain"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Runs on NEAR testnet with test USDC. No real money moves, and the electricity tokens come from a bill-payment sandbox.</span></div>
+  </section>
+
+  <section data-view="desk" hidden>
+    <div class="stats">
+      <div class="stat"><span>Your test USDC</span><b class="bal" id="balance">…</b></div>
+      <div class="stat"><span>Bills you have paid</span><b id="done-count">0</b></div>
+    </div>
+    <div class="note warn" id="register-note" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Your account is not set up to receive test USDC yet.</span></div>
+    <button class="btn block" type="button" id="register" hidden>Set up to receive USDC</button>
+
+    <div class="tabs" role="tablist" aria-label="Requests">
+      <button type="button" role="tab" id="tab-open" aria-selected="true" aria-controls="panel">Open requests <span class="chip neutral" id="n-open">0</span></button>
+      <button type="button" role="tab" id="tab-mine" aria-selected="false" aria-controls="panel">My jobs <span class="chip neutral" id="n-mine">0</span></button>
+    </div>
+    <div id="panel" role="tabpanel" aria-labelledby="tab-open"></div>
+    <p class="hint center">Updates every 10 seconds.</p>
+  </section>
+
+  <section data-view="paying" hidden>
+    <div class="page-head"><h1>Paying the bill</h1><p id="pay-text"></p></div>
+    <div class="card">
+      <ol class="steps-live" id="pay-steps">
+        <li data-step="pay"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Paying the bill with the electricity company</li>
+        <li data-step="check"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Checking the payment with the bill provider</li>
+        <li data-step="release"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Releasing your USDC from the contract</li>
+      </ol>
+    </div>
+    <div class="note bad" id="pay-error" role="alert" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#alert"/></svg><span></span></div>
+    <div class="card" id="pay-done" hidden>
+      <div class="kv"><span>Reference</span><b class="mono" id="pay-ref"></b></div>
+      <div class="kv"><span>You earned</span><b id="pay-earned"></b></div>
+      <a class="btn block" id="pay-tx" target="_blank" rel="noopener">See the transaction</a>
+    </div>
+    <button class="btn primary block" type="button" id="back-desk">Back to the desk</button>
+  </section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="js/agent.js"></script>
+</body>
+</html>

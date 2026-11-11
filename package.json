@@ -1,0 +1,34 @@
+{
+  "name": "sendam",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Real-world intents for Nigerian bills: someone abroad locks USDC on NEAR, a local agent pays the bill in naira, and the contract pays the agent once the payment is verified.",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "near-api-js": "7.5.1"
+  },
+  "devDependencies": {
+    "@near-wallet-selector/core": "^10.1.4",
+    "@near-wallet-selector/intear-wallet": "^10.1.4",
+    "@near-wallet-selector/meteor-wallet": "^10.1.4",
+    "@near-wallet-selector/modal-ui": "^10.1.4",
+    "@near-wallet-selector/my-near-wallet": "^10.1.4",
+    "axe-core": "^4.14.0",
+    "buffer": "^6.0.3",
+    "esbuild": "^0.28.2",
+    "events": "^3.3.0",
+    "util": "^0.12.5"
+  },
+  "scripts": {
+    "serve": "node scripts/serve.mjs",
+    "test": "node --test test/*.test.js",
+    "test:contracts": "cd contracts && cargo test",
+    "test:e2e": "node test-e2e/run.cjs",
+    "build:contracts": "cd contracts && cargo near build non-reproducible-wasm --manifest-path sendam/Cargo.toml && cargo near build non-reproducible-wasm --manifest-path mock-usdc/Cargo.toml",
+    "vendor": "esbuild src/wallet-entry.js --bundle --format=esm --minify --target=es2020 --define:global=globalThis --outfile=vendor/wallet.js && cp node_modules/@near-wallet-selector/modal-ui/styles.css vendor/wallet-modal.css"
+  }
+}

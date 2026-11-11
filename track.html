@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#033d2b">
+<title>Track a bill | Sendam</title>
+<meta name="description" content="Follow an electricity bill paid through Sendam and collect the token.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="vendor/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="appbar">
+  <a class="logo" href="./" aria-label="Sendam home"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</a>
+  <span class="chip">Tracking</span>
+  <span class="spacer"></span>
+  <span id="account"></span>
+  <details class="menu">
+    <summary aria-label="Switch view"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#grid"/></svg></summary>
+    <nav aria-label="Views">
+      <div class="group">Sendam</div>
+      <a href="send"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg>Send a bill</a>
+      <a href="agent"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#handshake"/></svg>Agent desk</a>
+      <a href="./"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg>About Sendam</a>
+    </nav>
+  </details>
+</header>
+<main class="app">
+  <section data-view="track">
+    <div class="page-head">
+      <h1 id="t-title">Electricity for your home</h1>
+      <p id="t-sub"></p>
+    </div>
+    <div class="card">
+      <div class="kv"><span>Meter</span><b class="mono" id="t-meter"></b></div>
+      <div class="kv"><span>Company</span><b id="t-provider"></b></div>
+      <div class="kv total"><span>Amount</span><b id="t-naira"></b></div>
+    </div>
+    <div class="card">
+      <ol class="timeline" id="timeline">
+        <li data-step="funded"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>Paid for by your family</b><span>The money is held safely until the bill is paid.</span></div></li>
+        <li data-step="claimed"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>An agent is paying it</b><span>A local agent has taken the request.</span></div></li>
+        <li data-step="paid"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>Bill paid</b><span>The electricity company has confirmed the payment.</span></div></li>
+      </ol>
+    </div>
+    <div class="card" id="token-card" hidden>
+      <b>Your electricity token</b>
+      <p class="small muted">Type these numbers into the meter keypad, then press Enter.</p>
+      <div class="token" id="token"></div>
+      <div class="kv"><span>Units</span><b id="units"></b></div>
+      <button class="btn block" type="button" id="copy-token"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg>Copy token</button>
+    </div>
+    <div class="note warn" id="t-note" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span></span></div>
+    <p class="hint center" id="t-live">Updates by itself. You can leave this page open.</p>
+  </section>
+  <section data-view="missing" hidden>
+    <div class="result">
+      <div class="tick bad"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#x"/></svg></div>
+      <h1>We could not find that request</h1>
+      <p>Check that you opened the whole link you were sent.</p>
+    </div>
+  </section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="js/track.js"></script>
+</body>
+</html>

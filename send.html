@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#033d2b">
+<title>Send a bill | Sendam</title>
+<meta name="description" content="Pay an electricity bill in Nigeria from anywhere, with USDC on NEAR.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="vendor/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+
+<link rel="stylesheet" href="vendor/wallet-modal.css">
+</head>
+<body>
+<header class="appbar">
+  <a class="logo" href="./" aria-label="Sendam home"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</a>
+  <span class="chip">Sender</span>
+  <span class="spacer"></span>
+  <span id="account"></span>
+  <details class="menu">
+    <summary aria-label="Switch view"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#grid"/></svg></summary>
+    <nav aria-label="Views">
+      <div class="group">Sendam</div>
+      <a href="send" aria-current="page"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg>Send a bill</a>
+      <a href="agent"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#handshake"/></svg>Agent desk</a>
+      <a href="./"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg>About Sendam</a>
+    </nav>
+  </details>
+</header>
+<main class="app">
+  <section data-view="connect">
+    <div class="page-head">
+      <h1>Pay a bill back home</h1>
+      <p>Lock USDC for a prepaid electricity token. A local agent pays it in naira, and you are only charged when the bill is paid.</p>
+    </div>
+    <div class="card flush">
+      <ul class="plain-list">
+        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg><div><b>Connect a NEAR wallet</b><span>Your USDC stays in the contract until an agent pays the bill.</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg><div><b>Choose the meter and the amount</b><span>Any prepaid meter on the twelve Nigerian distribution companies.</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#link"/></svg><div><b>Send the link home</b><span>Your family opens it to see progress and collect the token.</span></div></li>
+      </ul>
+    </div>
+    <button class="btn primary block" id="connect" type="button"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg>Connect wallet</button>
+    <div class="note plain"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Runs on NEAR testnet with test USDC. No real money moves, and the electricity tokens come from a bill-payment sandbox.</span></div>
+  </section>
+
+  <section data-view="form" hidden>
+    <div class="page-head">
+      <h1>Pay a bill back home</h1>
+      <p>You are only charged if an agent pays it. Otherwise the USDC comes back to you.</p>
+    </div>
+    <div class="card row-between" id="balance-card">
+      <div><span class="muted small">Your test USDC</span><div class="bal big-num" id="balance">…</div></div>
+      <button class="btn sm" type="button" id="faucet">Get 100 test USDC</button>
+    </div>
+    <form class="card form-grid" id="form" novalidate>
+      <div class="field">
+        <label for="provider">Electricity company</label>
+        <select id="provider" required></select>
+      </div>
+      <div class="field">
+        <label for="meter">Prepaid meter number</label>
+        <input type="text" id="meter" inputmode="numeric" autocomplete="off" placeholder="11 to 13 digits" required>
+        <p class="hint">Sandbox test meter: 1111111111111</p>
+      </div>
+      <div class="field">
+        <label for="naira">Amount in naira</label>
+        <input type="number" id="naira" inputmode="numeric" min="500" max="500000" step="100" value="10000" required>
+        <div class="presets" id="presets">
+          <button class="btn" type="button" data-n="5000">₦5,000</button>
+          <button class="btn" type="button" data-n="10000">₦10,000</button>
+          <button class="btn" type="button" data-n="20000">₦20,000</button>
+          <button class="btn" type="button" data-n="50000">₦50,000</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="rate">Rate (₦ per USDC)</label><input type="number" id="rate" inputmode="numeric" min="100" max="100000" step="10"></div>
+        <div class="field"><label for="tip">Agent tip (%)</label><input type="number" id="tip" inputmode="decimal" min="0" max="20" step="0.5"></div>
+      </div>
+      <div class="field">
+        <label for="expiry">If nobody pays it, refund me after</label>
+        <select id="expiry">
+          <option value="60">1 hour</option>
+          <option value="360">6 hours</option>
+          <option value="1440" selected>24 hours</option>
+          <option value="4320">3 days</option>
+        </select>
+      </div>
+      <div class="quote card flush">
+        <div class="kv"><span>Bill</span><b id="q-naira"></b></div>
+        <div class="kv"><span>At your rate</span><b id="q-base"></b></div>
+        <div class="kv"><span>Agent tip</span><b id="q-tip"></b></div>
+        <div class="kv total"><span>You lock</span><b id="q-total"></b></div>
+      </div>
+      <p class="hint">Agents choose which requests to take, so a fair rate and tip get your bill paid faster.</p>
+      <button class="btn primary block" type="submit" id="send"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg>Lock USDC and send</button>
+    </form>
+
+    <div class="section-title"><h2>Your requests</h2><button class="btn sm" type="button" id="refresh-mine" aria-label="Refresh"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#refresh"/></svg></button></div>
+    <div id="mine"><p class="empty-note">Nothing sent yet.</p></div>
+  </section>
+
+  <section data-view="sending" hidden>
+    <div class="result">
+      <div class="spinner" aria-hidden="true"></div>
+      <h1>Locking your USDC</h1>
+      <p>Approve the transaction in your wallet.</p>
+    </div>
+  </section>
+
+  <section data-view="sent" hidden>
+    <div class="result">
+      <div class="tick"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></div>
+      <h1>Request sent</h1>
+      <p id="sent-text"></p>
+    </div>
+    <div class="card share">
+      <b>Send this link home</b>
+      <p class="small muted">Whoever opens it can follow the payment and collect the electricity token. Treat it like the token itself.</p>
+      <div class="linkbox" id="share-link"></div>
+      <div class="row">
+        <button class="btn" type="button" id="copy-link"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg>Copy link</button>
+        <a class="btn primary" id="whatsapp" target="_blank" rel="noopener">Share on WhatsApp</a>
+      </div>
+    </div>
+    <a class="btn block" id="open-track">Follow it yourself</a>
+    <button class="btn block" type="button" id="another">Pay another bill</button>
+  </section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="js/send.js"></script>
+</body>
+</html>

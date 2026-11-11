@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#033d2b">
+<title>Sendam: pay bills in Nigeria from anywhere</title>
+<meta name="description" content="Someone abroad locks USDC on NEAR. A local agent pays the electricity bill in naira. The contract pays the agent only once the payment is verified.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="vendor/fonts/bricolage-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="vendor/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <div class="site-nav">
+      <a class="logo" href="./" aria-label="Sendam home"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</a>
+      <nav class="links" aria-label="Sections">
+        <a href="#how">How it works</a>
+        <a href="#trust">Why it is safe</a>
+        <a href="#agents">For agents</a>
+        <a href="#limits">Status</a>
+      </nav>
+      <a class="btn sm on-night primary" href="send">Send a bill</a>
+    </div>
+    <div class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg>Real-world intents on NEAR</span>
+        <h1>Pay for the light at home, <span class="hl">from anywhere.</span></h1>
+        <p class="lead">Lock USDC for your family's electricity. A local agent pays the bill in naira, and the contract pays them only once the electricity company confirms it. If nobody does, your money comes back.</p>
+        <div class="actions">
+          <a class="btn lg on-night primary" href="send"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg>Send a bill</a>
+          <a class="btn lg on-night" href="agent">Become an agent</a>
+        </div>
+        <div class="foot">
+          <span><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Charged only when paid</span>
+          <span><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Automatic refund</span>
+          <span><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Family needs no wallet</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="phone">
+          <div class="p-bar"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</div>
+          <div class="p-list" style="margin-top:12px">
+            <div><span>Ibadan Electric<small>Meter 111…111</small></span><span>₦20,000</span></div>
+            <div><span>Paid for by Ada in London<small>13.30 USDC locked</small></span><span>✓</span></div>
+            <div><span>Agent Tunde paid it<small>Confirmed by IBEDC</small></span><span>✓</span></div>
+          </div>
+          <div class="p-cam" style="height:auto;padding:18px 12px;color:#fff;text-align:center;font-family:var(--mono);font-weight:700;letter-spacing:.06em">1234 5678 9012<br>3456 7890</div>
+          <div class="p-total"><b>Token ready</b><span>Copy token</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="facts" aria-label="Live on NEAR testnet">
+    <div class="wrap">
+      <div class="fact"><b id="s-total">–</b><span>bills requested on testnet</span></div>
+      <div class="fact"><b id="s-paid">–</b><span>paid by agents</span></div>
+      <div class="fact"><b id="s-open">–</b><span>waiting for an agent now</span></div>
+      <div class="fact"><b>12</b><span>Nigerian electricity companies</span></div>
+    </div>
+  </section>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="band-head">
+        <div class="kicker">How it works</div>
+        <h2>An intent that settles in the real world</h2>
+        <p>On NEAR Intents, you say what you want and competing solvers deliver it. Sendam does the same for a Nigerian electricity bill, with local agents as the solvers.</p>
+      </div>
+      <div class="grid-3">
+        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg></div><div class="step">Step 1</div><h3>Abroad, you lock USDC</h3><p>Choose the meter and the amount. The USDC sits in a NEAR contract, not with us and not with an agent.</p></div>
+        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#handshake"/></svg></div><div class="step">Step 2</div><h3>A local agent pays in naira</h3><p>Agents who already hold naira and want dollars pick up the request and pay the electricity company.</p></div>
+        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg></div><div class="step">Step 3</div><h3>The token reaches home</h3><p>Once the payment is confirmed, the agent is paid and your family collects the token from a link. No wallet needed.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="trust">
+    <div class="wrap">
+      <div class="band-head">
+        <div class="kicker">Why it is safe</div>
+        <h2>The contract only ever pays two people</h2>
+        <p>The agent named in a confirmed claim, or the sender who funded the request. Nobody else can move the money.</p>
+      </div>
+      <div class="grid-2">
+        <div class="feature">
+          <h3>For the sender</h3>
+          <ul class="plain-list">
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#shield"/></svg><div><b>Charged only on proof</b><span>The agent is paid after the electricity company confirms the purchase, not before.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#refresh"/></svg><div><b>Automatic refund</b><span>If no agent pays by the deadline, anyone can trigger the refund, and it can only go back to you.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#link"/></svg><div><b>The token stays private</b><span>Only a fingerprint of your family's link is on chain. The token is fetched with the link, never published.</span></div></li>
+          </ul>
+        </div>
+        <div class="feature">
+          <h3>For the agent</h3>
+          <ul class="plain-list">
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#clock"/></svg><div><b>A reserved job</b><span>Taking a request holds it for you for 30 minutes, so nobody else pays the same bill.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><div><b>Paid even if you are slow</b><span>If your claim lapses but nobody else has taken it, a confirmed payment still pays you.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#receipt"/></svg><div><b>No double payments</b><span>Every purchase has a fixed reference, so a retry looks the payment up instead of paying twice.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="agents">
+    <div class="wrap">
+      <div class="band-head">
+        <div class="kicker">For agents</div>
+        <h2>Earn dollars for something you already do</h2>
+        <p>POS agents and bill vendors across Nigeria already sell electricity tokens all day. Sendam turns that into a way to earn USDC, with the rate and tip set in the open by each request.</p>
+      </div>
+      <div class="actions"><a class="btn lg" href="agent">Open the agent desk<svg class="icon" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a></div>
+    </div>
+  </section>
+
+  <section class="band deep" id="limits">
+    <div class="wrap">
+      <div class="band-head">
+        <div class="kicker">Status</div>
+        <h2>A working prototype, honestly labelled</h2>
+        <p>Built in four days for the NEAR Hackathon, in the Real-World Money track.</p>
+      </div>
+      <div class="guards">
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><h3>Working</h3><p>The NEAR contract, tested with 23 unit tests: requests, claims, confirmation, refunds and failed-payout recovery.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><h3>Working</h3><p>Paying and verifying electricity through the VTpass sandbox, with test meters and test tokens.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Test money</h3><p>It runs on NEAR testnet with test USDC. Real USDC and payment from any chain through NEAR Intents come next.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>One verifier</h3><p>A single service checks payments and holds the demo agent's bill account. In production each agent's key moves into a secure enclave.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Electricity only</h3><p>Airtime, data and school fees use the same pattern and come after.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Not a licensed service</h3><p>A real launch needs licensed partners for moving money into and out of Nigeria.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="wrap">
+      <div>
+        <h2 id="cta-title">Keep the lights on at home.</h2>
+        <p>Try it on testnet: get test USDC, send a bill to the sandbox meter, then pay it from the agent desk.</p>
+      </div>
+      <div class="actions">
+        <a class="btn lg" href="send">Send a bill<svg class="icon" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
+        <a class="btn lg ghost" href="agent">Agent desk</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="logo" href="./"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</a>
+    <span>Built for the NEAR Hackathon 2026. Testnet prototype: no real money moves.</span>
+    <span class="foot-links"><a href="https://github.com/DE-LIGHTPRO/sendam">Source code</a></span>
+  </div>
+</footer>
+<script type="module" src="js/landing.js"></script>
+</body>
+</html>
