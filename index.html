@@ -6,118 +6,202 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f4f2ed">
 <title>Sendam: send light home</title>
-<meta name="description" content="Pay your family's electricity in Nigeria from anywhere. Lock USDC on NEAR; a local agent pays the bill in naira; the contract pays them only once the electricity company confirms it.">
+<meta name="description" content="Pay a prepaid electricity meter in Nigeria from anywhere. Lock USDC on NEAR; a local agent pays the bill in naira and is paid only once the electricity company confirms it.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="vendor/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="img/photos/hero.jpg">
+<link rel="preload" href="vendor/fonts/geist-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/landing.css">
 </head>
-<body>
-<header class="hero">
-  <div class="hero-photo" role="img" aria-label="City lights at night"></div>
-  <nav class="l-nav" aria-label="Main">
+<body class="landing">
+<header class="l-nav">
+  <div class="l-wrap l-nav-in">
     <a class="logo" href="./" aria-label="Sendam home"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</a>
-    <div class="links">
+    <nav class="links" aria-label="Main">
       <a href="#how">How it works</a>
-      <a href="#promises">Guarantees</a>
+      <a href="#guarantees">Guarantees</a>
       <a href="#agents">For agents</a>
       <a href="#status">Status</a>
-    </div>
-    <a class="btn sm light" href="send">Send a bill</a>
-  </nav>
-  <div class="hero-body">
-    <div>
-      <span class="hero-kicker">Real-world intents on NEAR</span>
-      <h1>Send light <em>home,</em> from anywhere.</h1>
-      <p class="hero-lead">Pay your family's electricity in Nigeria from wherever you are. You lock USDC, a local agent pays the bill in naira, and they are paid only once the electricity company confirms it.</p>
-      <div class="actions">
-        <a class="btn lg light" href="send">Send a bill<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
-        <a class="btn lg ghost-light" href="agent">Become an agent</a>
-      </div>
-    </div>
-    <aside class="float-card" aria-label="Example: a bill paid through Sendam">
-      <div class="fc-top"><span>Ibadan Electric · meter 111…111</span><span class="fc-live">Example</span></div>
-      <div class="fc-amount">₦20,000<small>Sent by Ada in London · 13.30 USDC</small></div>
-      <ol class="fc-steps">
-        <li><i></i>Paid for, USDC held<span>18:42</span></li>
-        <li><i></i>Agent Tunde paying<span>18:47</span></li>
-        <li><i></i>Confirmed by IBEDC<span>18:49</span></li>
-      </ol>
-      <div class="fc-token"><small>Electricity token</small>4321 8765 2109 6543</div>
-    </aside>
+    </nav>
+    <a class="btn sm primary" href="send">Send a bill</a>
   </div>
 </header>
 
-<section class="strip" aria-labelledby="strip-title">
-  <p id="strip-title">Pays prepaid meters in every one of Nigeria's twelve distribution areas</p>
-  <ul class="areas"><li>Ikeja</li><li>Eko</li><li>Ibadan</li><li>Abuja</li><li>Kano</li><li>Port Harcourt</li><li>Jos</li><li>Kaduna</li><li>Enugu</li><li>Benin</li><li>Aba</li><li>Yola</li></ul>
-</section>
-
 <main>
+  <!-- Hero: the promise on the left, the moment it lands on the right. -->
+  <section class="hero">
+    <div class="l-wrap hero-in">
+      <div class="hero-copy">
+        <p class="kicker"><span class="dot" aria-hidden="true"></span>Electricity bills, paid from abroad</p>
+        <h1>Send light <em>home.</em></h1>
+        <p class="lead">Pay a prepaid electricity meter in Nigeria with USDC on NEAR. A local agent pays the bill in naira and is paid only after the electricity company confirms it. If nobody pays, your money comes back.</p>
+        <div class="actions">
+          <a class="btn lg primary" href="send">Send a bill<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
+          <a class="btn lg" href="agent">Become an agent</a>
+        </div>
+        <dl class="facts">
+          <div><dt>12</dt><dd>distribution companies</dd></div>
+          <div><dt>30 min</dt><dd>to deliver, or the job reopens</dd></div>
+          <div><dt>2</dt><dd>places the money can go</dd></div>
+        </dl>
+      </div>
+
+      <figure class="meter-stage lit" id="stage" aria-label="A prepaid electricity meter accepting a token and adding 64.5 kWh">
+        <div class="meter" id="meter" aria-hidden="true">
+          <div class="m-head">
+            <span class="m-brand">PREPAID<b>ENERGY METER</b></span>
+            <span class="m-leds"><i class="led red"></i><i class="led green"></i></span>
+          </div>
+          <div class="m-lcd">
+            <div class="m-lcd-top"><span id="lcd-mode">CREDIT</span><span>kWh</span></div>
+            <div class="m-lcd-main" id="lcd">76.8</div>
+            <div class="m-lcd-bar"><i id="lcd-bar"></i></div>
+          </div>
+          <div class="m-keys" id="keys">
+            <span>1</span><span>2</span><span>3</span>
+            <span>4</span><span>5</span><span>6</span>
+            <span>7</span><span>8</span><span>9</span>
+            <span class="k-fn">⌫</span><span>0</span><span class="k-fn k-ok">↵</span>
+          </div>
+          <div class="m-foot"><span>IBEDC</span><span>No. 111 •••• 111</span></div>
+        </div>
+        <figcaption class="m-tag">
+          <span class="m-tag-row"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Token accepted</span>
+          <b>₦20,000 from Ada in London</b>
+          <span class="m-tag-sub">Paid by Tunde in Ibadan · 7 min</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="areas-band" aria-labelledby="areas-title">
+    <div class="l-wrap">
+      <p id="areas-title">Works on prepaid meters across all twelve distribution areas</p>
+      <ul class="areas"><li>Ikeja</li><li>Eko</li><li>Ibadan</li><li>Abuja</li><li>Kano</li><li>Port Harcourt</li><li>Jos</li><li>Kaduna</li><li>Enugu</li><li>Benin</li><li>Aba</li><li>Yola</li></ul>
+    </div>
+  </section>
+
+  <!-- How it works: the real screens each person sees, in order. -->
   <section class="l-section" id="how">
     <div class="l-wrap">
       <div class="l-head reveal">
-        <div><div class="l-eyebrow">How it works</div><h2>One bill, <em>three</em> people.</h2></div>
-        <p>Like NEAR Intents, you say what you want and someone competes to deliver it. Here the delivery is a prepaid electricity token, and the someone is a local agent with naira.</p>
+        <p class="eyebrow">How it works</p>
+        <h2>From a phone in London to a meter in Ibadan, <em>in minutes.</em></h2>
       </div>
-      <div class="people">
-        <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/abroad.jpg')"></div><span class="person-n">01</span><div class="person-body"><h3>Ada, <em>abroad</em></h3><p>Types her mother's meter, sees the name on it, and locks USDC for the bill. The money waits in a NEAR contract.</p></div></article>
-        <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/agent.jpg')"></div><span class="person-n">02</span><div class="person-body"><h3>Tunde, <em>the agent</em></h3><p>Takes the request, buys the token from the electricity company in naira, and is paid in USDC once it is confirmed.</p></div></article>
-        <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/home.jpg')"></div><span class="person-n">03</span><div class="person-body"><h3>Mum, <em>at home</em></h3><p>Opens a link, sees the payment arrive, and types the token into her meter. No wallet, no app.</p></div></article>
-      </div>
+      <ol class="journey">
+        <li class="j-step reveal">
+          <div class="j-meta"><span class="j-n">01</span><span class="j-time">18:42 · London</span></div>
+          <h3>Ada locks the money</h3>
+          <p>She types her mother's meter, sees the name on it, and locks USDC in the NEAR contract.</p>
+          <div class="j-ui ui-receipt">
+            <span class="u-label">Electricity for</span>
+            <b class="u-name">ADEBAYO F. O.</b>
+            <span class="u-sub">Ibadan Electric · 111 •••• 111</span>
+            <span class="u-big">₦20,000</span>
+            <span class="u-row"><span>You pay</span><b>13.30 USDC</b></span>
+          </div>
+        </li>
+        <li class="j-step reveal">
+          <div class="j-meta"><span class="j-n">02</span><span class="j-time">18:47 · Ibadan</span></div>
+          <h3>Tunde pays the bill</h3>
+          <p>A local agent takes the job, pays the electricity company in naira, and is paid once it is confirmed.</p>
+          <div class="j-ui ui-job">
+            <div class="u-job-top">
+              <div><span class="u-label">You pay</span><span class="u-mid">₦20,000</span></div>
+              <div class="u-earn"><span>You earn</span><b>≈ ₦615</b></div>
+            </div>
+            <span class="u-row"><span>You get</span><b>13.30 USDC</b></span>
+            <span class="u-btn">Take this job</span>
+          </div>
+        </li>
+        <li class="j-step reveal">
+          <div class="j-meta"><span class="j-n">03</span><span class="j-time">18:49 · Home</span></div>
+          <h3>Mum gets the token</h3>
+          <p>She opens a link, with no wallet and no app, and types the token into her meter.</p>
+          <div class="j-ui ui-token">
+            <span class="u-label">Electricity token</span>
+            <span class="u-token">4321 8765 2109 6543 0987</span>
+            <span class="u-row"><span>Units</span><b>64.5 kWh</b></span>
+          </div>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <section class="l-section" id="promises" style="padding-top:0">
-    <div class="l-wrap">
+  <!-- Guarantees: the contract's rules, drawn plainly. -->
+  <section class="l-section tint" id="guarantees">
+    <div class="l-wrap g-grid">
       <div class="l-head reveal">
-        <div><div class="l-eyebrow">Guarantees</div><h2>The money only goes <em>two</em> places.</h2></div>
-        <p>To the agent named in a confirmed claim, or back to the person who sent it. Nobody else can move it, including us.</p>
+        <p class="eyebrow">Guarantees</p>
+        <h2>The money can only go <em>two ways.</em></h2>
+        <p class="l-sub">To the agent who delivered, or back to the sender. The rules live in a NEAR contract, so nobody can change them, including us.</p>
       </div>
-      <div class="promises">
-        <div class="promise reveal"><span class="promise-n">01</span><div><h3>Charged only on proof</h3><p>The agent is paid after the electricity company confirms the purchase, never before.</p></div></div>
-        <div class="promise reveal"><span class="promise-n">02</span><div><h3>A refund nobody can block</h3><p>If no one pays by your deadline, anyone can trigger the refund, and it can only go back to you.</p></div></div>
-        <div class="promise reveal"><span class="promise-n">03</span><div><h3>One agent per bill</h3><p>Taking a request reserves it for 30 minutes, so two agents never pay the same meter.</p></div></div>
-        <div class="promise reveal"><span class="promise-n">04</span><div><h3>The token stays private</h3><p>Only a fingerprint of the family's link is on chain. The token itself is never published.</p></div></div>
+      <div class="flow reveal" role="img" aria-label="A request starts open. An agent claims it for 30 minutes. If the electricity company confirms payment, the agent is paid. If the deadline passes or the sender cancels, the sender is refunded.">
+        <div class="f-node"><span class="f-k">Locked</span><b>Open request</b><small>USDC held by the contract</small></div>
+        <div class="f-arrow"><span>an agent claims it for 30 min</span></div>
+        <div class="f-node"><span class="f-k">Reserved</span><b>Agent paying</b><small>Only one agent at a time</small></div>
+        <div class="f-split">
+          <div class="f-branch">
+            <div class="f-arrow ok"><span>bill confirmed</span></div>
+            <div class="f-node ok"><span class="f-k">Settled</span><b>Agent is paid</b><small>USDC to the agent's wallet</small></div>
+          </div>
+          <div class="f-branch">
+            <div class="f-arrow back"><span>deadline or cancel</span></div>
+            <div class="f-node back"><span class="f-k">Settled</span><b>Sender refunded</b><small>Anyone can trigger it</small></div>
+          </div>
+        </div>
+      </div>
+      <ul class="g-list">
+        <li class="reveal"><b>Charged only on proof.</b> The agent is paid after the electricity company confirms the purchase, never before.</li>
+        <li class="reveal"><b>A refund nobody can block.</b> After your deadline anyone can trigger it, and it can only go back to you.</li>
+        <li class="reveal"><b>One agent per bill.</b> A claim reserves the request for 30 minutes, so no meter is paid twice.</li>
+        <li class="reveal"><b>The token stays private.</b> Only a fingerprint of the family's link is on chain, never the token.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Agents. -->
+  <section class="agents" id="agents">
+    <div class="l-wrap a-grid">
+      <div class="reveal">
+        <p class="eyebrow light">For agents</p>
+        <h2>Earn dollars on bills you <em>already sell.</em></h2>
+        <p class="l-sub">POS agents and bill vendors sell electricity tokens all day. On Sendam each request shows what you pay in naira and what you earn on top, so you choose the jobs worth taking.</p>
+        <a class="btn lg light" href="agent">Open the agent desk<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
+      </div>
+      <div class="a-stats reveal">
+        <div class="a-stat big"><span>Earned on one ₦20,000 bill</span><b>₦615</b><small>13.30 USDC at ₦1,550, less the ₦20,000 paid</small></div>
+        <div class="a-stat"><span>Paid out</span><b>Seconds</b><small>after the bill is confirmed</small></div>
+        <div class="a-stat"><span>Needs</span><b>A NEAR wallet</b><small>and naira to pay the bill</small></div>
       </div>
     </div>
   </section>
 
-  <section class="night" id="agents">
-    <div class="night-photo" role="img" aria-label="A street at night"></div>
-    <div class="glass reveal" style="position:relative">
-      <span class="tag">AGENTS</span>
-      <h2>Earn dollars for something you <em>already</em> do.</h2>
-      <p>POS agents and bill vendors sell electricity tokens all day. On Sendam every request shows the bill you pay in naira and what you earn on top, so you pick the jobs worth taking.</p>
-      <div class="actions"><a class="btn lg light" href="agent">Open the agent desk<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a></div>
-    </div>
-  </section>
-
+  <!-- Status. -->
   <section class="l-section" id="status">
-    <div class="l-wrap">
+    <div class="l-wrap s-grid">
       <div class="l-head reveal">
-        <div><div class="l-eyebrow">Status</div><h2>A working prototype, <em>honestly</em> labelled.</h2></div>
-        <p>Built for the NEAR Hackathon 2026, Real-World Money track. It runs on NEAR testnet with test USDC, so no real money moves.</p>
+        <p class="eyebrow">Status</p>
+        <h2>A working prototype, <em>honestly labelled.</em></h2>
+        <p class="l-sub">Built for the NEAR Hackathon 2026. It runs on NEAR testnet with test USDC, so no real money moves.</p>
       </div>
       <div class="status-rows">
-        <div class="status-row reveal"><span class="chip ok">Working</span><h3>The NEAR contract</h3><p>Requests, claims, confirmation, refunds and recovery from a failed payout, covered by 23 unit tests.</p></div>
+        <div class="status-row reveal"><span class="chip ok">Working</span><h3>The NEAR contract</h3><p>Requests, claims, confirmation, refunds and recovery from a failed payout, with unit tests.</p></div>
         <div class="status-row reveal"><span class="chip ok">Working</span><h3>Electricity tokens</h3><p>Bought and verified through the VTpass sandbox, with test meters and test tokens.</p></div>
         <div class="status-row reveal"><span class="chip neutral">Next</span><h3>Real money</h3><p>Real USDC on NEAR mainnet, paid from any chain through NEAR Intents.</p></div>
         <div class="status-row reveal"><span class="chip neutral">Next</span><h3>Verified agents</h3><p>Each agent's bill-provider key sealed in a secure enclave, so the verifier is attested code.</p></div>
-        <div class="status-row reveal"><span class="chip neutral">Next</span><h3>More bills</h3><p>Airtime, data and school fees follow the same pattern.</p></div>
         <div class="status-row reveal"><span class="chip warn">Needed</span><h3>Licensed partners</h3><p>A real launch needs licensed partners to move money into and out of Nigeria.</p></div>
       </div>
     </div>
   </section>
 
   <section class="closing">
-    <div class="l-wrap">
-      <h2 class="reveal">Try it in<br><em>five minutes.</em></h2>
-      <div class="closing-foot reveal">
-        <p>Get test USDC, send a bill to the sandbox meter, then pay it from the agent desk. It all runs on NEAR testnet, so no real money moves.</p>
-        <div class="actions" style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn lg primary" href="send">Send a bill<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a><a class="btn lg" href="agent">Agent desk</a></div>
+    <div class="l-wrap closing-in reveal">
+      <h2>Try it in <em>five minutes.</em></h2>
+      <p>Get test USDC, send a bill to the sandbox meter, then pay it from the agent desk.</p>
+      <div class="actions">
+        <a class="btn lg light" href="send">Send a bill<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
+        <a class="btn lg ghost-light" href="agent">Agent desk</a>
       </div>
     </div>
   </section>

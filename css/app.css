@@ -1,17 +1,15 @@
 /* Sendam design system.
-   Photo-led and editorial: warm paper, near-black ink, a clean grotesk (Geist) with an
-   italic serif (Instrument Serif) for emphasis, black pill buttons, generous space. */
+   Warm paper, near-black ink, one type family (Geist, with Geist Mono for figures and
+   tokens), black pill buttons, generous space. Emphasis is tone, not a second typeface. */
 
 @font-face { font-family: "Geist"; font-style: normal; font-display: swap; font-weight: 100 900;
   src: url("../vendor/fonts/geist-latin-wght-normal.woff2") format("woff2-variations");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url("../vendor/fonts/geist-mono-latin-wght-normal.woff2") format("woff2-variations"); }
 @font-face { font-family: "Geist"; font-style: normal; font-display: swap; font-weight: 100 900;
   src: url("../vendor/fonts/geist-latin-ext-wght-normal.woff2") format("woff2-variations");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Instrument Serif"; font-style: italic; font-display: swap; font-weight: 400;
-  src: url("../vendor/fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); }
-@font-face { font-family: "Instrument Serif"; font-style: normal; font-display: swap; font-weight: 400;
-  src: url("../vendor/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); }
 
 :root {
   color-scheme: light;
@@ -32,8 +30,7 @@
   --red: #b42318;
   --red-soft: #fdecea;
   --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --serif: "Instrument Serif", ui-serif, Georgia, serif;
-  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --r-lg: 28px;
   --r: 18px;
   --r-sm: 12px;
@@ -50,7 +47,7 @@ img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 h1, h2, h3 { margin: 0; font-weight: 560; letter-spacing: -0.035em; line-height: 1.04; }
 p { margin: 0; }
-em, .serif { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+em { font-style: normal; color: #858178; }
 .muted { color: var(--muted); }
 .small { font-size: 14px; }
 .mono { font-family: var(--mono); letter-spacing: 0.04em; }
@@ -124,7 +121,6 @@ em, .serif { font-family: var(--serif); font-style: italic; font-weight: 400; le
 .app { max-width: 560px; margin: 0 auto; padding: 28px 16px 120px; }
 .app > section > * + *, .app [data-view] > * + * { margin-top: 16px; }
 .page-head h1 { font-size: clamp(36px, 9vw, 52px); }
-.page-head h1 em { font-size: 1.08em; }
 .page-head p { margin-top: 12px; color: var(--muted); font-size: 17px; max-width: 34em; }
 .page-head + * { margin-top: 26px !important; }
 .section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 36px !important; }

@@ -143,7 +143,7 @@ It creates `usdc.`, `sendam.` and `verifier.` sub-accounts, deploys both contrac
 
 All code here was written during the hackathon window, from 11 November 2026. The icons and parts of the front-end helpers (`js/ui.js`) were adapted from FastLane, an earlier project by the same author written on 10–11 November 2026, after the hackathon was announced.
 
-Built with AI assistance (Claude Code). Libraries: near-sdk and near-contract-standards (Rust), near-api-js, @near-wallet-selector (core, modal-ui, my-near-wallet, meteor-wallet, intear-wallet), @near-js/transactions, buffer, util and events (browser polyfills), esbuild, Playwright and axe-core (tests), and the Geist and Instrument Serif fonts (OFL 1.1).
+Built with AI assistance (Claude Code). Libraries: near-sdk and near-contract-standards (Rust), near-api-js, @near-wallet-selector (core, modal-ui, my-near-wallet, meteor-wallet, intear-wallet), @near-js/transactions, buffer, util and events (browser polyfills), esbuild, Playwright and axe-core (tests), and the Geist and Geist Mono fonts (OFL 1.1).
 
 ## Licence
 

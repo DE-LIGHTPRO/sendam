@@ -184,12 +184,11 @@ async function step(name, fn) {
     let link = '';
     let firstTotal = '';
 
-    await step('the landing page loads its photographs and leads to both sides of the app', async () => {
+    await step('the landing page shows the meter and leads to both sides of the app', async () => {
       const page = await open(null, '/', { width: 1440, height: 900 });
-      await page.getByRole('heading', { level: 1 }).waitFor();
-      for (const photo of ['hero', 'abroad', 'agent', 'home', 'night']) {
-        assert.equal((await page.request.get(`${BASE}/img/photos/${photo}.jpg`)).status(), 200, photo);
-      }
+      await page.getByRole('heading', { level: 1, name: 'Send light home.' }).waitFor();
+      assert.equal(await page.locator('#lcd').textContent(), '76.8', 'with reduced motion the meter shows the credited state');
+      assert.ok(await page.locator('#stage').evaluate((el) => el.classList.contains('lit')));
       const hrefs = await page.locator('a[href]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
       assert.ok(hrefs.includes('send') && hrefs.includes('agent'));
       await shot(page, '0-landing-desktop');
