@@ -179,10 +179,14 @@ async function step(name, fn) {
     let link = '';
     let firstTotal = '';
 
-    await step('the landing page loads with live numbers from the contract', async () => {
+    await step('the landing page loads its photographs and leads to both sides of the app', async () => {
       const page = await open(null, '/', { width: 1440, height: 900 });
       await page.getByRole('heading', { level: 1 }).waitFor();
-      await page.waitForFunction(() => document.querySelector('#s-total').textContent === '0');
+      for (const photo of ['hero', 'abroad', 'agent', 'home', 'night']) {
+        assert.equal((await page.request.get(`${BASE}/img/photos/${photo}.jpg`)).status(), 200, photo);
+      }
+      const hrefs = await page.locator('a[href]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+      assert.ok(hrefs.includes('send') && hrefs.includes('agent'));
       assert.ok(await noSideScroll(page));
       await page.context().close();
     });

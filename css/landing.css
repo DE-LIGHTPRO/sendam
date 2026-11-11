@@ -1,0 +1,136 @@
+/* Landing page. Builds on app.css. */
+.l-wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
+
+/* ---- Hero: a full-bleed photograph, inset with rounded corners ---------------------------- */
+.hero { position: relative; margin: 10px; min-height: min(94vh, 980px); border-radius: var(--r-lg); overflow: hidden; color: #fff; display: flex; flex-direction: column; isolation: isolate; }
+.hero-photo { position: absolute; inset: 0; z-index: -2; background: #16130f url("../img/photos/hero.jpg") center / cover no-repeat; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 9, 8, 0.55) 0%, rgba(10, 9, 8, 0.05) 30%, rgba(10, 9, 8, 0.25) 60%, rgba(10, 9, 8, 0.8) 100%); }
+.l-nav { display: flex; align-items: center; gap: 24px; padding: 18px clamp(18px, 3vw, 30px); }
+.l-nav .logo { color: #fff; }
+.l-nav .mark { --mark-bg: #fff; --mark-fg: #121211; }
+.l-nav .links { display: none; gap: 28px; margin-left: auto; }
+.l-nav .links a { color: rgba(255, 255, 255, 0.82); text-decoration: none; font-size: 15px; font-weight: 480; }
+.l-nav .links a:hover { color: #fff; }
+.l-nav .btn { margin-left: auto; }
+@media (min-width: 900px) { .l-nav .links { display: flex; } .l-nav .btn { margin-left: 0; } }
+.hero-body { margin-top: auto; padding: 0 clamp(18px, 3vw, 30px) clamp(26px, 4vw, 44px); display: grid; gap: 28px; align-items: end; }
+.hero-kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 520; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
+.hero-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #f6c36a; box-shadow: 0 0 12px #f6c36a; }
+.hero h1 { margin: 16px 0 0; font-size: clamp(54px, 10.5vw, 148px); font-weight: 560; line-height: 0.92; letter-spacing: -0.055em; max-width: 9.5em; }
+.hero h1 em { font-size: 1.08em; letter-spacing: -0.02em; color: #f6d79a; }
+.hero-lead { margin-top: 22px; max-width: 30em; font-size: clamp(16px, 1.6vw, 19px); color: rgba(255, 255, 255, 0.86); }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+@media (min-width: 1000px) { .hero-body { grid-template-columns: 1fr 380px; } }
+
+/* The product, floating over the photograph. */
+.float-card { width: 100%; max-width: 380px; justify-self: end; background: rgba(255, 255, 255, 0.96); color: var(--ink); border-radius: 22px; padding: 18px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.fc-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); }
+.fc-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: var(--green-soft); color: var(--green); font-weight: 540; font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; }
+.fc-live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.fc-amount { margin-top: 12px; font-size: 40px; font-weight: 560; letter-spacing: -0.05em; line-height: 1; }
+.fc-amount small { display: block; margin-top: 6px; font-size: 14px; letter-spacing: 0; color: var(--muted); font-weight: 450; }
+.fc-steps { list-style: none; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.fc-steps li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.fc-steps li i { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--line-strong); flex: none; display: grid; place-items: center; }
+.fc-steps li i::after { content: ""; width: 8px; height: 5px; border: solid #fff; border-width: 0 0 2px 2px; transform: rotate(-45deg) translate(1px, -1px); opacity: 0; }
+.fc-steps li span { color: var(--muted); margin-left: auto; font-size: 12.5px; }
+.fc-token { margin-top: 14px; padding: 14px; border-radius: 14px; background: #121211; color: #f6c36a; font-family: var(--mono); font-size: 18px; font-weight: 600; letter-spacing: 0.08em; text-align: center; }
+.fc-token small { display: block; font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8f8a7e; margin-bottom: 4px; font-weight: 500; }
+/* Static view: everything done (also what reduced-motion users see). */
+.fc-steps li i { background: var(--green); border-color: var(--green); }
+.fc-steps li i::after { opacity: 1; }
+
+/* ---- Strip: the twelve distribution companies, scrolling ------------------------------------ */
+.strip { padding: 34px 0 6px; text-align: center; }
+.strip p { font-size: 14px; color: var(--muted); }
+.marquee { position: relative; overflow: hidden; margin-top: 18px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.marquee-track { display: flex; gap: 46px; width: max-content; padding: 6px 0; }
+.marquee-track span { display: inline-flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 540; letter-spacing: -0.02em; color: #4a4843; white-space: nowrap; }
+.marquee-track span::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--ink); transform: rotate(45deg); opacity: 0.85; }
+
+/* ---- Sections --------------------------------------------------------------------------------- */
+.l-section { padding: clamp(70px, 10vw, 130px) 0; }
+.l-head { display: grid; gap: 18px; align-items: end; margin-bottom: clamp(30px, 5vw, 54px); }
+@media (min-width: 900px) { .l-head { grid-template-columns: 1.2fr 1fr; gap: 60px; } }
+.l-eyebrow { font-size: 13px; font-weight: 540; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.l-head h2 { font-size: clamp(40px, 6vw, 76px); line-height: 0.98; letter-spacing: -0.05em; }
+.l-head h2 em { font-size: 1.08em; }
+.l-head p { font-size: 17.5px; color: var(--muted); max-width: 30em; }
+
+/* Three people, three photographs. */
+.people { display: grid; gap: 14px; }
+@media (min-width: 820px) { .people { grid-template-columns: repeat(3, 1fr); } }
+.person { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; color: #fff; isolation: isolate; }
+.person-photo { position: absolute; inset: 0; z-index: -2; background: #1a1612 center / cover no-repeat; transition: transform 1.2s var(--ease); }
+.person::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 9, 8, 0) 35%, rgba(10, 9, 8, 0.82) 100%); }
+.person:hover .person-photo { transform: scale(1.05); }
+.person-n { position: absolute; top: 18px; left: 20px; font-size: 13px; font-weight: 540; letter-spacing: 0.08em; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.16); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.person-body { position: absolute; left: 22px; right: 22px; bottom: 22px; }
+.person-body h3 { font-size: 30px; letter-spacing: -0.04em; }
+.person-body h3 em { font-size: 1.1em; }
+.person-body p { margin-top: 8px; color: rgba(255, 255, 255, 0.82); font-size: 15.5px; }
+
+/* Guarantees: editorial numbered list. */
+.promises { display: grid; border-top: 1px solid var(--ink); }
+@media (min-width: 820px) { .promises { grid-template-columns: 1fr 1fr; column-gap: 60px; } }
+.promise { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line-strong); }
+.promise-n { font-family: var(--serif); font-style: italic; font-size: 34px; line-height: 1; color: var(--muted); }
+.promise h3 { font-size: 22px; letter-spacing: -0.03em; }
+.promise p { margin-top: 8px; color: var(--muted); }
+
+/* Agents: a glass card over a night photograph. */
+.night { position: relative; margin: 0 10px; border-radius: var(--r-lg); overflow: hidden; min-height: 620px; display: grid; align-items: center; isolation: isolate; color: #fff; }
+.night-photo { position: absolute; inset: 0; z-index: -2; background: #100e0c url("../img/photos/night.jpg") center / cover no-repeat; }
+.night::after { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(10, 9, 8, 0.35); }
+.glass { margin: 40px auto; width: min(100% - 32px, 860px); padding: clamp(28px, 5vw, 60px); border-radius: var(--r-lg); background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.28); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); }
+.glass h2 { font-size: clamp(40px, 6.4vw, 84px); line-height: 0.96; letter-spacing: -0.05em; }
+.glass h2 em { color: #f6d79a; font-size: 1.08em; }
+.glass p { margin-top: 18px; max-width: 34em; font-size: 18px; color: rgba(255, 255, 255, 0.86); }
+.glass .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.glass .tag { position: absolute; right: 0; top: 28px; padding: 10px 8px; border-radius: 10px 0 0 10px; background: #fff; color: var(--ink); font-size: 12px; font-weight: 640; letter-spacing: 0.08em; writing-mode: vertical-rl; }
+
+/* Status: a plain table. */
+.status-rows { border-top: 1px solid var(--ink); }
+.status-row { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 22px 0; border-bottom: 1px solid var(--line-strong); }
+@media (min-width: 820px) { .status-row { grid-template-columns: 140px 260px 1fr; gap: 28px; align-items: baseline; } }
+.status-row .chip { justify-self: start; }
+.status-row h3 { font-size: 19px; letter-spacing: -0.02em; }
+.status-row p { color: var(--muted); }
+
+/* Closing: very large type. */
+.closing { padding: clamp(80px, 12vw, 160px) 0 clamp(60px, 8vw, 100px); }
+.closing h2 { font-size: clamp(64px, 14vw, 210px); line-height: 0.86; letter-spacing: -0.065em; }
+.closing h2 em { font-size: 1.06em; letter-spacing: -0.03em; }
+.closing-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-top: 44px; }
+.closing-foot p { color: var(--muted); max-width: 30em; }
+.l-foot { border-top: 1px solid var(--line-strong); padding: 26px 0 40px; font-size: 14px; color: var(--muted); }
+.l-foot .l-wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; }
+.l-foot a { color: var(--ink); }
+
+/* ---- Motion ---------------------------------------------------------------------------- */
+@keyframes slow-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes card-in { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes step-on { from { background: transparent; border-color: var(--line-strong); } to { background: var(--green); border-color: var(--green); } }
+@keyframes tick-on { from { opacity: 0; } to { opacity: 1; } }
+@keyframes token-in { from { opacity: 0; filter: blur(8px); letter-spacing: 0.3em; } to { opacity: 1; filter: none; letter-spacing: 0.08em; } }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-photo { animation: slow-zoom 2.6s var(--ease) both; }
+  .hero-body > div > * { animation: rise-in 0.9s var(--ease) both; }
+  .hero-body > div > :nth-child(2) { animation-delay: 0.1s; }
+  .hero-body > div > :nth-child(3) { animation-delay: 0.2s; }
+  .hero-body > div > :nth-child(4) { animation-delay: 0.3s; }
+  .float-card { animation: card-in 1s var(--ease) 0.45s both; }
+  /* The card plays the product: each step ticks in turn, then the token appears. */
+  .fc-steps li i { animation: step-on 0.35s ease both; }
+  .fc-steps li i::after { animation: tick-on 0.2s ease both; }
+  .fc-steps li:nth-child(1) i, .fc-steps li:nth-child(1) i::after { animation-delay: 1.3s; }
+  .fc-steps li:nth-child(2) i, .fc-steps li:nth-child(2) i::after { animation-delay: 2.1s; }
+  .fc-steps li:nth-child(3) i, .fc-steps li:nth-child(3) i::after { animation-delay: 2.9s; }
+  .fc-token { animation: token-in 1s var(--ease) 3.4s both; }
+  .marquee-track { animation: marquee 38s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .js-motion .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease) var(--d, 0ms), transform 0.9s var(--ease) var(--d, 0ms); }
+  .js-motion .reveal.in { opacity: 1; transform: none; }
+}
