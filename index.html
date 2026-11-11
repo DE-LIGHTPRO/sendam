@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#033d2b">
-<title>Sendam: pay bills in Nigeria from anywhere</title>
-<meta name="description" content="Someone abroad locks USDC on NEAR. A local agent pays the electricity bill in naira. The contract pays the agent only once the payment is verified.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#090b10">
+<title>Sendam: send light home</title>
+<meta name="description" content="Pay a family's electricity in Nigeria from anywhere. Lock USDC on NEAR; a local agent pays the bill in naira; the contract pays them only once the electricity company confirms it.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/bricolage-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="vendor/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -21,15 +21,15 @@
         <a href="#how">How it works</a>
         <a href="#trust">Why it is safe</a>
         <a href="#agents">For agents</a>
-        <a href="#limits">Status</a>
+        <a href="#status">Status</a>
       </nav>
       <a class="btn sm on-night primary" href="send">Send a bill</a>
     </div>
     <div class="hero">
       <div class="hero-copy">
         <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg>Real-world intents on NEAR</span>
-        <h1>Pay for the light at home, <span class="hl">from anywhere.</span></h1>
-        <p class="lead">Lock USDC for your family's electricity. A local agent pays the bill in naira, and the contract pays them only once the electricity company confirms it. If nobody does, your money comes back.</p>
+        <h1>Send light <span class="hl">home.</span></h1>
+        <p class="lead">Pay your family's electricity in Nigeria from anywhere. You lock USDC, a local agent pays the bill in naira, and the contract pays them only once the electricity company confirms it.</p>
         <div class="actions">
           <a class="btn lg on-night primary" href="send"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg>Send a bill</a>
           <a class="btn lg on-night" href="agent">Become an agent</a>
@@ -40,18 +40,72 @@
           <span><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Family needs no wallet</span>
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="phone">
-          <div class="p-bar"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam</div>
-          <div class="p-list" style="margin-top:12px">
-            <div><span>Ibadan Electric<small>Meter 111…111</small></span><span>₦20,000</span></div>
-            <div><span>Paid for by Ada in London<small>13.30 USDC locked</small></span><span>✓</span></div>
-            <div><span>Agent Tunde paid it<small>Confirmed by IBEDC</small></span><span>✓</span></div>
-          </div>
-          <div class="p-cam" style="height:auto;padding:18px 12px;color:#fff;text-align:center;font-family:var(--mono);font-weight:700;letter-spacing:.06em">1234 5678 9012<br>3456 7890</div>
-          <div class="p-total"><b>Token ready</b><span>Copy token</span></div>
-        </div>
-      </div>
+      <div class="scene" aria-hidden="true">
+  <svg viewBox="0 0 560 470" id="scene">
+    <defs>
+      <radialGradient id="g-window" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#ffcf7a" stop-opacity="0.9"/><stop offset="0.45" stop-color="#ffb547" stop-opacity="0.35"/><stop offset="1" stop-color="#ffb547" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="g-route" x1="0" x2="1"><stop offset="0" stop-color="#ffb547" stop-opacity="0.15"/><stop offset="1" stop-color="#ffb547" stop-opacity="0.85"/></linearGradient>
+      <linearGradient id="g-house" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1a1f2b"/><stop offset="1" stop-color="#11141b"/></linearGradient>
+      <filter id="f-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+    </defs>
+    <circle class="star" cx="341" cy="48" r="1.2" fill="#f4f1ea"/><circle class="star" cx="59" cy="28" r="1.6" fill="#f4f1ea"/><circle class="star" cx="106" cy="103" r="1.6" fill="#f4f1ea"/><circle class="star" cx="69" cy="139" r="0.9" fill="#f4f1ea"/><circle class="star" cx="48" cy="32" r="1.2" fill="#f4f1ea"/><circle class="star" cx="438" cy="27" r="0.9" fill="#f4f1ea"/><circle class="star" cx="102" cy="151" r="1.2" fill="#f4f1ea"/><circle class="star" cx="70" cy="221" r="1.6" fill="#f4f1ea"/><circle class="star" cx="136" cy="67" r="1.6" fill="#f4f1ea"/><circle class="star" cx="73" cy="157" r="1.6" fill="#f4f1ea"/><circle class="star" cx="416" cy="22" r="0.9" fill="#f4f1ea"/><circle class="star" cx="57" cy="152" r="0.9" fill="#f4f1ea"/><circle class="star" cx="306" cy="117" r="0.9" fill="#f4f1ea"/><circle class="star" cx="130" cy="156" r="1.2" fill="#f4f1ea"/><circle class="star" cx="195" cy="36" r="1.6" fill="#f4f1ea"/><circle class="star" cx="202" cy="105" r="0.9" fill="#f4f1ea"/><circle class="star" cx="74" cy="154" r="0.9" fill="#f4f1ea"/><circle class="star" cx="220" cy="137" r="1.6" fill="#f4f1ea"/><circle class="star" cx="447" cy="208" r="1.2" fill="#f4f1ea"/><circle class="star" cx="486" cy="159" r="1.2" fill="#f4f1ea"/><circle class="star" cx="380" cy="86" r="0.9" fill="#f4f1ea"/><circle class="star" cx="194" cy="188" r="0.9" fill="#f4f1ea"/>
+    <path id="route" d="M 120 104 C 230 10, 400 40, 433 312" fill="none" stroke="url(#g-route)" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round"/>
+
+    <g transform="translate(18 66)">
+      <rect width="196" height="70" rx="16" fill="#11141b" stroke="#2a3040"/>
+      <circle cx="26" cy="35" r="10" fill="rgba(255,181,71,0.15)" stroke="#ffb547"/>
+      <circle cx="26" cy="35" r="3.5" fill="#ffb547"><animate attributeName="r" values="3.5;5;3.5" dur="1.6s" repeatCount="indefinite"/></circle>
+      <text x="46" y="30" class="label"><tspan class="strong">Ada, in London</tspan></text>
+      <text x="46" y="50" class="label">locks 13.30 USDC</text>
+    </g>
+
+    <circle r="7" fill="#ffd99a" filter="url(#f-blur)" opacity="0">
+      <animateMotion dur="8s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.38;1" calcMode="linear"><mpath href="#route"/></animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.04;0.36;0.4;1" dur="8s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3.6" fill="#fff4dc" opacity="0">
+      <animateMotion dur="8s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.38;1" calcMode="linear"><mpath href="#route"/></animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.04;0.36;0.4;1" dur="8s" repeatCount="indefinite"/>
+    </circle>
+
+    <g transform="translate(206 186)" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.18;0.24;0.88;0.94;1" dur="8s" repeatCount="indefinite"/>
+      <rect width="168" height="58" rx="14" fill="#11141b" stroke="#2a3040"/>
+      <text x="16" y="25" class="label"><tspan class="strong">Tunde, an agent</tspan></text>
+      <text x="16" y="44" class="label">pays IBEDC ₦20,000</text>
+    </g>
+
+    <circle cx="433" cy="330" r="120" fill="url(#g-window)" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.5;0.92;1" dur="8s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="0" y1="430" x2="560" y2="430" stroke="#232835"/>
+    <g>
+      <polygon points="352,282 433,228 514,282" fill="#1a1f2b" stroke="#2a3040"/>
+      <rect x="362" y="280" width="142" height="150" fill="url(#g-house)" stroke="#2a3040"/>
+      <rect x="456" y="246" width="18" height="30" fill="#1a1f2b" stroke="#2a3040"/>
+      <rect x="410" y="306" width="46" height="40" rx="3" fill="#1d2230" stroke="#343b4c">
+        <animate attributeName="fill" values="#1d2230;#1d2230;#ffcf7a;#ffcf7a;#1d2230" keyTimes="0;0.4;0.44;0.92;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <line x1="433" y1="306" x2="433" y2="346" stroke="#343b4c"/><line x1="410" y1="326" x2="456" y2="326" stroke="#343b4c"/>
+      <rect x="378" y="372" width="26" height="58" rx="2" fill="#151925" stroke="#2a3040"/>
+      <polygon points="410,346 456,346 486,430 380,430" fill="#ffb547" opacity="0">
+        <animate attributeName="opacity" values="0;0;0.1;0.1;0" keyTimes="0;0.42;0.48;0.92;1" dur="8s" repeatCount="indefinite"/>
+      </polygon>
+    </g>
+    <text x="433" y="452" class="label" text-anchor="middle">Mum's house, Ibadan</text>
+
+    <g transform="translate(36 330)" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.5;0.56;0.92;1" dur="8s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="36 346;36 346;36 330;36 330;36 330" keyTimes="0;0.5;0.58;0.92;1" dur="8s" repeatCount="indefinite"/>
+      <rect width="226" height="76" rx="16" fill="#11141b" stroke="rgba(255,181,71,0.5)"/>
+      <circle cx="26" cy="27" r="9" fill="#3ddc97"/><path d="M21.5 27.2l3 3 6-6.4" stroke="#062014" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="32" class="label"><tspan class="strong">Paid. Token ready</tspan></text>
+      <text x="18" y="60" class="tok">4321 8765 2109 6543</text>
+    </g>
+  </svg>
+</div>
     </div>
   </div>
 </header>
@@ -59,10 +113,10 @@
 <main>
   <section class="facts" aria-label="Live on NEAR testnet">
     <div class="wrap">
-      <div class="fact"><b id="s-total">–</b><span>bills requested on testnet</span></div>
-      <div class="fact"><b id="s-paid">–</b><span>paid by agents</span></div>
-      <div class="fact"><b id="s-open">–</b><span>waiting for an agent now</span></div>
-      <div class="fact"><b>12</b><span>Nigerian electricity companies</span></div>
+      <div class="fact"><b id="s-total" data-count>0</b><span>bills sent on testnet</span></div>
+      <div class="fact"><b id="s-paid" data-count>0</b><span>paid by local agents</span></div>
+      <div class="fact"><b id="s-open" data-count>0</b><span>waiting for an agent now</span></div>
+      <div class="fact"><b data-count data-to="12">12</b><span>electricity companies covered</span></div>
     </div>
   </section>
 
@@ -71,12 +125,12 @@
       <div class="band-head">
         <div class="kicker">How it works</div>
         <h2>An intent that settles in the real world</h2>
-        <p>On NEAR Intents, you say what you want and competing solvers deliver it. Sendam does the same for a Nigerian electricity bill, with local agents as the solvers.</p>
+        <p>On NEAR Intents you say what you want, and competing solvers deliver it. Sendam does the same for a Nigerian electricity bill, with local agents as the solvers.</p>
       </div>
-      <div class="grid-3">
-        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg></div><div class="step">Step 1</div><h3>Abroad, you lock USDC</h3><p>Choose the meter and the amount. The USDC sits in a NEAR contract, not with us and not with an agent.</p></div>
-        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#handshake"/></svg></div><div class="step">Step 2</div><h3>A local agent pays in naira</h3><p>Agents who already hold naira and want dollars pick up the request and pay the electricity company.</p></div>
-        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg></div><div class="step">Step 3</div><h3>The token reaches home</h3><p>Once the payment is confirmed, the agent is paid and your family collects the token from a link. No wallet needed.</p></div>
+      <div class="journey">
+        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#globe"/></svg></div><h3>You lock USDC, from anywhere</h3><p>Choose the meter and the amount, and set the rate you are offering. The USDC waits in a NEAR contract, not with us and not with an agent.</p></div>
+        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#handshake"/></svg></div><h3>A local agent pays in naira</h3><p>Agents who hold naira and want dollars pick the request up and buy the token from the electricity company.</p></div>
+        <div class="feature"><div class="badge"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg></div><h3>The lights come on</h3><p>Once the purchase is confirmed, the agent is paid and your family opens a link to collect the token. No wallet, no app.</p></div>
       </div>
     </div>
   </section>
@@ -86,23 +140,23 @@
       <div class="band-head">
         <div class="kicker">Why it is safe</div>
         <h2>The contract only ever pays two people</h2>
-        <p>The agent named in a confirmed claim, or the sender who funded the request. Nobody else can move the money.</p>
+        <p>The agent named in a confirmed claim, or the sender who funded the request. Nobody else can move the money, including us.</p>
       </div>
       <div class="grid-2">
         <div class="feature">
-          <h3>For the sender</h3>
+          <h3>If you are sending</h3>
           <ul class="plain-list">
-            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#shield"/></svg><div><b>Charged only on proof</b><span>The agent is paid after the electricity company confirms the purchase, not before.</span></div></li>
-            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#refresh"/></svg><div><b>Automatic refund</b><span>If no agent pays by the deadline, anyone can trigger the refund, and it can only go back to you.</span></div></li>
-            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#link"/></svg><div><b>The token stays private</b><span>Only a fingerprint of your family's link is on chain. The token is fetched with the link, never published.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#shield"/></svg><div><b>Charged only on proof</b><span>The agent is paid after the electricity company confirms the purchase, never before.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#refresh"/></svg><div><b>A refund you cannot be denied</b><span>If nobody pays by your deadline, anyone can trigger the refund, and it can only go back to you.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#link"/></svg><div><b>The token stays private</b><span>Only a fingerprint of your family's link is on chain. The token is fetched with that link, never published.</span></div></li>
           </ul>
         </div>
         <div class="feature">
-          <h3>For the agent</h3>
+          <h3>If you are an agent</h3>
           <ul class="plain-list">
             <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#clock"/></svg><div><b>A reserved job</b><span>Taking a request holds it for you for 30 minutes, so nobody else pays the same bill.</span></div></li>
-            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><div><b>Paid even if you are slow</b><span>If your claim lapses but nobody else has taken it, a confirmed payment still pays you.</span></div></li>
-            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#receipt"/></svg><div><b>No double payments</b><span>Every purchase has a fixed reference, so a retry looks the payment up instead of paying twice.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><div><b>Paid even if you run late</b><span>If your hold lapses but nobody else took the request, a confirmed payment still pays you.</span></div></li>
+            <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#receipt"/></svg><div><b>Never pay twice</b><span>Every purchase has a fixed reference, so a retry looks the payment up instead of buying again.</span></div></li>
           </ul>
         </div>
       </div>
@@ -114,26 +168,26 @@
       <div class="band-head">
         <div class="kicker">For agents</div>
         <h2>Earn dollars for something you already do</h2>
-        <p>POS agents and bill vendors across Nigeria already sell electricity tokens all day. Sendam turns that into a way to earn USDC, with the rate and tip set in the open by each request.</p>
+        <p>POS agents and bill vendors across Nigeria sell electricity tokens all day. Sendam turns that into a way to earn USDC, with the rate and tip on every request set in the open.</p>
       </div>
-      <div class="actions"><a class="btn lg" href="agent">Open the agent desk<svg class="icon" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a></div>
+      <div class="actions"><a class="btn lg primary" href="agent">Open the agent desk<svg class="icon" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a></div>
     </div>
   </section>
 
-  <section class="band deep" id="limits">
+  <section class="band deep" id="status">
     <div class="wrap">
       <div class="band-head">
         <div class="kicker">Status</div>
         <h2>A working prototype, honestly labelled</h2>
-        <p>Built in four days for the NEAR Hackathon, in the Real-World Money track.</p>
+        <p>Built for the NEAR Hackathon 2026, Real-World Money track.</p>
       </div>
       <div class="guards">
-        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><h3>Working</h3><p>The NEAR contract, tested with 23 unit tests: requests, claims, confirmation, refunds and failed-payout recovery.</p></div>
-        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><h3>Working</h3><p>Paying and verifying electricity through the VTpass sandbox, with test meters and test tokens.</p></div>
-        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Test money</h3><p>It runs on NEAR testnet with test USDC. Real USDC and payment from any chain through NEAR Intents come next.</p></div>
-        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>One verifier</h3><p>A single service checks payments and holds the demo agent's bill account. In production each agent's key moves into a secure enclave.</p></div>
-        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Electricity only</h3><p>Airtime, data and school fees use the same pattern and come after.</p></div>
-        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Not a licensed service</h3><p>A real launch needs licensed partners for moving money into and out of Nigeria.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><h3>Working</h3><p>The NEAR contract: requests, claims, confirmation, refunds and recovery from a failed payout, covered by 23 unit tests.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg><h3>Working</h3><p>Buying and verifying electricity tokens through the VTpass sandbox, with test meters and test tokens.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Test money</h3><p>NEAR testnet and test USDC. Real USDC, and paying from any chain through NEAR Intents, come next.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>One verifier</h3><p>A single service checks payments and holds the demo agent's bill account. In production, each agent's key moves into a secure enclave.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Electricity first</h3><p>Airtime, data and school fees follow the same pattern.</p></div>
+        <div class="guard"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><h3>Not yet licensed</h3><p>A real launch needs licensed partners to move money into and out of Nigeria.</p></div>
       </div>
     </div>
   </section>

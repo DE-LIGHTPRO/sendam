@@ -5,6 +5,7 @@ const id = Number(new URLSearchParams(location.search).get('id'));
 const secret = location.hash.replace(/^#/, '').replace(/^s=/, '');
 let timer = 0;
 let tokenShown = false;
+let badLink = false;
 
 function mark(stepName, state) {
   const li = document.querySelector(`#timeline [data-step="${stepName}"]`);
@@ -22,12 +23,18 @@ async function collect() {
   try {
     const res = await fetch('api/token', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, secret }) });
     const body = await res.json();
+    if (res.status === 403) {
+      // A wrong link will not become right by retrying; say so once and stop.
+      badLink = true;
+      return note(`${body.error}. Ask the sender to send the link again.`);
+    }
     if (!res.ok) return note(body.error || 'The token could not be fetched yet. Retrying.');
     tokenShown = true;
     note('');
     $('#token').textContent = body.token;
     $('#units').textContent = body.units || '-';
     $('#token-card').hidden = false;
+    $('#t-live').hidden = true;
     $('#copy-token').onclick = () => copyText(body.token.replace(/\s/g, ''), 'Token copied');
   } catch {
     note('Could not reach the token service. Retrying.');
@@ -61,9 +68,9 @@ async function refresh() {
     expired: 'No agent took this request in time. The sender can get the money back.',
   }[st];
   $('#t-sub').textContent = sub;
-  $('#t-live').hidden = ['paid', 'refunded', 'expired'].includes(st) && (tokenShown || !secret || st !== 'paid');
+  $('#t-live').hidden = badLink || (['paid', 'refunded', 'expired'].includes(st) && (tokenShown || !secret || st !== 'paid'));
   if (st === 'paid') await collect();
-  if (!['refunded', 'expired'].includes(st) && !tokenShown) timer = setTimeout(refresh, 5000);
+  if (!['refunded', 'expired'].includes(st) && !tokenShown && !badLink) timer = setTimeout(refresh, 5000);
 }
 
 if (!Number.isSafeInteger(id) || id < 1) show('missing');

@@ -88,7 +88,7 @@ function step(name, state) {
 }
 
 async function pay(req) {
-  $('#pay-text').textContent = `${naira(req.naira)} to meter ${req.meter} (${providerName(req.provider)}).`;
+  $('#pay-text').textContent = `${naira(req.naira)} to meter ${req.meter}, ${providerName(req.provider)}.`;
   $('#pay-error').hidden = true;
   $('#pay-done').hidden = true;
   ['pay', 'check', 'release'].forEach((s) => step(s, ''));

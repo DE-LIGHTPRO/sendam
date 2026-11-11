@@ -107,6 +107,9 @@ class FakeVtpass {
 }
 
 let passed = 0;
+// SHOTS=some/folder saves a screenshot of each key screen, for design review.
+const SHOTS = process.env.SHOTS;
+const shot = (page, name) => (SHOTS ? page.screenshot({ path: join(SHOTS, `${name}.png`), fullPage: true }) : null);
 async function step(name, fn) {
   await fn();
   passed++;
@@ -125,7 +128,8 @@ async function step(name, fn) {
   const errors = [];
 
   async function open(account, path, viewport = { width: 390, height: 844 }) {
-    const ctx = await browser.newContext({ viewport, bypassCSP: true });
+    // Reduced motion keeps every block visible, so the accessibility check sees the whole page.
+    const ctx = await browser.newContext({ viewport, bypassCSP: true, reducedMotion: 'reduce' });
     await ctx.exposeBinding('__fakeCall', (_src, signer, tx) => chain.call(signer, tx));
     await ctx.addInitScript((acc) => {
       if (!acc) return;
@@ -164,7 +168,8 @@ async function step(name, fn) {
     }
     const page = await ctx.newPage();
     page.on('pageerror', (e) => errors.push(`${path}: ${e.message}`));
-    page.on('console', (m) => { if (m.type() === 'error' && !/favicon/.test(m.text())) errors.push(`${path}: ${m.text()}`); });
+    // A deliberately wrong link is refused with 403; the browser logs that, and it is expected.
+    page.on('console', (m) => { if (m.type() === 'error' && !/favicon/.test(m.text()) && !(path.includes('not-the-right-secret') && /403/.test(m.text()))) errors.push(`${path}: ${m.text()}`); });
     await page.goto(BASE + path);
     return page;
   }
@@ -190,10 +195,12 @@ async function step(name, fn) {
       await page.waitForFunction(() => document.querySelector('#balance').textContent === '100.00 USDC');
       await page.locator('#meter').fill('1111111111111');
       await page.getByRole('button', { name: '₦20,000' }).click();
+      await shot(page, '1-send-form');
       firstTotal = await page.locator('#q-total').textContent();
       assert.equal(firstTotal, '13.30 USDC'); // 20,000 / 1,550 = 12.91, plus a 3% tip
       await page.getByRole('button', { name: 'Lock USDC and send' }).click();
       await page.getByRole('heading', { name: 'Request sent' }).waitFor();
+      await shot(page, '2-sent');
       link = await page.locator('#share-link').textContent();
       assert.match(link, /\/track\?id=1#[A-Za-z0-9_-]{24}$/);
       assert.equal(sha(link.split('#')[1]), chain.requests.get(1).secret_hash, 'only the hash of the secret is on chain');
@@ -224,6 +231,7 @@ async function step(name, fn) {
       assert.match(await family.locator('#t-sub').textContent(), /Waiting for a local agent/);
       assert.ok(await family.locator('#timeline [data-step="funded"]').evaluate((el) => el.classList.contains('done')));
       assert.ok(await noSideScroll(family));
+      await shot(family, '3-family-waiting');
     });
 
     let agent;
@@ -236,6 +244,7 @@ async function step(name, fn) {
       assert.match(await job.textContent(), /₦20,000/);
       assert.match(await job.textContent(), /13\.30 USDC/);
       assert.match(await job.textContent(), /≈ ₦1,504 per USDC/);
+      await shot(agent, '4-agent-desk');
       await job.getByRole('button', { name: 'Take this job' }).click();
       await agent.locator('dialog').getByRole('button', { name: 'Take this job' }).click();
       await agent.getByRole('tab', { name: /My jobs/ }).waitFor();
@@ -251,6 +260,7 @@ async function step(name, fn) {
       await agent.getByRole('button', { name: 'Pay the bill' }).click();
       await agent.getByRole('heading', { name: 'Paying the bill' }).waitFor();
       await agent.locator('#pay-done').waitFor();
+      await shot(agent, '5-agent-paid');
       assert.equal(await agent.locator('#pay-earned').textContent(), '13.30 USDC');
       assert.match(await agent.locator('#pay-ref').textContent(), /^\d{12}SENDAM000001$/);
       assert.equal(chain.requests.get(1).status.state, 'fulfilled');
@@ -271,6 +281,7 @@ async function step(name, fn) {
       await family.locator('#token-card').waitFor({ timeout: 15000 });
       assert.equal(await family.locator('#token').textContent(), '4321 8765 2109 6543 0987');
       assert.equal(await family.locator('#units').textContent(), '64.5 kWh');
+      await shot(family, '6-family-token');
       assert.ok(await family.locator('#timeline [data-step="paid"]').evaluate((el) => el.classList.contains('done')));
     });
 
@@ -281,6 +292,8 @@ async function step(name, fn) {
       const tampered = await open(null, '/track?id=1#not-the-right-secret-at-all');
       await tampered.locator('#t-note').waitFor({ state: 'visible' });
       assert.match(await tampered.locator('#t-note').textContent(), /not valid/);
+      await tampered.waitForTimeout(6000);
+      assert.equal(await tampered.locator('#t-note').textContent(), 'This link is not valid for that request. Ask the sender to send the link again.', 'a bad link is not retried');
       assert.ok(await tampered.locator('#token-card').isHidden());
       const missing = await open(null, '/track?id=99');
       await missing.getByRole('heading', { name: 'We could not find that request' }).waitFor();
