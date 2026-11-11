@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f4f2ed">
-<title>Sendam: keep the lights on, from anywhere</title>
+<title>Sendam: send light home</title>
 <meta name="description" content="Pay your family's electricity in Nigeria from anywhere. Lock USDC on NEAR; a local agent pays the bill in naira; the contract pays them only once the electricity company confirms it.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -30,7 +30,7 @@
   <div class="hero-body">
     <div>
       <span class="hero-kicker">Real-world intents on NEAR</span>
-      <h1>Keep the lights <em>on,</em> from anywhere.</h1>
+      <h1>Send light <em>home,</em> from anywhere.</h1>
       <p class="hero-lead">Pay your family's electricity in Nigeria from wherever you are. You lock USDC, a local agent pays the bill in naira, and they are paid only once the electricity company confirms it.</p>
       <div class="actions">
         <a class="btn lg light" href="send">Send a bill<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <aside class="float-card" aria-label="Example: a bill paid through Sendam">
-      <div class="fc-top"><span>Ibadan Electric · meter 111…111</span><span class="fc-live">Live</span></div>
+      <div class="fc-top"><span>Ibadan Electric · meter 111…111</span><span class="fc-live">Example</span></div>
       <div class="fc-amount">₦20,000<small>Sent by Ada in London · 13.30 USDC</small></div>
       <ol class="fc-steps">
         <li><i></i>Paid for, USDC held<span>18:42</span></li>
@@ -50,9 +50,9 @@
   </div>
 </header>
 
-<section class="strip" aria-label="Electricity companies covered">
-  <p>Works with all twelve of Nigeria's electricity distribution companies</p>
-  <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Ikeja Electric</span><span>Eko Electric</span><span>Ibadan Electric</span><span>Abuja Electric</span><span>Kano Electric</span><span>Port Harcourt Electric</span><span>Jos Electric</span><span>Kaduna Electric</span><span>Enugu Electric</span><span>Benin Electric</span><span>Aba Power</span><span>Yola Electric</span><span>Ikeja Electric</span><span>Eko Electric</span><span>Ibadan Electric</span><span>Abuja Electric</span><span>Kano Electric</span><span>Port Harcourt Electric</span><span>Jos Electric</span><span>Kaduna Electric</span><span>Enugu Electric</span><span>Benin Electric</span><span>Aba Power</span><span>Yola Electric</span></div></div>
+<section class="strip" aria-labelledby="strip-title">
+  <p id="strip-title">Pays prepaid meters in every one of Nigeria's twelve distribution areas</p>
+  <ul class="areas"><li>Ikeja</li><li>Eko</li><li>Ibadan</li><li>Abuja</li><li>Kano</li><li>Port Harcourt</li><li>Jos</li><li>Kaduna</li><li>Enugu</li><li>Benin</li><li>Aba</li><li>Yola</li></ul>
 </section>
 
 <main>
@@ -63,7 +63,7 @@
         <p>Like NEAR Intents, you say what you want and someone competes to deliver it. Here the delivery is a prepaid electricity token, and the someone is a local agent with naira.</p>
       </div>
       <div class="people">
-        <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/abroad.jpg')"></div><span class="person-n">01</span><div class="person-body"><h3>Ada, <em>abroad</em></h3><p>Locks USDC for her mother's meter and sets the rate she is offering. The money waits in a NEAR contract.</p></div></article>
+        <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/abroad.jpg')"></div><span class="person-n">01</span><div class="person-body"><h3>Ada, <em>abroad</em></h3><p>Types her mother's meter, sees the name on it, and locks USDC for the bill. The money waits in a NEAR contract.</p></div></article>
         <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/agent.jpg')"></div><span class="person-n">02</span><div class="person-body"><h3>Tunde, <em>the agent</em></h3><p>Takes the request, buys the token from the electricity company in naira, and is paid in USDC once it is confirmed.</p></div></article>
         <article class="person reveal"><div class="person-photo" style="background-image:url('img/photos/home.jpg')"></div><span class="person-n">03</span><div class="person-body"><h3>Mum, <em>at home</em></h3><p>Opens a link, sees the payment arrive, and types the token into her meter. No wallet, no app.</p></div></article>
       </div>
@@ -90,7 +90,7 @@
     <div class="glass reveal" style="position:relative">
       <span class="tag">AGENTS</span>
       <h2>Earn dollars for something you <em>already</em> do.</h2>
-      <p>POS agents and bill vendors sell electricity tokens all day. On Sendam every request shows the bill, the USDC offered and the rate it works out to, so you pick the jobs worth taking.</p>
+      <p>POS agents and bill vendors sell electricity tokens all day. On Sendam every request shows the bill you pay in naira and what you earn on top, so you pick the jobs worth taking.</p>
       <div class="actions"><a class="btn lg light" href="agent">Open the agent desk<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a></div>
     </div>
   </section>
@@ -114,9 +114,9 @@
 
   <section class="closing">
     <div class="l-wrap">
-      <h2 class="reveal">Send light<br><em>home.</em></h2>
+      <h2 class="reveal">Try it in<br><em>five minutes.</em></h2>
       <div class="closing-foot reveal">
-        <p>Try it on testnet: get test USDC, send a bill to the sandbox meter, then pay it from the agent desk.</p>
+        <p>Get test USDC, send a bill to the sandbox meter, then pay it from the agent desk. It all runs on NEAR testnet, so no real money moves.</p>
         <div class="actions" style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn lg primary" href="send">Send a bill<svg class="icon arrow" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a><a class="btn lg" href="agent">Agent desk</a></div>
       </div>
     </div>

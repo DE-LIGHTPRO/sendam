@@ -1,5 +1,5 @@
-import { CONTRACT, USDC, EXPLORER } from './config.js';
-import { view, usd, naira, impliedRate, timeLeft, providerName } from './chain.js';
+import { CONTRACT, USDC, EXPLORER, SUGGESTED_RATE as MARKET_RATE, USDC_DECIMALS } from './config.js';
+import { view, usd, naira, timeLeft, providerName, maskMeter } from './chain.js';
 import { $, escapeHtml, icon, show, toast, confirmDialog } from './ui.js';
 import { mountAccount, explain } from './session.js';
 
@@ -25,15 +25,26 @@ async function drawBalance() {
   }
 }
 
+/** What taking a request is worth to an agent, in naira, at the demo's market rate. */
+function earnings(r) {
+  const worth = Math.round((Number(r.amount) / 10 ** USDC_DECIMALS) * MARKET_RATE);
+  return { worth, profit: worth - r.naira };
+}
+
 function card(r, actions) {
   const s = r.status;
+  const { worth, profit } = earnings(r);
+  const yours = s.state !== 'open' && s.agent === account;
+  const earn = profit >= 0
+    ? `<div class="earn"><span>You earn</span><b>≈ ${naira(profit)}</b></div>`
+    : `<div class="earn low"><span>Below market</span><b>${naira(profit).replace('₦-', '−₦')}</b></div>`;
   return `<div class="card job" data-id="${r.id}">
     <div class="job-top">
-      <div><div class="big">${naira(r.naira)}</div><div class="small muted">${escapeHtml(providerName(r.provider))}</div></div>
-      <div style="text-align:right"><b>${usd(r.amount)}</b><div class="small muted">≈ ₦${impliedRate(r.naira, r.amount).toLocaleString('en-NG')} per USDC</div></div>
+      <div><span class="job-label">You pay</span><div class="big">${naira(r.naira)}</div><div class="small muted">${escapeHtml(providerName(r.provider))}<span class="mono">Meter ${escapeHtml(yours ? r.meter : maskMeter(r.meter))}</span></div></div>
+      ${s.state === 'fulfilled' ? '' : earn}
     </div>
     <div class="job-meta">
-      <span>Meter <b class="mono">${escapeHtml(r.meter)}</b></span>
+      <span>You get <b>${usd(r.amount)}</b> ≈ ${naira(worth)}</span>
       ${s.state === 'fulfilled' ? `<span>Ref <b class="mono">${escapeHtml(s.reference)}</b></span>` : `<span>${s.state === 'claimed' && s.agent === account ? `Yours for ${timeLeft(s.until_ms).replace(' left', '')}` : timeLeft(r.expires_ms)}</span>`}
     </div>
     ${actions}
@@ -113,6 +124,7 @@ async function pay(req) {
       ['pay', 'check', 'release'].forEach((s) => step(s, 'done'));
       $('#pay-ref').textContent = body.reference;
       $('#pay-earned').textContent = usd(req.amount);
+      $('#pay-profit').textContent = `≈ ${naira(earnings(req).profit)}`;
       $('#pay-tx').hidden = !body.txHash;
       $('#pay-tx').href = `${EXPLORER}/txns/${body.txHash}`;
       $('#pay-done').hidden = false;
@@ -136,7 +148,7 @@ $('#panel').addEventListener('click', async (e) => {
   btn.disabled = true;
   try {
     if (act === 'claim') {
-      const ok = await confirmDialog({ title: `Take ${naira(req.naira)}?`, body: `It is reserved for you for 30 minutes. Pay it promptly: you earn ${usd(req.amount)} once the payment is confirmed.`, confirm: 'Take this job' });
+      const ok = await confirmDialog({ title: `Take ${naira(req.naira)}?`, body: `It is reserved for you for 30 minutes. Pay it promptly: you receive ${usd(req.amount)}, about ${naira(earnings(req).worth)} at ₦${MARKET_RATE.toLocaleString('en-NG')} per USDC, once the payment is confirmed.`, confirm: 'Take this job' });
       if (!ok) return;
       await w.call({ receiverId: CONTRACT, methodName: 'claim', args: { id }, tgas: 30 });
       toast('Reserved for you. Pay it from My jobs.');

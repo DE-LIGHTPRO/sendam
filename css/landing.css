@@ -25,8 +25,7 @@
 /* The product, floating over the photograph. */
 .float-card { width: 100%; max-width: 380px; justify-self: end; background: rgba(255, 255, 255, 0.96); color: var(--ink); border-radius: 22px; padding: 18px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .fc-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); }
-.fc-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: var(--green-soft); color: var(--green); font-weight: 540; font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; }
-.fc-live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.fc-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: var(--paper); color: var(--muted); border: 1px solid var(--line); font-weight: 540; font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; }
 .fc-amount { margin-top: 12px; font-size: 40px; font-weight: 560; letter-spacing: -0.05em; line-height: 1; }
 .fc-amount small { display: block; margin-top: 6px; font-size: 14px; letter-spacing: 0; color: var(--muted); font-weight: 450; }
 .fc-steps { list-style: none; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; }
@@ -43,10 +42,9 @@
 /* ---- Strip: the twelve distribution companies, scrolling ------------------------------------ */
 .strip { padding: 34px 0 6px; text-align: center; }
 .strip p { font-size: 14px; color: var(--muted); }
-.marquee { position: relative; overflow: hidden; margin-top: 18px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
-.marquee-track { display: flex; gap: 46px; width: max-content; padding: 6px 0; }
-.marquee-track span { display: inline-flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 540; letter-spacing: -0.02em; color: #4a4843; white-space: nowrap; }
-.marquee-track span::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--ink); transform: rotate(45deg); opacity: 0.85; }
+.areas { list-style: none; margin: 14px auto 0; padding: 0 16px; max-width: 980px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 0; font-size: 15px; color: var(--ink-2); }
+.areas li { white-space: nowrap; }
+.areas li + li::before { content: "·"; margin: 0 10px; color: var(--line-strong); }
 
 /* ---- Sections --------------------------------------------------------------------------------- */
 .l-section { padding: clamp(70px, 10vw, 130px) 0; }
@@ -111,7 +109,6 @@
 @keyframes slow-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
 @keyframes rise-in { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 @keyframes card-in { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: none; } }
-@keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes step-on { from { background: transparent; border-color: var(--line-strong); } to { background: var(--green); border-color: var(--green); } }
 @keyframes tick-on { from { opacity: 0; } to { opacity: 1; } }
 @keyframes token-in { from { opacity: 0; filter: blur(8px); letter-spacing: 0.3em; } to { opacity: 1; filter: none; letter-spacing: 0.08em; } }
@@ -129,8 +126,5 @@
   .fc-steps li:nth-child(2) i, .fc-steps li:nth-child(2) i::after { animation-delay: 2.1s; }
   .fc-steps li:nth-child(3) i, .fc-steps li:nth-child(3) i::after { animation-delay: 2.9s; }
   .fc-token { animation: token-in 1s var(--ease) 3.4s both; }
-  .marquee-track { animation: marquee 38s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
-  .js-motion .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease) var(--d, 0ms), transform 0.9s var(--ease) var(--d, 0ms); }
-  .js-motion .reveal.in { opacity: 1; transform: none; }
+    .js-motion .reveal.in { opacity: 1; transform: none; }
 }

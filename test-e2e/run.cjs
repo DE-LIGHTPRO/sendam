@@ -101,6 +101,11 @@ class FakeVtpass {
     this.purchases.set(requestId, res);
     return res;
   }
+  async verifyMeter({ meter }) {
+    return meter === '1111111111111'
+      ? { code: '000', content: { Customer_Name: 'TESTMETER1', Address: 'ABULE - EGBA BU ALA ABULE', WrongBillersCode: false } }
+      : { code: '000', content: { error: 'Meter not found', WrongBillersCode: true } };
+  }
   async requery(requestId) {
     return this.purchases.get(requestId) || { code: '015', response_description: 'INVALID REQUEST ID', content: {} };
   }
@@ -156,7 +161,7 @@ async function step(name, fn) {
       return route.fulfill({ json: { jsonrpc: '2.0', id: body.id, result: { result: bytes, logs: [] } } });
     });
     // The verifier endpoints run the real service code against the fakes.
-    for (const [name, fn] of [['fulfil', service.fulfil], ['token', service.collectToken]]) {
+    for (const [name, fn] of [['fulfil', service.fulfil], ['token', service.collectToken], ['meter', service.checkMeter]]) {
       await ctx.route(`${BASE}/api/${name}`, async (route) => {
         try {
           const out = await fn(JSON.parse(route.request().postData()), deps);
@@ -187,6 +192,7 @@ async function step(name, fn) {
       }
       const hrefs = await page.locator('a[href]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
       assert.ok(hrefs.includes('send') && hrefs.includes('agent'));
+      await shot(page, '0-landing-desktop');
       assert.ok(await noSideScroll(page));
       await page.context().close();
     });
@@ -198,7 +204,12 @@ async function step(name, fn) {
       await page.getByRole('button', { name: 'Get 100 test USDC' }).click();
       await page.waitForFunction(() => document.querySelector('#balance').textContent === '100.00 USDC');
       await page.locator('#meter').fill('1111111111111');
+      await page.locator('#meter-check[data-state="found"]').waitFor();
+      assert.match(await page.locator('#meter-check').textContent(), /TESTMETER1/);
+      assert.equal(await page.locator('#r-name').textContent(), 'TESTMETER1', 'the summary names whose meter it is');
       await page.getByRole('button', { name: '₦20,000' }).click();
+      assert.equal(await page.locator('#q-naira').textContent(), '₦20,000');
+      assert.ok(await page.locator('#rate').isHidden(), 'rate and tip are tucked away until asked for');
       await shot(page, '1-send-form');
       firstTotal = await page.locator('#q-total').textContent();
       assert.equal(firstTotal, '13.30 USDC'); // 20,000 / 1,550 = 12.91, plus a 3% tip
@@ -223,6 +234,10 @@ async function step(name, fn) {
       await page.locator('#meter').fill('12AB');
       await page.getByRole('button', { name: 'Lock USDC and send' }).click();
       await page.getByText('Enter the meter number: digits only.').waitFor();
+      await page.locator('#meter').fill('9999999999');
+      await page.locator('#meter-check[data-state="missing"]').waitFor();
+      await page.getByRole('button', { name: 'Lock USDC and send' }).click();
+      await page.getByText('That meter was not found. Check the number and the company.').waitFor();
       assert.equal(chain.nextId, 2, 'no request was created');
       await page.context().close();
     });
@@ -247,7 +262,8 @@ async function step(name, fn) {
       await job.waitFor();
       assert.match(await job.textContent(), /₦20,000/);
       assert.match(await job.textContent(), /13\.30 USDC/);
-      assert.match(await job.textContent(), /≈ ₦1,504 per USDC/);
+      assert.match(await job.textContent(), /You earn\s*≈ ₦615/); // 13.30 USDC at ₦1,550 is ₦20,615
+      assert.match(await job.textContent(), /Meter 111•+111/, 'the meter is masked until the job is taken');
       await shot(agent, '4-agent-desk');
       await job.getByRole('button', { name: 'Take this job' }).click();
       await agent.locator('dialog').getByRole('button', { name: 'Take this job' }).click();
@@ -266,6 +282,7 @@ async function step(name, fn) {
       await agent.locator('#pay-done').waitFor();
       await shot(agent, '5-agent-paid');
       assert.equal(await agent.locator('#pay-earned').textContent(), '13.30 USDC');
+      assert.equal(await agent.locator('#pay-profit').textContent(), '≈ ₦615');
       assert.match(await agent.locator('#pay-ref').textContent(), /^\d{12}SENDAM000001$/);
       assert.equal(chain.requests.get(1).status.state, 'fulfilled');
       assert.equal(chain.bal('tunde.testnet'), 13_300_000n);
@@ -304,9 +321,14 @@ async function step(name, fn) {
     });
 
     await step('a sender can cancel an untaken request and get the USDC back', async () => {
-      const page = await open('ada.testnet', '/send');
+      const page = await open('ada.testnet', '/send', { width: 1440, height: 900 });
       await page.locator('#meter').fill('1111111111111');
       await page.getByRole('button', { name: '₦5,000' }).click();
+      await page.locator('#meter-check[data-state="found"]').waitFor();
+      const [form, receipt] = await Promise.all([page.locator('.send-fields').boundingBox(), page.locator('.receipt').boundingBox()]);
+      assert.ok(receipt.x > form.x + form.width, 'on desktop the summary sits beside the form');
+      await shot(page, '7-send-desktop');
+      assert.ok(await noSideScroll(page));
       await page.getByRole('button', { name: 'Lock USDC and send' }).click();
       await page.getByRole('heading', { name: 'Request sent' }).waitFor();
       const before = chain.bal('ada.testnet');

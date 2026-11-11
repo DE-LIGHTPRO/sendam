@@ -145,3 +145,16 @@ test('the HTTP wrapper answers JSON, uses 202 for pending and hides unexpected e
   await endpoint(async () => ({}), {})({ method: 'GET' }, get);
   assert.equal(get.statusCode, 405);
 });
+
+test('a meter lookup returns the customer name, or says the meter is unknown', async () => {
+  const { checkMeter } = await import('../lib/service.js');
+  const asked = [];
+  const vtpass = (res) => ({ async verifyMeter(a) { asked.push(a); return res; } });
+  const found = await checkMeter({ provider: 'ibadan-electric', meter: '1111 1111 11111' }, { vtpass: vtpass({ code: '000', content: { Customer_Name: 'TESTMETER1', Address: 'ABULE - EGBA BU ALA ABULE' } }) });
+  assert.deepEqual(found, { found: true, name: 'TESTMETER1', address: 'ABULE - EGBA BU ALA ABULE' });
+  assert.deepEqual(asked[0], { provider: 'ibadan-electric', meter: '11111111111111'.slice(0, 13) });
+  const wrong = await checkMeter({ provider: 'ibadan-electric', meter: '1234567890' }, { vtpass: vtpass({ code: '000', content: { error: 'Meter not found', WrongBillersCode: true } }) });
+  assert.equal(wrong.found, false);
+  await assert.rejects(checkMeter({ provider: 'ibadan-electric', meter: '12AB' }, { vtpass: vtpass({}) }), (e) => e.status === 400);
+  await assert.rejects(checkMeter({ provider: 'evil', meter: '1234567' }, { vtpass: vtpass({}) }), (e) => e.status === 400);
+});

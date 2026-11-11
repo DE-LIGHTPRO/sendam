@@ -10,7 +10,8 @@ export const RPC_URLS = {
 }[NETWORK];
 export const EXPLORER = NETWORK === 'mainnet' ? 'https://nearblocks.io' : 'https://testnet.nearblocks.io';
 
-/** Starting point for the rate a sender offers, in naira per USDC. Senders can change it. */
+/** The demo's market rate, in naira per USDC: the sender's starting offer, and what agents'
+    earnings are estimated against. A real launch would read a live rate. */
 export const SUGGESTED_RATE = 1550;
 /** Starting point for the tip a sender adds on top, as a percentage. */
 export const SUGGESTED_TIP = 3;

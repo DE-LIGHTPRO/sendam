@@ -1,4 +1,4 @@
-import { CONTRACT, USDC, PROVIDERS, SUGGESTED_RATE, SUGGESTED_TIP, EXPLORER } from './config.js';
+import { CONTRACT, USDC, PROVIDERS, SUGGESTED_RATE, SUGGESTED_TIP } from './config.js';
 import { view, eventsOf, eventsFromOutcome, toUnits, usd, naira, maskMeter, timeLeft, stateOf, providerName } from './chain.js';
 import { $, escapeHtml, icon, show, toast, copyText, confirmDialog } from './ui.js';
 import { mountAccount, explain } from './session.js';
@@ -32,10 +32,65 @@ function quote() {
 }
 function drawQuote() {
   const q = quote();
+  const rate = Number($('#rate').value);
+  const tip = Number($('#tip').value);
   $('#q-naira').textContent = q ? naira(q.naira) : '-';
+  $('#q-rate-label').textContent = rate > 0 ? `At ₦${rate.toLocaleString('en-NG')} per USDC` : 'At your rate';
   $('#q-base').textContent = q ? `${q.base.toFixed(2)} USDC` : '-';
+  $('#q-tip-label').textContent = tip >= 0 ? `Agent tip, ${tip}%` : 'Agent tip';
   $('#q-tip').textContent = q ? `${q.tip.toFixed(2)} USDC` : '-';
   $('#q-total').textContent = q ? `${q.total.toFixed(2)} USDC` : '-';
+  $('#q-expiry').textContent = `after ${$('#expiry').selectedOptions[0].textContent}`;
+  drawWho();
+}
+
+// ---- Meter check ------------------------------------------------------------------
+// Looks up the name on the meter as it is typed, the way Nigerian bill apps do, so a
+// wrong digit is caught before any money is locked.
+const lookups = new Map(); // "provider:meter" -> { found, name, address } | { unavailable: true }
+let lookupTimer = 0;
+const meterValue = () => $('#meter').value.replace(/\s/g, '');
+const lookupKey = () => `${$('#provider').value}:${meterValue()}`;
+
+function drawWho() {
+  const res = lookups.get(lookupKey());
+  $('#r-name').textContent = res?.found ? res.name : "Your family's meter";
+  const m = meterValue();
+  $('#r-meter').textContent = [providerName($('#provider').value), /^\d{6,20}$/.test(m) ? `meter ${maskMeter(m)}` : ''].filter(Boolean).join(' · ');
+}
+
+function drawCheck() {
+  const box = $('#meter-check');
+  const m = meterValue();
+  const res = lookups.get(lookupKey());
+  box.dataset.state = '';
+  if (!/^\d{6,20}$/.test(m)) box.innerHTML = '<span class="hint">Sandbox test meter: 1111111111111</span>';
+  else if (!res) { box.dataset.state = 'checking'; box.innerHTML = `<span class="mc-spin" aria-hidden="true"></span><span>Checking the meter…</span>`; }
+  else if (res.found) { box.dataset.state = 'found'; box.innerHTML = `${icon('check')}<span><b>${escapeHtml(res.name)}</b>${res.address ? `<small>${escapeHtml(res.address)}</small>` : ''}</span>`; }
+  else if (res.unavailable) { box.dataset.state = 'unknown'; box.innerHTML = `${icon('info')}<span>We could not check this meter right now. Make sure the number is right.</span>`; }
+  else { box.dataset.state = 'missing'; box.innerHTML = `${icon('alert')}<span>${escapeHtml(res.message)}. Check the number and the company.</span>`; }
+  drawWho();
+}
+
+async function lookUp() {
+  const key = lookupKey();
+  const [provider, meter] = key.split(':');
+  if (!/^\d{6,20}$/.test(meter) || lookups.has(key)) return drawCheck();
+  drawCheck();
+  let res;
+  try {
+    const r = await fetch('api/meter', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ provider, meter }) });
+    res = r.ok ? await r.json() : { unavailable: true };
+  } catch {
+    res = { unavailable: true };
+  }
+  lookups.set(key, res);
+  if (key === lookupKey()) drawCheck();
+}
+function scheduleLookUp() {
+  clearTimeout(lookupTimer);
+  drawCheck();
+  lookupTimer = setTimeout(lookUp, 450);
 }
 
 // ---- Balance and history ----------------------------------------------------
@@ -113,6 +168,8 @@ $('#form').addEventListener('submit', async (e) => {
   const q = quote();
   const meter = $('#meter').value.replace(/\s/g, '');
   if (!/^\d{6,20}$/.test(meter)) { $('#meter').focus(); return toast('Enter the meter number: digits only.', 'warn'); }
+  if (!lookups.has(lookupKey())) { clearTimeout(lookupTimer); await lookUp(); }
+  if (lookups.get(lookupKey())?.found === false) { $('#meter').focus(); return toast('That meter was not found. Check the number and the company.', 'warn'); }
   if (!q || q.naira < 500 || q.naira > 500000) { $('#naira').focus(); return toast('The amount must be between ₦500 and ₦500,000.', 'warn'); }
   const secret = randomSecret();
   const msg = {
@@ -178,6 +235,9 @@ $('#presets').addEventListener('click', (e) => {
   drawQuote();
 });
 $('#form').addEventListener('input', drawQuote);
+$('#form').addEventListener('change', drawQuote);
+$('#meter').addEventListener('input', scheduleLookUp);
+$('#provider').addEventListener('change', scheduleLookUp);
 drawQuote();
 $('#faucet').addEventListener('click', async () => {
   try {
@@ -201,4 +261,3 @@ w = await mountAccount(async (id) => {
   drawBalance();
   drawMine();
 });
-void EXPLORER;
