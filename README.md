@@ -79,7 +79,7 @@ npm run test:contracts
 npm test
 ```
 
-11 tests of the verifier: Lagos-time request ids, reading VTpass answers, paying once and never twice, pending and failed payments, meter and amount mismatches, and the token only for the right secret.
+10 tests of the verifier: Lagos-time request ids, reading VTpass answers, paying once and never twice, pending and failed payments, meter and amount mismatches, and the token only for the right secret.
 
 ```bash
 npm run test:e2e
