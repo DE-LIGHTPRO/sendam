@@ -31,29 +31,45 @@
 </header>
 <main class="app wide">
   <section data-view="connect">
-    <div class="page-head">
-      <h1>Agent <em>desk</em></h1>
-      <p>Pay electricity bills for families abroad from your naira balance, and get paid in USDC the moment the payment is confirmed.</p>
+    <div class="hero-split">
+      <div>
+        <p class="eyebrow">Agent desk</p>
+        <h1>Earn dollars on <em>bills you sell.</em></h1>
+        <p class="lead">Pay electricity bills for families abroad from your naira balance, and get paid in USDC the moment the payment is confirmed.</p>
+        <ol class="num-steps">
+          <li><span>01</span><b>Pick a request</b><p>Each one shows the bill you pay in naira and what you earn on top.</p></li>
+          <li><span>02</span><b>Pay the bill</b><p>Taking a request reserves it for you for 30 minutes.</p></li>
+          <li><span>03</span><b>Get paid automatically</b><p>Once the electricity company confirms it, the contract sends you the USDC.</p></li>
+        </ol>
+        <div class="actions"><button class="btn lg primary" id="connect" type="button"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg>Connect wallet</button></div>
+        <div class="note plain"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Runs on NEAR testnet with test USDC. No real money moves, and the electricity tokens come from a bill-payment sandbox.</span></div>
+      </div>
+      <div class="preview" aria-hidden="true">
+        <div class="card job preview-b">
+          <div class="job-top"><div><span class="job-label">You pay</span><div class="big">₦5,000</div></div><div class="earn"><span>You earn</span><b>≈ ₦162</b></div></div>
+        <div class="card job preview-a">
+          <div class="job-top"><div><span class="job-label">You pay</span><div class="big">₦20,000</div><div class="small muted">Ibadan Electric (IBEDC)<span class="mono">Meter 111•••••••111</span></div></div><div class="earn"><span>You earn</span><b>≈ ₦615</b></div></div>
+          <div class="job-meta"><span>You get <b>13.30 USDC</b> ≈ ₦20,615</span><span>23 h left</span></div>
+          <span class="btn primary block">Take this job</span>
+        </div>
+
+        </div>
+      </div>
     </div>
-    <div class="card flush">
-      <ul class="plain-list">
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#list"/></svg><div><b>Pick a request</b><span>See the bill, the USDC offered and what you earn in naira.</span></div></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg><div><b>Pay the bill</b><span>Taking a request reserves it for you for 30 minutes.</span></div></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#shield"/></svg><div><b>Get paid automatically</b><span>Once the bill provider confirms it, the contract sends you the USDC.</span></div></li>
-      </ul>
-    </div>
-    <button class="btn primary block" id="connect" type="button"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg>Connect wallet</button>
-    <div class="note plain"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Runs on NEAR testnet with test USDC. No real money moves, and the electricity tokens come from a bill-payment sandbox.</span></div>
   </section>
 
   <section data-view="desk" hidden>
-    <div class="page-head">
-      <h1>Agent <em>desk</em></h1>
-      <p>Take a request, pay the bill, and the USDC is yours once it is confirmed.</p>
-    </div>
-    <div class="stats">
-      <div class="stat"><span>Your test USDC</span><b class="bal" id="balance">…</b></div>
-      <div class="stat"><span>Bills you have paid</span><b id="done-count">0</b></div>
+    <div class="page-head split">
+      <div>
+        <p class="eyebrow">Agent desk</p>
+        <h1>Agent <em>desk</em></h1>
+        <p>Take a request, pay the bill, and the USDC is yours once it is confirmed.</p>
+      </div>
+      <div class="wallet-strip">
+        <div><span class="eyebrow">Test USDC</span><b class="bal" id="balance">…</b></div>
+        <span class="ws-sep" aria-hidden="true"></span>
+        <div><span class="eyebrow">Bills paid</span><b id="done-count">0</b></div>
+      </div>
     </div>
     <div class="note warn" id="register-note" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Your account is not set up to receive test USDC yet.</span></div>
     <button class="btn block" type="button" id="register" hidden>Set up to receive USDC</button>
@@ -63,29 +79,39 @@
       <button type="button" role="tab" id="tab-mine" aria-selected="false" aria-controls="panel">My jobs <span class="chip neutral" id="n-mine">0</span></button>
     </div>
     <div id="panel" class="job-list" role="tabpanel" aria-labelledby="tab-open"></div>
-    <p class="hint center">Updates every 10 seconds. Earnings are estimated at ₦1,550 per USDC, the demo's market rate.</p>
+    <p class="hint">Updates every 10 seconds. Earnings are estimated at ₦1,550 per USDC, the demo's market rate.</p>
   </section>
 
   <section data-view="paying" hidden>
-    <div class="page-head"><h1>Paying the bill</h1><p id="pay-text"></p></div>
-    <div class="card">
-      <ol class="steps-live" id="pay-steps">
-        <li data-step="pay"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Paying the bill with the electricity company</li>
-        <li data-step="check"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Checking the payment with the bill provider</li>
-        <li data-step="release"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Releasing your USDC from the contract</li>
-      </ol>
+    <div class="settle">
+      <div class="page-head"><p class="eyebrow">Settlement</p><h1>Paying the bill</h1><p id="pay-text"></p></div>
+      <div class="lcd" id="pay-lcd" aria-hidden="true">
+        <div class="lcd-row"><span id="pay-lcd-mode">Bill payment</span><span>NGN</span></div>
+        <div class="lcd-main" id="pay-lcd-main">PAYING</div>
+        <div class="lcd-bar"><i id="pay-lcd-bar"></i></div>
+      </div>
+      <div class="card">
+        <ol class="steps-live" id="pay-steps">
+          <li data-step="pay"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Paying the bill with the electricity company</li>
+          <li data-step="check"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Checking the payment with the bill provider</li>
+          <li data-step="release"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg>Releasing your USDC from the contract</li>
+        </ol>
+      </div>
+      <div class="note bad" id="pay-error" role="alert" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#alert"/></svg><span></span></div>
+      <div class="payout" id="pay-done" hidden>
+        <span class="t-label">Paid to your wallet</span>
+        <b class="payout-big"><span id="pay-big">+0.00</span> <small>USDC</small></b>
+        <div class="kv"><span>You received</span><b id="pay-earned"></b></div>
+        <div class="kv"><span>Over what you paid</span><b id="pay-profit"></b></div>
+        <div class="kv"><span>Reference</span><b class="mono" id="pay-ref"></b></div>
+        <a class="btn block" id="pay-tx" target="_blank" rel="noopener">See the transaction</a>
+      </div>
+      <button class="btn primary block" type="button" id="back-desk">Back to the desk</button>
     </div>
-    <div class="note bad" id="pay-error" role="alert" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#alert"/></svg><span></span></div>
-    <div class="card" id="pay-done" hidden>
-      <div class="kv"><span>Reference</span><b class="mono" id="pay-ref"></b></div>
-      <div class="kv"><span>You received</span><b id="pay-earned"></b></div>
-      <div class="kv"><span>Over what you paid</span><b id="pay-profit"></b></div>
-      <a class="btn block" id="pay-tx" target="_blank" rel="noopener">See the transaction</a>
-    </div>
-    <button class="btn primary block" type="button" id="back-desk">Back to the desk</button>
   </section>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
 <script type="module" src="js/agent.js"></script>
+<script type="module" src="js/backdrop.js"></script>
 </body>
 </html>

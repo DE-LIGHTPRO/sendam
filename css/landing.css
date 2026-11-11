@@ -2,7 +2,7 @@
    One idea carries it: the prepaid meter, the object every Nigerian household knows.
    Everything else is the real product, shown plainly. No stock photography. */
 
-.landing { background: var(--bg); }
+.landing { background: transparent; }
 .l-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
 .landing h2 { font-size: clamp(36px, 5.2vw, 64px); line-height: 1; letter-spacing: -0.045em; font-weight: 570; text-wrap: balance; }
 .landing h2 em, .landing h1 em { color: #858178; }
@@ -11,7 +11,7 @@
 .l-sub { margin-top: 18px; font-size: 18px; line-height: 1.55; color: var(--muted); max-width: 32em; }
 
 /* ---- Navigation ---------------------------------------------------------------- */
-.l-nav { position: sticky; top: 0; z-index: 20; background: rgba(244, 242, 237, 0.8); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+.l-nav { position: sticky; top: 0; z-index: 20; background: rgba(244, 242, 237, 0.7); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
 .l-nav.scrolled { border-bottom-color: var(--line); }
 .l-nav-in { display: flex; align-items: center; gap: 28px; height: 68px; }
 .l-nav .links { display: none; gap: 30px; margin-left: auto; }
@@ -86,7 +86,7 @@
 
 /* ---- Sections --------------------------------------------------------------------- */
 .l-section { padding: clamp(80px, 11vw, 140px) 0; }
-.l-section.tint { background: #ebe8e1; }
+.l-section.tint { background: rgba(228, 223, 212, 0.55); }
 .l-head { max-width: 760px; }
 
 /* How it works: three people, three phones, one bill travelling between them. */

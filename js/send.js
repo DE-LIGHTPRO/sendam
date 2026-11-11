@@ -1,7 +1,7 @@
 import { CONTRACT, USDC, PROVIDERS, SUGGESTED_RATE, SUGGESTED_TIP } from './config.js';
 import { view, eventsOf, eventsFromOutcome, toUnits, usd, naira, maskMeter, timeLeft, stateOf, providerName } from './chain.js';
 import { $, escapeHtml, icon, show, toast, copyText, confirmDialog } from './ui.js';
-import { mountAccount, explain } from './session.js';
+import { mountAccount, explain, connect } from './session.js';
 
 const PENDING = 'sendam.pending';
 const SENT = 'sendam.sent'; // request id -> secret, so the sender can reopen their links
@@ -21,8 +21,9 @@ async function sha256hex(text) {
 }
 
 // ---- Quote --------------------------------------------------------------------
+const nairaValue = () => Number(String($('#naira').value).replace(/[^\d]/g, ''));
 function quote() {
-  const n = Number($('#naira').value);
+  const n = nairaValue();
   const rate = Number($('#rate').value);
   const tip = Number($('#tip').value);
   if (!(n > 0) || !(rate > 0) || !(tip >= 0)) return null;
@@ -41,6 +42,7 @@ function drawQuote() {
   $('#q-tip').textContent = q ? `${q.tip.toFixed(2)} USDC` : '-';
   $('#q-total').textContent = q ? `${q.total.toFixed(2)} USDC` : '-';
   $('#q-expiry').textContent = `after ${$('#expiry').selectedOptions[0].textContent}`;
+  document.querySelectorAll('#presets [data-n]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.n) === nairaValue())));
   drawWho();
 }
 
@@ -56,6 +58,7 @@ function drawWho() {
   const res = lookups.get(lookupKey());
   $('#r-name').textContent = res?.found ? res.name : "Your family's meter";
   const m = meterValue();
+  $('#lcd-co').textContent = (providerName($('#provider').value).match(/\(([^)]+)\)/) || [, 'PREPAID'])[1];
   $('#r-meter').textContent = [providerName($('#provider').value), /^\d{6,20}$/.test(m) ? `meter ${maskMeter(m)}` : ''].filter(Boolean).join(' · ');
 }
 
@@ -64,11 +67,11 @@ function drawCheck() {
   const m = meterValue();
   const res = lookups.get(lookupKey());
   box.dataset.state = '';
-  if (!/^\d{6,20}$/.test(m)) box.innerHTML = '<span class="hint">Sandbox test meter: 1111111111111</span>';
-  else if (!res) { box.dataset.state = 'checking'; box.innerHTML = `<span class="mc-spin" aria-hidden="true"></span><span>Checking the meter…</span>`; }
+  if (!/^\d{6,20}$/.test(m)) box.innerHTML = '<span class="mc-idle">Test meter: 1111111111111</span>';
+  else if (!res) { box.dataset.state = 'checking'; box.innerHTML = '<span class="mc-spin" aria-hidden="true"></span><span>Checking the meter…</span>'; }
   else if (res.found) { box.dataset.state = 'found'; box.innerHTML = `${icon('check')}<span><b>${escapeHtml(res.name)}</b>${res.address ? `<small>${escapeHtml(res.address)}</small>` : ''}</span>`; }
-  else if (res.unavailable) { box.dataset.state = 'unknown'; box.innerHTML = `${icon('info')}<span>We could not check this meter right now. Make sure the number is right.</span>`; }
-  else { box.dataset.state = 'missing'; box.innerHTML = `${icon('alert')}<span>${escapeHtml(res.message)}. Check the number and the company.</span>`; }
+  else if (res.unavailable) { box.dataset.state = 'unknown'; box.innerHTML = `${icon('info')}<span>Could not check this meter right now. Make sure the number is right.</span>`; }
+  else { box.dataset.state = 'missing'; box.innerHTML = `${icon('alert')}<span>No meter with this number at this company.</span>`; }
   drawWho();
 }
 
@@ -98,7 +101,7 @@ async function drawBalance() {
   try {
     const bal = await view('ft_balance_of', { account_id: account }, USDC);
     $('#balance').textContent = usd(bal || '0');
-    $('#faucet').hidden = BigInt(bal || '0') >= 100_000_000n;
+    $('#faucet').hidden = BigInt(bal || '0') >= 9_900_000_000n; // the test token caps each account at 10,000
   } catch {
     $('#balance').textContent = 'Unavailable';
   }
@@ -151,16 +154,69 @@ $('#mine').addEventListener('click', async (e) => {
 });
 
 // ---- Sending -------------------------------------------------------------------
+// ---- The ticket ------------------------------------------------------------------
+// After sending, the request is shown as a ticket that stays live: it reads the request
+// from the chain every few seconds, so the sender watches an agent take it and pay.
+let ticketTimer = 0;
+let ticketShown = false;
+
+function countUp(el, to, ms = 900) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = naira(to); return; }
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / ms);
+    el.textContent = naira(Math.round(to * (1 - Math.pow(1 - t, 3))));
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function drawTicket(r) {
+  const short = (providerName(r.provider).match(/\(([^)]+)\)/) || [, providerName(r.provider)])[1];
+  const who = lookups.get(`${r.provider}:${r.meter}`);
+  if (!ticketShown) { countUp($('#t-naira'), r.naira); ticketShown = true; }
+  $('#t-for').textContent = `for ${who?.found ? who.name : 'the family'} · ${short} · meter ${maskMeter(r.meter)}`;
+  $('#t-usdc').textContent = usd(r.amount);
+  const st = stateOf(r);
+  $('#t-expiry').textContent = st === 'open' ? timeLeft(r.expires_ms).replace(' left', '') : '-';
+  const steps = { agent: $('#t-steps [data-step="agent"]'), token: $('#t-steps [data-step="token"]') };
+  const set = (li, state, text) => { li.className = state; if (text) li.querySelector('span').textContent = text; };
+  const words = {
+    open: ['now', 'Waiting for an agent', '', `Request ${r.id} is waiting for an agent. You are only charged once the bill is paid.`],
+    claimed: ['now', 'An agent is paying the bill', '', `An agent has taken request ${r.id} and is paying the bill now.`],
+    paid: ['done', 'Paid by a local agent', 'done', `The bill is paid. The family can collect the token from the link.`],
+    refunded: ['', 'Refunded to you', '', `Request ${r.id} was refunded. The USDC is back in your wallet.`],
+    expired: ['', 'Nobody took it in time', '', `Nobody paid request ${r.id} in time. Refund it from Your requests.`],
+  }[st];
+  set(steps.agent, words[0], words[1]);
+  steps.token.className = words[2];
+  $('#sent-text').textContent = words[3];
+  $('#ticket').dataset.state = st;
+}
+
+async function watchTicket(id) {
+  clearTimeout(ticketTimer);
+  if (document.querySelector('[data-view="sent"]').hidden) return;
+  try { drawTicket(await view('get_request', { id })); } catch { /* try again shortly */ }
+  ticketTimer = setTimeout(() => watchTicket(id), 8000);
+}
+
 function finish(id, secret) {
   remember(id, secret);
   localStorage.removeItem(PENDING);
   const link = new URL(`track?id=${id}#${secret}`, location.href).href;
+  ticketShown = false;
+  $('#t-no').textContent = `№ ${String(id).padStart(4, '0')}`;
+  $('#t-naira').textContent = naira(0);
   $('#sent-text').textContent = `Request ${id} is waiting for an agent. You are only charged once the bill is paid.`;
   $('#share-link').textContent = link;
   $('#open-track').href = link;
   $('#whatsapp').href = 'https://wa.me/?text=' + encodeURIComponent(`I've paid for electricity for you. Open this link to follow it and get the token: ${link}`);
   $('#copy-link').onclick = () => copyText(link, 'Link copied');
+  $('#t-qr').innerHTML = '';
+  import('../vendor/qr.js').then(({ qrSvg }) => { $('#t-qr').innerHTML = qrSvg(link); }).catch(() => {});
   show('sent');
+  watchTicket(id);
 }
 
 $('#form').addEventListener('submit', async (e) => {
@@ -231,26 +287,38 @@ $('#tip').value = SUGGESTED_TIP;
 $('#presets').addEventListener('click', (e) => {
   const b = e.target.closest('button[data-n]');
   if (!b) return;
-  $('#naira').value = b.dataset.n;
+  $('#naira').value = Number(b.dataset.n).toLocaleString('en-NG');
   drawQuote();
 });
 $('#form').addEventListener('input', drawQuote);
 $('#form').addEventListener('change', drawQuote);
 $('#meter').addEventListener('input', scheduleLookUp);
+// The amount reads like money as it is typed: digits only, with thousands separators.
+$('#naira').addEventListener('input', () => {
+  const n = nairaValue();
+  $('#naira').value = n ? n.toLocaleString('en-NG') : '';
+});
 $('#provider').addEventListener('change', scheduleLookUp);
 drawQuote();
 $('#faucet').addEventListener('click', async () => {
+  const btn = $('#faucet');
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Approve in your wallet…';
   try {
     await w.call({ receiverId: USDC, methodName: 'faucet', args: {}, tgas: 30 });
     toast('100 test USDC added');
     drawBalance();
   } catch (err) {
     toast(explain(err), 'warn');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
   }
 });
 $('#refresh-mine').addEventListener('click', () => { drawMine(); drawBalance(); });
-$('#another').addEventListener('click', () => { show('form'); drawMine(); drawBalance(); });
-$('#connect').addEventListener('click', () => w.signIn());
+$('#another').addEventListener('click', () => { clearTimeout(ticketTimer); show('form'); drawMine(); drawBalance(); });
+$('#connect').addEventListener('click', connect);
 
 w = await mountAccount(async (id) => {
   account = id;

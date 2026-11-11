@@ -155,6 +155,25 @@ test('a meter lookup returns the customer name, or says the meter is unknown', a
   assert.deepEqual(asked[0], { provider: 'ibadan-electric', meter: '11111111111111'.slice(0, 13) });
   const wrong = await checkMeter({ provider: 'ibadan-electric', meter: '1234567890' }, { vtpass: vtpass({ code: '000', content: { error: 'Meter not found', WrongBillersCode: true } }) });
   assert.equal(wrong.found, false);
+  const quiet = console.warn;
+  console.warn = () => {};
+  await assert.rejects(checkMeter({ provider: 'ibadan-electric', meter: '1234567890' }, { vtpass: vtpass('Invalid Credentials.') }), (e) => e.status === 502 && /Invalid Credentials/.test(e.message));
+  console.warn = quiet;
   await assert.rejects(checkMeter({ provider: 'ibadan-electric', meter: '12AB' }, { vtpass: vtpass({}) }), (e) => e.status === 400);
   await assert.rejects(checkMeter({ provider: 'evil', meter: '1234567' }, { vtpass: vtpass({}) }), (e) => e.status === 400);
+});
+
+test('the simulated bill provider runs the whole verifier flow without VTpass', async () => {
+  const { createSimulatedVtpass } = await import('../lib/vtpass-sim.js');
+  const { checkMeter } = await import('../lib/service.js');
+  const vtpass = createSimulatedVtpass();
+  assert.equal((await checkMeter({ provider: 'ibadan-electric', meter: '1111111111111' }, { vtpass })).name, 'TESTMETER1');
+  assert.equal((await checkMeter({ provider: 'ibadan-electric', meter: '2222222222' }, { vtpass })).found, false);
+  const f = fakes();
+  const out = await fulfil({ id: 7, agent: 'tunde.testnet' }, { near: f.near, vtpass });
+  assert.equal(out.state, 'fulfilled');
+  const done = fakes({ req: request({ state: 'fulfilled', agent: 'tunde.testnet', reference: REQUEST_ID, at_ms: 1 }) });
+  const token = await collectToken({ id: 7, secret: SECRET }, { near: done.near, vtpass });
+  assert.match(token.token, /^\d{4}( \d{4}){4}$/);
+  assert.deepEqual(token, await collectToken({ id: 7, secret: SECRET }, { near: done.near, vtpass }), 'the same purchase always gives the same token');
 });

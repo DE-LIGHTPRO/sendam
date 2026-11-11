@@ -31,52 +31,81 @@
 </header>
 <main class="app wide">
   <section data-view="connect">
-    <div class="page-head">
-      <h1>Pay a bill <em>back home</em></h1>
-      <p>Lock USDC for a prepaid electricity token. A local agent pays it in naira, and you are only charged when the bill is paid.</p>
+    <div class="hero-split">
+      <div>
+        <p class="eyebrow">Send a bill</p>
+        <h1>Pay a bill <em>back home</em></h1>
+        <p class="lead">Lock USDC for a prepaid electricity token. A local agent pays it in naira, and you are only charged once the bill is paid.</p>
+        <ol class="num-steps">
+          <li><span>01</span><b>Connect a NEAR wallet</b><p>Your USDC stays in the contract until an agent pays the bill.</p></li>
+          <li><span>02</span><b>Choose the meter and the amount</b><p>Any prepaid meter, across all twelve distribution companies.</p></li>
+          <li><span>03</span><b>Send the link home</b><p>Your family follows it and collects the token. No wallet, no app.</p></li>
+        </ol>
+        <div class="actions"><button class="btn lg primary" id="connect" type="button"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg>Connect wallet</button></div>
+        <div class="note plain"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Runs on NEAR testnet with test USDC. No real money moves, and the electricity tokens come from a bill-payment sandbox.</span></div>
+      </div>
+      <div class="preview" aria-hidden="true">
+        <div class="ticket preview-a">
+          <div class="t-main">
+            <div class="t-top"><span class="t-brand"><svg class="mark"><use href="img/icons.svg#mark"/></svg>Sendam · Electricity</span><span class="t-no">№ 0001</span></div>
+            <span class="t-stamp">Locked</span>
+            <span class="t-label">They get</span>
+            <b class="t-big">₦20,000</b>
+            <span class="t-for">for ADEBAYO F. O. · IBEDC · meter 111•••111</span>
+          </div>
+          <div class="t-tear"></div>
+          <div class="t-stub">
+            <div class="t-qr"><svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116 116"  preserveAspectRatio="xMinYMin meet"><rect width="100%" height="100%" fill="white" cx="0" cy="0"/><path d="M0,0l4,0 0,4 -4,0 0,-4z M4,0l4,0 0,4 -4,0 0,-4z M8,0l4,0 0,4 -4,0 0,-4z M12,0l4,0 0,4 -4,0 0,-4z M16,0l4,0 0,4 -4,0 0,-4z M20,0l4,0 0,4 -4,0 0,-4z M24,0l4,0 0,4 -4,0 0,-4z M36,0l4,0 0,4 -4,0 0,-4z M44,0l4,0 0,4 -4,0 0,-4z M48,0l4,0 0,4 -4,0 0,-4z M56,0l4,0 0,4 -4,0 0,-4z M72,0l4,0 0,4 -4,0 0,-4z M76,0l4,0 0,4 -4,0 0,-4z M88,0l4,0 0,4 -4,0 0,-4z M92,0l4,0 0,4 -4,0 0,-4z M96,0l4,0 0,4 -4,0 0,-4z M100,0l4,0 0,4 -4,0 0,-4z M104,0l4,0 0,4 -4,0 0,-4z M108,0l4,0 0,4 -4,0 0,-4z M112,0l4,0 0,4 -4,0 0,-4z M0,4l4,0 0,4 -4,0 0,-4z M24,4l4,0 0,4 -4,0 0,-4z M32,4l4,0 0,4 -4,0 0,-4z M40,4l4,0 0,4 -4,0 0,-4z M48,4l4,0 0,4 -4,0 0,-4z M56,4l4,0 0,4 -4,0 0,-4z M64,4l4,0 0,4 -4,0 0,-4z M80,4l4,0 0,4 -4,0 0,-4z M88,4l4,0 0,4 -4,0 0,-4z M112,4l4,0 0,4 -4,0 0,-4z M0,8l4,0 0,4 -4,0 0,-4z M8,8l4,0 0,4 -4,0 0,-4z M12,8l4,0 0,4 -4,0 0,-4z M16,8l4,0 0,4 -4,0 0,-4z M24,8l4,0 0,4 -4,0 0,-4z M32,8l4,0 0,4 -4,0 0,-4z M36,8l4,0 0,4 -4,0 0,-4z M40,8l4,0 0,4 -4,0 0,-4z M48,8l4,0 0,4 -4,0 0,-4z M56,8l4,0 0,4 -4,0 0,-4z M60,8l4,0 0,4 -4,0 0,-4z M72,8l4,0 0,4 -4,0 0,-4z M80,8l4,0 0,4 -4,0 0,-4z M88,8l4,0 0,4 -4,0 0,-4z M96,8l4,0 0,4 -4,0 0,-4z M100,8l4,0 0,4 -4,0 0,-4z M104,8l4,0 0,4 -4,0 0,-4z M112,8l4,0 0,4 -4,0 0,-4z M0,12l4,0 0,4 -4,0 0,-4z M8,12l4,0 0,4 -4,0 0,-4z M12,12l4,0 0,4 -4,0 0,-4z M16,12l4,0 0,4 -4,0 0,-4z M24,12l4,0 0,4 -4,0 0,-4z M32,12l4,0 0,4 -4,0 0,-4z M36,12l4,0 0,4 -4,0 0,-4z M40,12l4,0 0,4 -4,0 0,-4z M48,12l4,0 0,4 -4,0 0,-4z M56,12l4,0 0,4 -4,0 0,-4z M64,12l4,0 0,4 -4,0 0,-4z M76,12l4,0 0,4 -4,0 0,-4z M80,12l4,0 0,4 -4,0 0,-4z M88,12l4,0 0,4 -4,0 0,-4z M96,12l4,0 0,4 -4,0 0,-4z M100,12l4,0 0,4 -4,0 0,-4z M104,12l4,0 0,4 -4,0 0,-4z M112,12l4,0 0,4 -4,0 0,-4z M0,16l4,0 0,4 -4,0 0,-4z M8,16l4,0 0,4 -4,0 0,-4z M12,16l4,0 0,4 -4,0 0,-4z M16,16l4,0 0,4 -4,0 0,-4z M24,16l4,0 0,4 -4,0 0,-4z M36,16l4,0 0,4 -4,0 0,-4z M40,16l4,0 0,4 -4,0 0,-4z M44,16l4,0 0,4 -4,0 0,-4z M52,16l4,0 0,4 -4,0 0,-4z M64,16l4,0 0,4 -4,0 0,-4z M68,16l4,0 0,4 -4,0 0,-4z M72,16l4,0 0,4 -4,0 0,-4z M76,16l4,0 0,4 -4,0 0,-4z M88,16l4,0 0,4 -4,0 0,-4z M96,16l4,0 0,4 -4,0 0,-4z M100,16l4,0 0,4 -4,0 0,-4z M104,16l4,0 0,4 -4,0 0,-4z M112,16l4,0 0,4 -4,0 0,-4z M0,20l4,0 0,4 -4,0 0,-4z M24,20l4,0 0,4 -4,0 0,-4z M48,20l4,0 0,4 -4,0 0,-4z M52,20l4,0 0,4 -4,0 0,-4z M56,20l4,0 0,4 -4,0 0,-4z M72,20l4,0 0,4 -4,0 0,-4z M80,20l4,0 0,4 -4,0 0,-4z M88,20l4,0 0,4 -4,0 0,-4z M112,20l4,0 0,4 -4,0 0,-4z M0,24l4,0 0,4 -4,0 0,-4z M4,24l4,0 0,4 -4,0 0,-4z M8,24l4,0 0,4 -4,0 0,-4z M12,24l4,0 0,4 -4,0 0,-4z M16,24l4,0 0,4 -4,0 0,-4z M20,24l4,0 0,4 -4,0 0,-4z M24,24l4,0 0,4 -4,0 0,-4z M32,24l4,0 0,4 -4,0 0,-4z M40,24l4,0 0,4 -4,0 0,-4z M48,24l4,0 0,4 -4,0 0,-4z M56,24l4,0 0,4 -4,0 0,-4z M64,24l4,0 0,4 -4,0 0,-4z M72,24l4,0 0,4 -4,0 0,-4z M80,24l4,0 0,4 -4,0 0,-4z M88,24l4,0 0,4 -4,0 0,-4z M92,24l4,0 0,4 -4,0 0,-4z M96,24l4,0 0,4 -4,0 0,-4z M100,24l4,0 0,4 -4,0 0,-4z M104,24l4,0 0,4 -4,0 0,-4z M108,24l4,0 0,4 -4,0 0,-4z M112,24l4,0 0,4 -4,0 0,-4z M32,28l4,0 0,4 -4,0 0,-4z M36,28l4,0 0,4 -4,0 0,-4z M40,28l4,0 0,4 -4,0 0,-4z M44,28l4,0 0,4 -4,0 0,-4z M48,28l4,0 0,4 -4,0 0,-4z M52,28l4,0 0,4 -4,0 0,-4z M64,28l4,0 0,4 -4,0 0,-4z M80,28l4,0 0,4 -4,0 0,-4z M0,32l4,0 0,4 -4,0 0,-4z M24,32l4,0 0,4 -4,0 0,-4z M32,32l4,0 0,4 -4,0 0,-4z M36,32l4,0 0,4 -4,0 0,-4z M44,32l4,0 0,4 -4,0 0,-4z M48,32l4,0 0,4 -4,0 0,-4z M56,32l4,0 0,4 -4,0 0,-4z M60,32l4,0 0,4 -4,0 0,-4z M84,32l4,0 0,4 -4,0 0,-4z M88,32l4,0 0,4 -4,0 0,-4z M100,32l4,0 0,4 -4,0 0,-4z M104,32l4,0 0,4 -4,0 0,-4z M108,32l4,0 0,4 -4,0 0,-4z M0,36l4,0 0,4 -4,0 0,-4z M4,36l4,0 0,4 -4,0 0,-4z M20,36l4,0 0,4 -4,0 0,-4z M32,36l4,0 0,4 -4,0 0,-4z M40,36l4,0 0,4 -4,0 0,-4z M56,36l4,0 0,4 -4,0 0,-4z M60,36l4,0 0,4 -4,0 0,-4z M72,36l4,0 0,4 -4,0 0,-4z M84,36l4,0 0,4 -4,0 0,-4z M92,36l4,0 0,4 -4,0 0,-4z M96,36l4,0 0,4 -4,0 0,-4z M104,36l4,0 0,4 -4,0 0,-4z M108,36l4,0 0,4 -4,0 0,-4z M8,40l4,0 0,4 -4,0 0,-4z M12,40l4,0 0,4 -4,0 0,-4z M24,40l4,0 0,4 -4,0 0,-4z M32,40l4,0 0,4 -4,0 0,-4z M36,40l4,0 0,4 -4,0 0,-4z M48,40l4,0 0,4 -4,0 0,-4z M60,40l4,0 0,4 -4,0 0,-4z M68,40l4,0 0,4 -4,0 0,-4z M96,40l4,0 0,4 -4,0 0,-4z M0,44l4,0 0,4 -4,0 0,-4z M8,44l4,0 0,4 -4,0 0,-4z M16,44l4,0 0,4 -4,0 0,-4z M32,44l4,0 0,4 -4,0 0,-4z M36,44l4,0 0,4 -4,0 0,-4z M44,44l4,0 0,4 -4,0 0,-4z M48,44l4,0 0,4 -4,0 0,-4z M56,44l4,0 0,4 -4,0 0,-4z M60,44l4,0 0,4 -4,0 0,-4z M64,44l4,0 0,4 -4,0 0,-4z M80,44l4,0 0,4 -4,0 0,-4z M84,44l4,0 0,4 -4,0 0,-4z M100,44l4,0 0,4 -4,0 0,-4z M0,48l4,0 0,4 -4,0 0,-4z M4,48l4,0 0,4 -4,0 0,-4z M8,48l4,0 0,4 -4,0 0,-4z M12,48l4,0 0,4 -4,0 0,-4z M20,48l4,0 0,4 -4,0 0,-4z M24,48l4,0 0,4 -4,0 0,-4z M44,48l4,0 0,4 -4,0 0,-4z M52,48l4,0 0,4 -4,0 0,-4z M56,48l4,0 0,4 -4,0 0,-4z M64,48l4,0 0,4 -4,0 0,-4z M68,48l4,0 0,4 -4,0 0,-4z M76,48l4,0 0,4 -4,0 0,-4z M80,48l4,0 0,4 -4,0 0,-4z M88,48l4,0 0,4 -4,0 0,-4z M92,48l4,0 0,4 -4,0 0,-4z M112,48l4,0 0,4 -4,0 0,-4z M0,52l4,0 0,4 -4,0 0,-4z M20,52l4,0 0,4 -4,0 0,-4z M28,52l4,0 0,4 -4,0 0,-4z M32,52l4,0 0,4 -4,0 0,-4z M52,52l4,0 0,4 -4,0 0,-4z M56,52l4,0 0,4 -4,0 0,-4z M60,52l4,0 0,4 -4,0 0,-4z M64,52l4,0 0,4 -4,0 0,-4z M68,52l4,0 0,4 -4,0 0,-4z M72,52l4,0 0,4 -4,0 0,-4z M80,52l4,0 0,4 -4,0 0,-4z M88,52l4,0 0,4 -4,0 0,-4z M92,52l4,0 0,4 -4,0 0,-4z M96,52l4,0 0,4 -4,0 0,-4z M108,52l4,0 0,4 -4,0 0,-4z M112,52l4,0 0,4 -4,0 0,-4z M0,56l4,0 0,4 -4,0 0,-4z M4,56l4,0 0,4 -4,0 0,-4z M8,56l4,0 0,4 -4,0 0,-4z M16,56l4,0 0,4 -4,0 0,-4z M24,56l4,0 0,4 -4,0 0,-4z M44,56l4,0 0,4 -4,0 0,-4z M48,56l4,0 0,4 -4,0 0,-4z M52,56l4,0 0,4 -4,0 0,-4z M56,56l4,0 0,4 -4,0 0,-4z M60,56l4,0 0,4 -4,0 0,-4z M64,56l4,0 0,4 -4,0 0,-4z M72,56l4,0 0,4 -4,0 0,-4z M80,56l4,0 0,4 -4,0 0,-4z M84,56l4,0 0,4 -4,0 0,-4z M96,56l4,0 0,4 -4,0 0,-4z M100,56l4,0 0,4 -4,0 0,-4z M104,56l4,0 0,4 -4,0 0,-4z M0,60l4,0 0,4 -4,0 0,-4z M4,60l4,0 0,4 -4,0 0,-4z M12,60l4,0 0,4 -4,0 0,-4z M16,60l4,0 0,4 -4,0 0,-4z M20,60l4,0 0,4 -4,0 0,-4z M28,60l4,0 0,4 -4,0 0,-4z M32,60l4,0 0,4 -4,0 0,-4z M36,60l4,0 0,4 -4,0 0,-4z M40,60l4,0 0,4 -4,0 0,-4z M48,60l4,0 0,4 -4,0 0,-4z M52,60l4,0 0,4 -4,0 0,-4z M56,60l4,0 0,4 -4,0 0,-4z M72,60l4,0 0,4 -4,0 0,-4z M76,60l4,0 0,4 -4,0 0,-4z M92,60l4,0 0,4 -4,0 0,-4z M96,60l4,0 0,4 -4,0 0,-4z M104,60l4,0 0,4 -4,0 0,-4z M112,60l4,0 0,4 -4,0 0,-4z M0,64l4,0 0,4 -4,0 0,-4z M20,64l4,0 0,4 -4,0 0,-4z M24,64l4,0 0,4 -4,0 0,-4z M32,64l4,0 0,4 -4,0 0,-4z M36,64l4,0 0,4 -4,0 0,-4z M40,64l4,0 0,4 -4,0 0,-4z M48,64l4,0 0,4 -4,0 0,-4z M56,64l4,0 0,4 -4,0 0,-4z M60,64l4,0 0,4 -4,0 0,-4z M76,64l4,0 0,4 -4,0 0,-4z M84,64l4,0 0,4 -4,0 0,-4z M92,64l4,0 0,4 -4,0 0,-4z M100,64l4,0 0,4 -4,0 0,-4z M104,64l4,0 0,4 -4,0 0,-4z M0,68l4,0 0,4 -4,0 0,-4z M8,68l4,0 0,4 -4,0 0,-4z M16,68l4,0 0,4 -4,0 0,-4z M36,68l4,0 0,4 -4,0 0,-4z M48,68l4,0 0,4 -4,0 0,-4z M60,68l4,0 0,4 -4,0 0,-4z M64,68l4,0 0,4 -4,0 0,-4z M76,68l4,0 0,4 -4,0 0,-4z M88,68l4,0 0,4 -4,0 0,-4z M92,68l4,0 0,4 -4,0 0,-4z M96,68l4,0 0,4 -4,0 0,-4z M104,68l4,0 0,4 -4,0 0,-4z M108,68l4,0 0,4 -4,0 0,-4z M112,68l4,0 0,4 -4,0 0,-4z M0,72l4,0 0,4 -4,0 0,-4z M4,72l4,0 0,4 -4,0 0,-4z M8,72l4,0 0,4 -4,0 0,-4z M16,72l4,0 0,4 -4,0 0,-4z M20,72l4,0 0,4 -4,0 0,-4z M24,72l4,0 0,4 -4,0 0,-4z M32,72l4,0 0,4 -4,0 0,-4z M36,72l4,0 0,4 -4,0 0,-4z M40,72l4,0 0,4 -4,0 0,-4z M48,72l4,0 0,4 -4,0 0,-4z M52,72l4,0 0,4 -4,0 0,-4z M56,72l4,0 0,4 -4,0 0,-4z M60,72l4,0 0,4 -4,0 0,-4z M68,72l4,0 0,4 -4,0 0,-4z M76,72l4,0 0,4 -4,0 0,-4z M96,72l4,0 0,4 -4,0 0,-4z M100,72l4,0 0,4 -4,0 0,-4z M112,72l4,0 0,4 -4,0 0,-4z M0,76l4,0 0,4 -4,0 0,-4z M8,76l4,0 0,4 -4,0 0,-4z M12,76l4,0 0,4 -4,0 0,-4z M20,76l4,0 0,4 -4,0 0,-4z M28,76l4,0 0,4 -4,0 0,-4z M44,76l4,0 0,4 -4,0 0,-4z M56,76l4,0 0,4 -4,0 0,-4z M60,76l4,0 0,4 -4,0 0,-4z M72,76l4,0 0,4 -4,0 0,-4z M80,76l4,0 0,4 -4,0 0,-4z M88,76l4,0 0,4 -4,0 0,-4z M0,80l4,0 0,4 -4,0 0,-4z M24,80l4,0 0,4 -4,0 0,-4z M28,80l4,0 0,4 -4,0 0,-4z M36,80l4,0 0,4 -4,0 0,-4z M40,80l4,0 0,4 -4,0 0,-4z M44,80l4,0 0,4 -4,0 0,-4z M48,80l4,0 0,4 -4,0 0,-4z M60,80l4,0 0,4 -4,0 0,-4z M64,80l4,0 0,4 -4,0 0,-4z M76,80l4,0 0,4 -4,0 0,-4z M80,80l4,0 0,4 -4,0 0,-4z M84,80l4,0 0,4 -4,0 0,-4z M88,80l4,0 0,4 -4,0 0,-4z M92,80l4,0 0,4 -4,0 0,-4z M96,80l4,0 0,4 -4,0 0,-4z M104,80l4,0 0,4 -4,0 0,-4z M108,80l4,0 0,4 -4,0 0,-4z M112,80l4,0 0,4 -4,0 0,-4z M32,84l4,0 0,4 -4,0 0,-4z M36,84l4,0 0,4 -4,0 0,-4z M40,84l4,0 0,4 -4,0 0,-4z M52,84l4,0 0,4 -4,0 0,-4z M60,84l4,0 0,4 -4,0 0,-4z M80,84l4,0 0,4 -4,0 0,-4z M96,84l4,0 0,4 -4,0 0,-4z M100,84l4,0 0,4 -4,0 0,-4z M0,88l4,0 0,4 -4,0 0,-4z M4,88l4,0 0,4 -4,0 0,-4z M8,88l4,0 0,4 -4,0 0,-4z M12,88l4,0 0,4 -4,0 0,-4z M16,88l4,0 0,4 -4,0 0,-4z M20,88l4,0 0,4 -4,0 0,-4z M24,88l4,0 0,4 -4,0 0,-4z M48,88l4,0 0,4 -4,0 0,-4z M52,88l4,0 0,4 -4,0 0,-4z M56,88l4,0 0,4 -4,0 0,-4z M60,88l4,0 0,4 -4,0 0,-4z M64,88l4,0 0,4 -4,0 0,-4z M72,88l4,0 0,4 -4,0 0,-4z M76,88l4,0 0,4 -4,0 0,-4z M80,88l4,0 0,4 -4,0 0,-4z M88,88l4,0 0,4 -4,0 0,-4z M96,88l4,0 0,4 -4,0 0,-4z M100,88l4,0 0,4 -4,0 0,-4z M104,88l4,0 0,4 -4,0 0,-4z M0,92l4,0 0,4 -4,0 0,-4z M24,92l4,0 0,4 -4,0 0,-4z M40,92l4,0 0,4 -4,0 0,-4z M48,92l4,0 0,4 -4,0 0,-4z M52,92l4,0 0,4 -4,0 0,-4z M60,92l4,0 0,4 -4,0 0,-4z M64,92l4,0 0,4 -4,0 0,-4z M72,92l4,0 0,4 -4,0 0,-4z M76,92l4,0 0,4 -4,0 0,-4z M80,92l4,0 0,4 -4,0 0,-4z M96,92l4,0 0,4 -4,0 0,-4z M108,92l4,0 0,4 -4,0 0,-4z M0,96l4,0 0,4 -4,0 0,-4z M8,96l4,0 0,4 -4,0 0,-4z M12,96l4,0 0,4 -4,0 0,-4z M16,96l4,0 0,4 -4,0 0,-4z M24,96l4,0 0,4 -4,0 0,-4z M40,96l4,0 0,4 -4,0 0,-4z M48,96l4,0 0,4 -4,0 0,-4z M52,96l4,0 0,4 -4,0 0,-4z M64,96l4,0 0,4 -4,0 0,-4z M68,96l4,0 0,4 -4,0 0,-4z M76,96l4,0 0,4 -4,0 0,-4z M80,96l4,0 0,4 -4,0 0,-4z M84,96l4,0 0,4 -4,0 0,-4z M88,96l4,0 0,4 -4,0 0,-4z M92,96l4,0 0,4 -4,0 0,-4z M96,96l4,0 0,4 -4,0 0,-4z M100,96l4,0 0,4 -4,0 0,-4z M112,96l4,0 0,4 -4,0 0,-4z M0,100l4,0 0,4 -4,0 0,-4z M8,100l4,0 0,4 -4,0 0,-4z M12,100l4,0 0,4 -4,0 0,-4z M16,100l4,0 0,4 -4,0 0,-4z M24,100l4,0 0,4 -4,0 0,-4z M36,100l4,0 0,4 -4,0 0,-4z M52,100l4,0 0,4 -4,0 0,-4z M60,100l4,0 0,4 -4,0 0,-4z M76,100l4,0 0,4 -4,0 0,-4z M80,100l4,0 0,4 -4,0 0,-4z M84,100l4,0 0,4 -4,0 0,-4z M100,100l4,0 0,4 -4,0 0,-4z M104,100l4,0 0,4 -4,0 0,-4z M112,100l4,0 0,4 -4,0 0,-4z M0,104l4,0 0,4 -4,0 0,-4z M8,104l4,0 0,4 -4,0 0,-4z M12,104l4,0 0,4 -4,0 0,-4z M16,104l4,0 0,4 -4,0 0,-4z M24,104l4,0 0,4 -4,0 0,-4z M36,104l4,0 0,4 -4,0 0,-4z M44,104l4,0 0,4 -4,0 0,-4z M56,104l4,0 0,4 -4,0 0,-4z M60,104l4,0 0,4 -4,0 0,-4z M64,104l4,0 0,4 -4,0 0,-4z M68,104l4,0 0,4 -4,0 0,-4z M72,104l4,0 0,4 -4,0 0,-4z M76,104l4,0 0,4 -4,0 0,-4z M80,104l4,0 0,4 -4,0 0,-4z M84,104l4,0 0,4 -4,0 0,-4z M88,104l4,0 0,4 -4,0 0,-4z M92,104l4,0 0,4 -4,0 0,-4z M96,104l4,0 0,4 -4,0 0,-4z M100,104l4,0 0,4 -4,0 0,-4z M104,104l4,0 0,4 -4,0 0,-4z M108,104l4,0 0,4 -4,0 0,-4z M0,108l4,0 0,4 -4,0 0,-4z M24,108l4,0 0,4 -4,0 0,-4z M36,108l4,0 0,4 -4,0 0,-4z M44,108l4,0 0,4 -4,0 0,-4z M56,108l4,0 0,4 -4,0 0,-4z M60,108l4,0 0,4 -4,0 0,-4z M72,108l4,0 0,4 -4,0 0,-4z M88,108l4,0 0,4 -4,0 0,-4z M92,108l4,0 0,4 -4,0 0,-4z M100,108l4,0 0,4 -4,0 0,-4z M104,108l4,0 0,4 -4,0 0,-4z M112,108l4,0 0,4 -4,0 0,-4z M0,112l4,0 0,4 -4,0 0,-4z M4,112l4,0 0,4 -4,0 0,-4z M8,112l4,0 0,4 -4,0 0,-4z M12,112l4,0 0,4 -4,0 0,-4z M16,112l4,0 0,4 -4,0 0,-4z M20,112l4,0 0,4 -4,0 0,-4z M24,112l4,0 0,4 -4,0 0,-4z M32,112l4,0 0,4 -4,0 0,-4z M36,112l4,0 0,4 -4,0 0,-4z M40,112l4,0 0,4 -4,0 0,-4z M76,112l4,0 0,4 -4,0 0,-4z M88,112l4,0 0,4 -4,0 0,-4z M92,112l4,0 0,4 -4,0 0,-4z M96,112l4,0 0,4 -4,0 0,-4z M104,112l4,0 0,4 -4,0 0,-4z " stroke="transparent" fill="black"/></svg></div>
+            <div class="t-stub-copy"><span class="t-label">Scan to collect the token</span>
+              <ol class="t-steps"><li class="done"><i><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></i>USDC locked</li><li class="now"><i><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></i>Agent paying</li><li><i><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></i>Token ready</li></ol>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card flush">
-      <ul class="plain-list">
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg><div><b>Connect a NEAR wallet</b><span>Your USDC stays in the contract until an agent pays the bill.</span></div></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg><div><b>Choose the meter and the amount</b><span>Any prepaid meter on the twelve Nigerian distribution companies.</span></div></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#link"/></svg><div><b>Send the link home</b><span>Your family opens it to see progress and collect the token.</span></div></li>
-      </ul>
-    </div>
-    <button class="btn primary block" id="connect" type="button"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#wallet"/></svg>Connect wallet</button>
-    <div class="note plain"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span>Runs on NEAR testnet with test USDC. No real money moves, and the electricity tokens come from a bill-payment sandbox.</span></div>
   </section>
 
   <section data-view="form" hidden>
-    <div class="page-head">
-      <h1>Pay a bill <em>back home</em></h1>
-      <p>You are only charged if an agent pays it. Otherwise the USDC comes back to you.</p>
+    <div class="page-head split">
+      <div>
+        <p class="eyebrow">Send a bill</p>
+        <h1>Pay a bill <em>back home</em></h1>
+        <p>You are only charged if an agent pays it. Otherwise the USDC comes back to you.</p>
+      </div>
+      <div class="wallet-strip" id="balance-card">
+        <div><span class="eyebrow">Test USDC</span><b class="bal" id="balance">…</b></div>
+        <button class="btn sm" type="button" id="faucet">Get 100 test USDC</button>
+      </div>
     </div>
     <form class="send-grid" id="form" novalidate>
       <div class="send-fields">
-        <div class="card row-between" id="balance-card">
-          <div><span class="muted small">Your test USDC</span><div class="bal big-num" id="balance">…</div></div>
-          <button class="btn sm" type="button" id="faucet">Get 100 test USDC</button>
-        </div>
-        <div class="card form-grid">
-          <div class="field">
-            <label for="provider">Electricity company</label>
-            <select id="provider" required></select>
-          </div>
-          <div class="field">
-            <label for="meter">Prepaid meter number</label>
-            <input type="text" id="meter" inputmode="numeric" autocomplete="off" placeholder="11 to 13 digits" required aria-describedby="meter-check">
-            <div class="meter-check" id="meter-check" aria-live="polite"><span class="hint">Sandbox test meter: 1111111111111</span></div>
-          </div>
-          <div class="field">
-            <label for="naira">Amount in naira</label>
-            <input type="number" id="naira" inputmode="numeric" min="500" max="500000" step="100" value="10000" required>
+        <div class="card form-card">
+          <section class="step" aria-labelledby="step-1">
+            <div class="step-head"><span class="step-n">01</span><h2 id="step-1">Whose meter?</h2></div>
+            <div class="field">
+              <label for="provider">Electricity company</label>
+              <select id="provider" required></select>
+            </div>
+            <div class="field">
+              <label for="meter">Prepaid meter number</label>
+              <div class="lcd-field">
+                <div class="lcd-top" aria-hidden="true"><span id="lcd-co">IBEDC</span><span>Prepaid meter</span></div>
+                <input type="text" id="meter" class="lcd-input" inputmode="numeric" autocomplete="off" placeholder="0000 0000 00000" required aria-describedby="meter-check">
+                <div class="meter-check" id="meter-check" aria-live="polite"><span class="mc-idle">Test meter: 1111111111111</span></div>
+              </div>
+            </div>
+          </section>
+          <section class="step" aria-labelledby="step-2">
+            <div class="step-head"><span class="step-n">02</span><h2 id="step-2">How much electricity?</h2></div>
+            <label for="naira" class="sr-only">Amount in naira</label>
+            <div class="amount-field"><span class="cur" aria-hidden="true">₦</span><input type="text" id="naira" inputmode="numeric" autocomplete="off" value="10,000" required></div>
             <div class="presets" id="presets">
               <button class="btn" type="button" data-n="5000">₦5,000</button>
               <button class="btn" type="button" data-n="10000">₦10,000</button>
               <button class="btn" type="button" data-n="20000">₦20,000</button>
               <button class="btn" type="button" data-n="50000">₦50,000</button>
             </div>
-          </div>
+          </section>
           <details class="adjust">
             <summary>Adjust the rate, tip and refund time</summary>
             <div class="adjust-body">
@@ -121,33 +150,64 @@
   </section>
 
   <section data-view="sending" hidden>
-    <div class="result">
-      <div class="spinner" aria-hidden="true"></div>
-      <h1>Locking your USDC</h1>
-      <p>Approve the transaction in your wallet.</p>
+    <div class="ghost-ticket" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="wait-copy">
+      <h1>Approve in your wallet</h1>
+      <p>Confirm locking the USDC in your wallet window. If none opened, check for a blocked pop-up.</p>
     </div>
   </section>
 
   <section data-view="sent" hidden>
-    <div class="result">
-      <div class="tick"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></div>
-      <h1>Request sent</h1>
-      <p id="sent-text"></p>
-    </div>
-    <div class="card share">
-      <b>Send this link home</b>
-      <p class="small muted">Whoever opens it can follow the payment and collect the electricity token. Treat it like the token itself.</p>
-      <div class="linkbox" id="share-link"></div>
-      <div class="row">
-        <button class="btn" type="button" id="copy-link"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg>Copy link</button>
-        <a class="btn primary" id="whatsapp" target="_blank" rel="noopener">Share on WhatsApp</a>
+    <div class="sent-grid">
+      <div class="sent-copy">
+        <p class="eyebrow" id="sent-eyebrow">Request locked on NEAR</p>
+        <h1 tabindex="-1">Light is on its <em>way.</em></h1>
+        <p class="sent-lead" id="sent-text"></p>
+        <div class="share-box">
+          <span class="eyebrow">The family's link</span>
+          <div class="linkbox" id="share-link"></div>
+          <div class="row">
+            <button class="btn" type="button" id="copy-link"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg>Copy link</button>
+            <a class="btn primary" id="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+          <p class="small muted">Whoever opens it can follow the payment and collect the token. Share it like you would the token itself.</p>
+        </div>
+        <div class="sent-more">
+          <a class="text-link" id="open-track">Follow it yourself<svg class="icon" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></a>
+          <button class="text-link" type="button" id="another">Pay another bill<svg class="icon" aria-hidden="true"><use href="img/icons.svg#arrow"/></svg></button>
+        </div>
       </div>
+
+      <article class="ticket" id="ticket" aria-label="Your request">
+        <div class="t-main">
+          <div class="t-top"><span class="t-brand"><svg class="mark" aria-hidden="true"><use href="img/icons.svg#mark"/></svg>Sendam · Electricity</span><span class="t-no" id="t-no">№ 0001</span></div>
+          <span class="t-stamp" aria-hidden="true">Locked</span>
+          <span class="t-label">They get</span>
+          <b class="t-big" id="t-naira">₦0</b>
+          <span class="t-for" id="t-for">&nbsp;</span>
+          <dl class="t-facts">
+            <div><dt>Locked</dt><dd id="t-usdc">-</dd></div>
+            <div><dt>Refund if unpaid</dt><dd id="t-expiry">-</dd></div>
+          </dl>
+        </div>
+        <div class="t-tear" aria-hidden="true"></div>
+        <div class="t-stub">
+          <div class="t-qr" id="t-qr" role="img" aria-label="QR code of the family's link"></div>
+          <div class="t-stub-copy">
+            <span class="t-label">Scan to collect the token</span>
+            <ol class="t-steps" id="t-steps" aria-live="polite">
+              <li data-step="locked" class="done"><i><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></i>USDC locked</li>
+              <li data-step="agent" class="now"><i><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></i><span>Waiting for an agent</span></li>
+              <li data-step="token"><i><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></i>Token ready</li>
+            </ol>
+          </div>
+        </div>
+      </article>
     </div>
-    <a class="btn block" id="open-track">Follow it yourself</a>
-    <button class="btn block" type="button" id="another">Pay another bill</button>
   </section>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
 <script type="module" src="js/send.js"></script>
+<script type="module" src="js/backdrop.js"></script>
 </body>
 </html>

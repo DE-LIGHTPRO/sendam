@@ -1,7 +1,7 @@
 import { CONTRACT, USDC, EXPLORER, SUGGESTED_RATE as MARKET_RATE, USDC_DECIMALS } from './config.js';
 import { view, usd, naira, timeLeft, providerName, maskMeter } from './chain.js';
 import { $, escapeHtml, icon, show, toast, confirmDialog } from './ui.js';
-import { mountAccount, explain } from './session.js';
+import { mountAccount, explain, connect } from './session.js';
 
 let account = null;
 let w;
@@ -98,12 +98,32 @@ function step(name, state) {
   li.classList.toggle('now', state === 'now');
 }
 
+// The settlement screen's meter display.
+function lcd(mode, main, fill, { lit = false, blink = false } = {}) {
+  $('#pay-lcd-mode').textContent = mode;
+  $('#pay-lcd-main').replaceChildren(blink ? Object.assign(document.createElement('span'), { className: 'blink', textContent: main }) : main);
+  $('#pay-lcd-bar').style.setProperty('--fill', fill);
+  $('#pay-lcd').classList.toggle('lit', lit);
+}
+function countUsdc(el, units) {
+  const to = Number(units) / 10 ** USDC_DECIMALS;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = `+${to.toFixed(2)}`; return; }
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / 1100);
+    el.textContent = `+${(to * (1 - Math.pow(1 - t, 3))).toFixed(2)}`;
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
 async function pay(req) {
   $('#pay-text').textContent = `${naira(req.naira)} to meter ${req.meter}, ${providerName(req.provider)}.`;
   $('#pay-error').hidden = true;
   $('#pay-done').hidden = true;
   ['pay', 'check', 'release'].forEach((s) => step(s, ''));
   step('pay', 'now');
+  lcd('Bill payment', `PAYING ${naira(req.naira)}`, '30%', { blink: true });
   show('paying');
   for (let attempt = 0; attempt < 10; attempt++) {
     let res;
@@ -117,22 +137,25 @@ async function pay(req) {
     if (res?.status === 202) {
       step('pay', 'done');
       step('check', 'now');
+      lcd('Bill provider', 'CHECKING', '60%', { blink: true });
       await new Promise((r) => setTimeout(r, 4000));
       continue;
     }
     if (res?.ok && body.state === 'fulfilled') {
       ['pay', 'check', 'release'].forEach((s) => step(s, 'done'));
+      lcd('Confirmed', 'PAID', '100%', { lit: true });
       $('#pay-ref').textContent = body.reference;
       $('#pay-earned').textContent = usd(req.amount);
       $('#pay-profit').textContent = `≈ ${naira(earnings(req).profit)}`;
       $('#pay-tx').hidden = !body.txHash;
       $('#pay-tx').href = `${EXPLORER}/txns/${body.txHash}`;
       $('#pay-done').hidden = false;
-      toast(`Paid. ${usd(req.amount)} is on its way to you.`);
+      countUsdc($('#pay-big'), req.amount);
       return;
     }
     $('#pay-error span').textContent = body.error || 'The payment did not go through.';
     $('#pay-error').hidden = false;
+    lcd('Error', 'NOT PAID', '0%');
     return;
   }
   $('#pay-error span').textContent = 'The bill provider is still processing the payment. Try "Pay the bill" again in a minute; it will not pay twice.';
@@ -178,7 +201,7 @@ $('#register').addEventListener('click', async () => {
   }
 });
 $('#back-desk').addEventListener('click', () => { show('desk'); refresh(); drawBalance(); });
-$('#connect').addEventListener('click', () => w.signIn());
+$('#connect').addEventListener('click', connect);
 
 w = await mountAccount((id) => {
   account = id;

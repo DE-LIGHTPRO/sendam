@@ -27,17 +27,20 @@
     </nav>
   </details>
 </header>
-<main class="app">
+<main class="app wide">
   <section data-view="track">
-    <div class="page-head">
-      <h1 id="t-title">Electricity for <em>your home</em></h1>
-      <p id="t-sub"></p>
-    </div>
-    <div class="card">
-      <div class="kv"><span>Meter</span><b class="mono" id="t-meter"></b></div>
-      <div class="kv"><span>Company</span><b id="t-provider"></b></div>
-      <div class="kv total"><span>Amount</span><b id="t-naira"></b></div>
-    </div>
+    <div class="track-grid">
+      <div>
+        <div class="page-head">
+          <p class="eyebrow">Sendam · for your home</p>
+          <h1 id="t-title">Electricity for <em>your home</em></h1>
+          <p id="t-sub"></p>
+        </div>
+        <div class="track-facts">
+          <div><span>Amount</span><b id="t-naira"></b></div>
+          <div><span>Meter</span><b class="mono" id="t-meter"></b></div>
+          <div><span>Company</span><b id="t-provider"></b></div>
+        </div>
     <div class="card">
       <ol class="timeline" id="timeline">
         <li data-step="funded"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>Paid for by your family</b><span>The money is held safely until the bill is paid.</span></div></li>
@@ -45,6 +48,15 @@
         <li data-step="paid"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>Bill paid</b><span>The electricity company has confirmed the payment.</span></div></li>
       </ol>
     </div>
+        <div class="note warn" id="t-note" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span></span></div>
+        <p class="hint" id="t-live">Updates by itself. You can leave this page open.</p>
+      </div>
+      <div class="track-side">
+        <div class="lcd" id="t-lcd" aria-hidden="true">
+          <div class="lcd-row"><span id="t-lcd-mode">Status</span><span id="t-lcd-co">Prepaid</span></div>
+          <div class="lcd-main" id="t-lcd-main">&nbsp;</div>
+          <div class="lcd-bar"><i id="t-lcd-bar"></i></div>
+        </div>
     <div class="card token-card" id="token-card" hidden>
       <b>Your electricity token</b>
       <p class="small muted">Type these numbers into the meter keypad, then press Enter.</p>
@@ -52,18 +64,19 @@
       <div class="kv"><span>Units</span><b id="units"></b></div>
       <button class="btn block" type="button" id="copy-token"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg>Copy token</button>
     </div>
-    <div class="note warn" id="t-note" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span></span></div>
-    <p class="hint center" id="t-live">Updates by itself. You can leave this page open.</p>
+      </div>
+    </div>
   </section>
   <section data-view="missing" hidden>
-    <div class="result">
-      <div class="tick bad"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#x"/></svg></div>
+    <div class="lost-in">
+      <div class="lcd" aria-hidden="true"><div class="lcd-row"><span>Request</span><span>No signal</span></div><div class="lcd-main"><span class="blink">NOT FOUND</span></div></div>
       <h1>We could not find that request</h1>
-      <p>Check that you opened the whole link you were sent.</p>
+      <p>Check that you opened the whole link you were sent. It is long, and some apps cut it short.</p>
     </div>
   </section>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
 <script type="module" src="js/track.js"></script>
+<script type="module" src="js/backdrop.js"></script>
 </body>
 </html>

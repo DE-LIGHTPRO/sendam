@@ -134,7 +134,7 @@ async function step(name, fn) {
   const browser = await chromium.launch();
   const errors = [];
 
-  async function open(account, path, viewport = { width: 390, height: 844 }) {
+  async function open(account, path, viewport = process.env.WIDE ? { width: 1440, height: 900 } : { width: 390, height: 844 }) {
     // Reduced motion keeps every block visible, so the accessibility check sees the whole page.
     const ctx = await browser.newContext({ viewport, bypassCSP: true, reducedMotion: 'reduce' });
     await ctx.exposeBinding('__fakeCall', (_src, signer, tx) => chain.call(signer, tx));
@@ -215,7 +215,11 @@ async function step(name, fn) {
       firstTotal = await page.locator('#q-total').textContent();
       assert.equal(firstTotal, '13.30 USDC'); // 20,000 / 1,550 = 12.91, plus a 3% tip
       await page.getByRole('button', { name: 'Lock USDC and send' }).click();
-      await page.getByRole('heading', { name: 'Request sent' }).waitFor();
+      await page.getByRole('heading', { name: 'Light is on its way.' }).waitFor();
+      await page.locator('#t-qr svg').waitFor();
+      await page.waitForFunction(() => document.querySelector('#t-usdc').textContent === '13.30 USDC');
+      assert.match(await page.locator('#t-for').textContent(), /TESTMETER1/);
+      await page.waitForTimeout(1600);
       await shot(page, '2-sent');
       link = await page.locator('#share-link').textContent();
       assert.match(link, /\/track\?id=1#[A-Za-z0-9_-]{24}$/);
@@ -331,7 +335,9 @@ async function step(name, fn) {
       await shot(page, '7-send-desktop');
       assert.ok(await noSideScroll(page));
       await page.getByRole('button', { name: 'Lock USDC and send' }).click();
-      await page.getByRole('heading', { name: 'Request sent' }).waitFor();
+      await page.getByRole('heading', { name: 'Light is on its way.' }).waitFor();
+      await page.locator('#t-qr svg').waitFor();
+      await shot(page, '8-sent-desktop');
       const before = chain.bal('ada.testnet');
       await page.getByRole('button', { name: 'Pay another bill' }).click();
       const card = page.locator('#mine .job[data-id="2"]');
