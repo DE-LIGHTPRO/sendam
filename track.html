@@ -7,6 +7,13 @@
 <meta name="theme-color" content="#f4f2ed">
 <title>Track a bill | Sendam</title>
 <meta name="description" content="Follow an electricity bill paid through Sendam and collect the token.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sendam">
+<meta property="og:title" content="Electricity for your home | Sendam">
+<meta property="og:description" content="Follow an electricity bill paid through Sendam and collect the token.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Electricity for your home | Sendam">
+<meta name="twitter:description" content="Follow an electricity bill paid through Sendam and collect the token.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
@@ -34,12 +41,12 @@
         <div class="page-head">
           <p class="eyebrow">Sendam · for your home</p>
           <h1 id="t-title">Electricity for <em>your home</em></h1>
-          <p id="t-sub"></p>
+          <p id="t-sub">Looking up your electricity payment…</p>
         </div>
         <div class="track-facts">
-          <div><span>Amount</span><b id="t-naira"></b></div>
-          <div><span>Meter</span><b class="mono" id="t-meter"></b></div>
-          <div><span>Company</span><b id="t-provider"></b></div>
+          <div><span>Amount</span><b id="t-naira">…</b></div>
+          <div><span>Meter</span><b class="mono" id="t-meter">…</b></div>
+          <div><span>Company</span><b id="t-provider">…</b></div>
         </div>
     <div class="card">
       <ol class="timeline" id="timeline">
@@ -54,7 +61,7 @@
       <div class="track-side">
         <div class="lcd" id="t-lcd" aria-hidden="true">
           <div class="lcd-row"><span id="t-lcd-mode">Status</span><span id="t-lcd-co">Prepaid</span></div>
-          <div class="lcd-main" id="t-lcd-main">&nbsp;</div>
+          <div class="lcd-main" id="t-lcd-main"><span class="blink">CONNECTING</span></div>
           <div class="lcd-bar"><i id="t-lcd-bar"></i></div>
         </div>
     <div class="card token-card" id="token-card" hidden>

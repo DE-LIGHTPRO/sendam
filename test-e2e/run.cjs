@@ -127,6 +127,13 @@ async function step(name, fn) {
   const service = await import(join(__dirname, '..', 'lib', 'service.js'));
   const chain = new Chain();
   const vtpass = new FakeVtpass();
+  const { createIntents } = await import(join(__dirname, '..', 'lib', 'intents.js'));
+  const intents = createIntents({ fetch: async (url, init) => {
+    if (url.endsWith('/v0/tokens')) return { ok: true, status: 200, text: async () => '[]' };
+    const b = JSON.parse(init.body);
+    assert.equal(b.dry, true);
+    return { ok: true, status: 200, text: async () => JSON.stringify({ quote: { amountIn: String(Number(b.amount) + 20000), amountOut: b.amount, timeEstimate: 20 } }) };
+  } });
   const deps = { near: { view: async (m, a) => chain.view(CONTRACT, m, a), confirm: async (...a) => chain.confirm(...a) }, vtpass };
 
   const server = spawn(process.execPath, [join(__dirname, '..', 'scripts', 'serve.mjs')], { env: { ...process.env, PORT: String(PORT) }, stdio: ['ignore', 'pipe', 'inherit'] });
@@ -163,6 +170,16 @@ async function step(name, fn) {
       return route.fulfill({ json: { jsonrpc: '2.0', id: body.id, result: { result: bytes, logs: [] } } });
     });
     // The verifier endpoints run the real service code against the fakes.
+    // The NEAR Intents quote runs the real client against a stand-in for the 1Click API.
+    await ctx.route(`${BASE}/api/intents`, async (route) => {
+      try {
+        const { usdc, from } = JSON.parse(route.request().postData());
+        const out = await intents.quote({ usdc, from });
+        return route.fulfill({ json: out });
+      } catch (err) {
+        return route.fulfill({ status: err.status || 500, json: { error: err.message } });
+      }
+    });
     for (const [name, fn] of [['fulfil', service.fulfil], ['token', service.collectToken], ['meter', service.checkMeter]]) {
       await ctx.route(`${BASE}/api/${name}`, async (route) => {
         try {
@@ -211,6 +228,10 @@ async function step(name, fn) {
       await page.getByRole('button', { name: '₦20,000' }).click();
       assert.equal(await page.locator('#q-naira').textContent(), '₦20,000');
       assert.ok(await page.locator('#rate').isHidden(), 'rate and tip are tucked away until asked for');
+      await page.waitForFunction(() => /^13\.32 USDC/.test(document.querySelector('#ac-out').textContent));
+      assert.match(await page.locator('#ac-out').textContent(), /^13\.32 USDC from Base delivers 13\.30 USDC on NEAR · about 20 seconds$/);
+      await page.getByRole('button', { name: 'Arbitrum' }).click();
+      await page.waitForFunction(() => /from Arbitrum/.test(document.querySelector('#ac-out').textContent));
       await shot(page, '1-send-form');
       firstTotal = await page.locator('#q-total').textContent();
       assert.equal(firstTotal, '13.30 USDC'); // 20,000 / 1,550 = 12.91, plus a 3% tip

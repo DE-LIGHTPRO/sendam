@@ -177,3 +177,58 @@ test('the simulated bill provider runs the whole verifier flow without VTpass', 
   assert.match(token.token, /^\d{4}( \d{4}){4}$/);
   assert.deepEqual(token, await collectToken({ id: 7, secret: SECRET }, { near: done.near, vtpass }), 'the same purchase always gives the same token');
 });
+
+test('a NEAR Intents quote is requested as a dry run and read into plain numbers', async () => {
+  const { createIntents } = await import('../lib/intents.js');
+  const sent = [];
+  const answer = (over = {}) => ({ quote: { amountIn: '13320000', amountOut: '13300000', timeEstimate: 22, ...over } });
+  const fetch = async (url, init = {}) => {
+    sent.push({ url, body: init.body && JSON.parse(init.body) });
+    if (url.endsWith('/v0/tokens')) return { ok: true, status: 200, text: async () => JSON.stringify([{ assetId: 'nep141:base-usdc', blockchain: 'base', symbol: 'USDC' }, { assetId: 'nep141:near-usdc', blockchain: 'near', symbol: 'USDC' }]) };
+    return { ok: true, status: 200, text: async () => JSON.stringify(answer()) };
+  };
+  const intents = createIntents({ baseUrl: 'https://one.click/', fetch });
+  const q = await intents.quote({ usdc: 13.3, from: 'base' });
+  assert.deepEqual(q, { from: 'base', fromLabel: 'Base', mode: 'EXACT_OUTPUT', payUsdc: 13.32, receiveUsdc: 13.3, costUsdc: 0.02, seconds: 22 });
+  const body = sent.find((s) => s.url.endsWith('/v0/quote')).body;
+  assert.equal(body.dry, true, 'never a real quote: nothing can be charged');
+  assert.deepEqual([body.amount, body.swapType, body.quoteWaitingTimeMs], ['13300000', 'EXACT_OUTPUT', 800]);
+  assert.match(body.originAsset, /^nep141:base-0x833589/);
+  assert.match(body.destinationAsset, /^nep141:17208628/);
+  await intents.quote({ usdc: 5, from: 'arb' });
+  assert.equal(sent.filter((s) => s.url.endsWith('/v0/tokens')).length, 0, 'quoting does not download the token list');
+  assert.match(sent.at(-1).body.originAsset, /^nep141:arb-/);
+  const before = sent.length;
+  assert.deepEqual(await intents.quote({ usdc: 13.3, from: 'base' }), q, 'a recent answer is reused');
+  assert.equal(sent.length, before, 'without asking the API again');
+  await assert.rejects(intents.quote({ usdc: 13.3, from: 'doge' }), (e) => e.status === 400);
+  await assert.rejects(intents.quote({ usdc: 0, from: 'base' }), (e) => e.status === 400);
+
+  // If exact-output is refused, it asks again as exact-input; if both fail, it says so.
+  const waits = [];
+  const picky = createIntents({ fetch: async (url, init) => {
+    const b = JSON.parse(init.body);
+    waits.push([b.swapType, b.quoteWaitingTimeMs]);
+    return b.swapType === 'EXACT_OUTPUT' ? { ok: false, status: 400, text: async () => '{"message":"swapType not supported"}' } : { ok: true, status: 200, text: async () => JSON.stringify(answer({ amountIn: '13300000', amountOut: '13280000' })) };
+  } });
+  assert.equal((await picky.quote({ usdc: 13.3, from: 'base' })).mode, 'EXACT_INPUT');
+  assert.deepEqual(waits, [['EXACT_OUTPUT', 800], ['EXACT_OUTPUT', 3000], ['EXACT_INPUT', 3000]], 'quick first, then patient');
+  // If the API calls a placeholder address invalid, the other form is tried and remembered.
+  const seen = [];
+  const strict = createIntents({ fetch: async (url, init) => {
+    if (url.endsWith('/v0/tokens')) return { ok: true, status: 200, text: async () => '[]' };
+    const b = JSON.parse(init.body);
+    seen.push([b.refundTo, b.recipient]);
+    if (seen.length === 1) return { ok: false, status: 400, text: async () => '{"message":"refundTo is not valid"}' };
+    if (seen.length === 2) return { ok: false, status: 400, text: async () => '{"message":"recipient is not valid"}' };
+    return { ok: true, status: 200, text: async () => JSON.stringify(answer()) };
+  } });
+  assert.equal((await strict.quote({ usdc: 13.3, from: 'base' })).payUsdc, 13.32);
+  assert.equal(seen.length, 3);
+  assert.notEqual(seen[0][0], seen[1][0]);
+  assert.deepEqual([seen[2][1], /^0x[0-9a-f]{40}$/.test(seen[2][0])], ['intents.near', true]);
+  await strict.quote({ usdc: 5, from: 'base' });
+  assert.deepEqual(seen.at(-1), seen[2], 'the accepted pair is reused');
+  const down = createIntents({ fetch: async () => ({ ok: false, status: 503, text: async () => '{"message":"try later"}' }) });
+  await assert.rejects(down.quote({ usdc: 13.3, from: 'base' }), (e) => e.status === 502 && /try later/.test(e.message));
+});

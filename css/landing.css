@@ -5,7 +5,7 @@
 .landing { background: transparent; }
 .l-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
 .landing h2 { font-size: clamp(36px, 5.2vw, 64px); line-height: 1; letter-spacing: -0.045em; font-weight: 570; text-wrap: balance; }
-.landing h2 em, .landing h1 em { color: #858178; }
+.landing h2 em, .landing h1 em { color: #7b776e; }
 .eyebrow { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
 .eyebrow.light { color: #a39e91; }
 .l-sub { margin-top: 18px; font-size: 18px; line-height: 1.55; color: var(--muted); max-width: 32em; }
@@ -34,7 +34,7 @@
 .facts dd { margin: 4px 0 0; font-size: 13.5px; line-height: 1.4; color: var(--muted); }
 
 /* The stage the meter stands on: a warm panel that lights up when the token is accepted. */
-.meter-stage { position: relative; margin: 0; padding: clamp(36px, 5vw, 60px) clamp(20px, 4vw, 48px) clamp(84px, 9vw, 104px); border-radius: 36px; background: linear-gradient(160deg, #e9e5dc, #dedad0); border: 1px solid var(--line); display: grid; place-items: center; overflow: hidden; isolation: isolate; }
+.meter-stage { position: relative; margin: 0; padding: clamp(36px, 5vw, 60px) clamp(20px, 4vw, 48px) clamp(84px, 9vw, 104px); border-radius: 36px; background: linear-gradient(160deg, rgba(255, 255, 255, 0.5), rgba(238, 233, 222, 0.34)); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 30px 80px -30px rgba(120, 90, 40, 0.25); display: grid; place-items: center; overflow: hidden; isolation: isolate; }
 .meter-stage::before { content: ""; position: absolute; inset: -20%; z-index: -1; background: radial-gradient(closest-side at 50% 42%, rgba(255, 190, 80, 0.85), rgba(255, 190, 80, 0.25) 55%, rgba(255, 190, 80, 0) 80%); opacity: 0; transition: opacity 1.4s var(--ease); }
 .meter-stage::after { content: ""; position: absolute; inset: 0; z-index: -1; background-image: radial-gradient(rgba(18, 18, 17, 0.09) 1px, transparent 1px); background-size: 18px 18px; -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent); }
 .meter-stage.lit::before { opacity: 1; }

@@ -18,7 +18,7 @@
   --surface: #ffffff;
   --ink: #121211;
   --ink-2: #2b2a27;
-  --muted: #6a6862;
+  --muted: #5f5d57;
   --line: #e4e1d9;
   --line-strong: #cfcbc0;
   --accent: #121211;            /* primary actions are ink, not colour */
@@ -47,7 +47,7 @@ img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 h1, h2, h3 { margin: 0; font-weight: 560; letter-spacing: -0.035em; line-height: 1.04; }
 p { margin: 0; }
-em { font-style: normal; color: #858178; }
+em { font-style: normal; color: #7b776e; }
 .muted { color: var(--muted); }
 .small { font-size: 14px; }
 .mono { font-family: var(--mono); letter-spacing: 0.04em; }
@@ -593,9 +593,8 @@ body::before {
 }
 body::after {
   background-image:
-    radial-gradient(rgba(18, 18, 17, 0.075) 1px, transparent 1.2px),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.07 0 0 0 0 0.07 0 0 0 0 0.06 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 22px 22px, 160px 160px;
+  background-size: 160px 160px;
   -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0.3) 100%);
   mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0.3) 100%);
   opacity: 0.55;
@@ -605,5 +604,105 @@ body::after {
 /* Bars and tinted sections let the atmosphere through. */
 .appbar { background: rgba(244, 242, 237, 0.72); }
 
-/* The living backdrop (js/backdrop.js): a power grid with current running through it. */
-.backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+/* The backdrop (js/backdrop.js): a WebGL shader of liquid light behind every page. */
+.backdrop { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.22s ease; }
+.backdrop.on { opacity: 1; }
+
+/* ---- Review fixes ---------------------------------------------------------------------- */
+/* The CSS glow is only the fallback; it rests while the canvas is drawing over it. */
+.has-backdrop body::before { animation: none; }
+
+/* The library's light defaults, restated so a dark-mode computer cannot swap them out. */
+#near-wallet-selector-modal .nws-modal-wrapper.light-theme {
+  --backdrop-bg: #26262630;
+  --heading-color: #222222;
+  --text-color: #676767;
+  --sidebar-border-color: #EDEDED;
+  --selected-wallet-bg: #4F7CD1;
+  --selected-wallet-bg-hover: transparent;
+  --wallet-option-border-color: #A7A7A730;
+  --wallet-option-bg-hover: #6494ee3d;
+  --wallet-option-outline-color: #6494EE;
+  --content-bg: #FAFAFA;
+  --change-path-bg: #EDEDED;
+  --home-button-bg: #EDEDED;
+  --confirm-button-bg: #5F8AFA;
+  --confirm-button-bg-hover: #5AA6FF;
+  --error: #DB5555;
+  --close-button-bg-color: #EDEDED;
+  --close-button-fill-icon-color: #9F9F9F;
+  --spinner-color: #676767;
+  --bottom-section: #FAFAFA;
+  --mobile-text: #3e3e3e;
+  --connected-green: #47E586;
+  --gradient-dark-icon: radial-gradient(297.59% 179.46% at 91.67% -25%, #AEC2EA 0%, #95D1E4 100%);
+  --get-wallet-option-bg-color: #F8F9FA;
+  --get-wallet-option-bg-color-hover: #6494ee3d;
+  --get-wallet-option-border-color: #C1C1C1;
+  --get-wallet-outline-color: #6494EE;
+  --get-wallet-option-box-shadow: 0px 2px 2px rgba(17, 22, 24, 0.04);
+  --secondary-button-bg-color: #4F7CD129;
+  --secondary-button-border-color: #4F7CD129;
+  --secondary-button-text-color: #4F7CD1;
+  --what-wallet-icon-color: #FFFFFF;
+  --deprecated-icon-bg-color: #D7E2F7;
+  --deprecated-icon-bg-color-selected: #4F7CD1;
+  --option-wallet-bg-color: #f0f0f0;
+  --option-single-wallet-bg-color: #f0f0f0;
+}
+/* The wallet chooser, in Sendam's own clothes (it comes from the NEAR wallet library). */
+#near-wallet-selector-modal .nws-modal-wrapper.light-theme {
+  --backdrop-bg: rgba(18, 18, 17, 0.45);
+  --heading-color: #121211;
+  --text-color: #5f5d57;
+  --sidebar-border-color: #e4e1d9;
+  --selected-wallet-bg: #121211;
+  --selected-wallet-bg-hover: #2b2a27;
+  --wallet-option-border-color: #e4e1d9;
+  --wallet-option-bg-hover: #f4f2ed;
+  --wallet-option-outline-color: #121211;
+  --content-bg: #fbfaf7;
+  --change-path-bg: #f4f2ed;
+  --home-button-bg: #f4f2ed;
+  --confirm-button-bg: #121211;
+  --confirm-button-bg-hover: #2b2a27;
+  --secondary-button-bg-color: #ffffff;
+  --secondary-button-border-color: #cfcbc0;
+  --secondary-button-text-color: #121211;
+  --option-wallet-bg-color: #f4f2ed;
+  --option-single-wallet-bg-color: #f4f2ed;
+  --deprecated-icon-bg-color-selected: #121211;
+  --get-wallet-option-bg-color: #ffffff;
+  --get-wallet-option-bg-color-hover: #f4f2ed;
+  --get-wallet-option-border-color: #e4e1d9;
+  --get-wallet-outline-color: #121211;
+  --spinner-color: #121211;
+  --close-button-bg-color: #ffffff;
+  --close-button-fill-icon-color: #5f5d57;
+  --what-wallet-icon-color: #121211;
+  font-family: var(--sans);
+}
+#near-wallet-selector-modal .nws-modal-wrapper .nws-modal { background: #ffffff; border-radius: 28px; box-shadow: var(--shadow-lg); font-family: var(--sans); }
+#near-wallet-selector-modal .nws-modal-wrapper .nws-modal * { font-family: var(--sans); }
+#near-wallet-selector-modal .nws-modal-wrapper .modal-overlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+#near-wallet-selector-modal .nws-modal-wrapper .nws-modal .modal-right a { color: #121211; text-decoration: underline; }
+/* The library's loading pill is blue; shown in ink instead. */
+#near-wallet-selector-modal .nws-modal-wrapper .connecting-details .loading-dots { background: #121211; }
+
+/* ---- Pay from another chain: the live NEAR Intents quote in the summary card ------------ */
+.anychain { display: grid; gap: 10px; padding: 14px; border-radius: 16px; background: #1b1b19; border: 1px solid #2b2a27; }
+.ac-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ac-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(127, 211, 155, 0.12); color: #7fd39b; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; white-space: nowrap; }
+.ac-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.ac-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ac-chip { appearance: none; padding: 6px 12px; border-radius: 999px; border: 1px solid #3a3934; background: transparent; color: #cfc9bb; font: inherit; font-size: 13px; font-weight: 520; cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.ac-chip:hover { border-color: #8f8a7e; }
+.ac-chip[aria-pressed="true"] { background: #f7f3ea; border-color: #f7f3ea; color: #121211; }
+.ac-chip:focus-visible { outline-color: #f6c36a; }
+.ac-out { min-height: 42px; font-size: 14px; line-height: 1.45; color: #cfc9bb; }
+.ac-out b { color: #f6c36a; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ac-out[data-state="off"] { color: #a39e91; }
+.ac-note { font-size: 12px; line-height: 1.45; color: #a39e91; }
+@media (prefers-reduced-motion: no-preference) { .ac-out[data-state="loading"] { animation: lcd-blink 1.2s ease-in-out infinite alternate; } }
+.ac-out { transition: opacity 0.25s; }
+.ac-out[data-state="refreshing"] { opacity: 0.45; }

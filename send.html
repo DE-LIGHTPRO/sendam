@@ -7,6 +7,13 @@
 <meta name="theme-color" content="#f4f2ed">
 <title>Send a bill | Sendam</title>
 <meta name="description" content="Pay an electricity bill in Nigeria from anywhere, with USDC on NEAR.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sendam">
+<meta property="og:title" content="Send a bill | Sendam">
+<meta property="og:description" content="Pay an electricity bill in Nigeria from anywhere, with USDC on NEAR.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Send a bill | Sendam">
+<meta name="twitter:description" content="Pay an electricity bill in Nigeria from anywhere, with USDC on NEAR.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
@@ -139,6 +146,16 @@
           <div class="kv"><span id="q-tip-label">Agent tip</span><b id="q-tip"></b></div>
           <div class="kv"><span>Refund if unpaid</span><b id="q-expiry">after 24 hours</b></div>
           <div class="kv total"><span>You pay</span><b id="q-total"></b></div>
+        </div>
+        <div class="anychain" id="anychain">
+          <div class="ac-head"><span class="r-label">From another chain</span><span class="ac-badge">NEAR Intents · live</span></div>
+          <div class="ac-chips" role="group" aria-label="Chain to pay from">
+            <button class="ac-chip" type="button" data-chain="base" aria-pressed="true">Base</button>
+            <button class="ac-chip" type="button" data-chain="arb" aria-pressed="false">Arbitrum</button>
+            <button class="ac-chip" type="button" data-chain="eth" aria-pressed="false">Ethereum</button>
+          </div>
+          <div class="ac-out" id="ac-out" aria-live="polite">Getting a live quote…</div>
+          <p class="ac-note">A live mainnet quote from NEAR Intents, as a dry run: nothing is charged. This demo itself runs on testnet.</p>
         </div>
         <button class="btn light block lg" type="submit" id="send"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#bolt"/></svg>Lock USDC and send</button>
         <p class="r-foot">Held by the NEAR contract. It reaches the agent only after the electricity company confirms the payment.</p>

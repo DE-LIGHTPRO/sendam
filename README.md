@@ -1,283 +1,159 @@
-# FOGO Wallet Browser Extension
+# Sendam
 
-A comprehensive multi-chain crypto wallet with native FOGO Chain support.
+**Send light home.** Someone abroad pays for their family's electricity in Nigeria. They lock USDC in a NEAR contract; a local agent pays the electricity company in naira; the contract pays the agent only after the payment is verified with the bill provider. If nobody pays by the deadline, the sender gets the USDC back.
 
-## Features
+It is an *intent that settles in the real world*: like NEAR Intents, the sender says what they want and competing solvers deliver it, except the solvers are Nigerian agents and the delivery is a prepaid electricity token.
 
-✅ **Multi-Chain Support**
-- FOGO Chain (native)
-- Ethereum
-- BSC
-- Polygon
-- Arbitrum
-- Base
+Built for the NEAR Hackathon 2026, **Real-World Money** track. Runs on **NEAR testnet with test USDC**; no real money moves.
 
-✅ **Core Wallet Functions**
-- Create & Import Wallets
-- Send/Receive Crypto
-- Token Management (ERC-20)
-- NFT Gallery
-- Transaction History
-- Address Book
+- Live demo: _add your Vercel address here_
+- Demo video: _add your X post here_
+- Contracts on NEAR testnet: [`sendam.sendam-delight.testnet`](https://testnet.nearblocks.io/address/sendam.sendam-delight.testnet) (Sendam) and [`usdc.sendam-delight.testnet`](https://testnet.nearblocks.io/address/usdc.sendam-delight.testnet) (test USDC)
 
-✅ **DeFi Features**
-- Token Swaps
-- Staking (FOGO tokens)
-- Multi-DEX Support
+## Try it (about five minutes)
 
-✅ **DApp Connectivity**
-- window.ethereum provider
-- window.fogo provider
-- MetaMask compatible
-- EIP-6963 Multi-Provider Discovery
-- Transaction signing
-- Message signing
-- Typed data signing
+You need a NEAR testnet wallet: Meteor Wallet works well (MyNearWallet no longer creates new accounts). Use two testnet accounts, one as the sender and one as the agent; Meteor can hold both.
 
-✅ **Security**
-- Secure seed phrase generation
-- Encrypted storage
-- Transaction approval popups
-- Network switching protection
+1. **As a sender**, open `/send` and connect your wallet. Tap **Get 100 test USDC**; the balance shows 100.00 USDC.
+2. Enter meter **1111111111111** (the bill provider's sandbox test meter). The meter is looked up as you type and the customer's name appears (*TESTMETER1*); an unknown meter is refused before anything is signed. Tap **₦20,000**: the summary shows what your family gets and what you pay in USDC (the rate, tip and refund time are under *Adjust*). Tap **Lock USDC and send** and approve. You get a link for your family.
+3. **As the family**, open that link (no wallet needed). It shows *Waiting for a local agent*.
+4. **As an agent**, open `/agent` in another browser with a different wallet. Tap **Set up to receive USDC** if asked. The request appears under **Open requests** with the naira you pay, the USDC you get and what you earn in naira at the demo's market rate (₦1,550 per USDC). Tap **Take this job**.
+5. Under **My jobs**, tap **Pay the bill**. The verifier buys the token from the bill provider (the VTpass sandbox, or the simulated provider described below), checks the meter and amount, and calls `confirm` on the contract. The USDC arrives in the agent's wallet.
+6. Back on the family link: the timeline completes and the **electricity token** appears, ready to type into the meter.
 
-## Installation
+To see a refund, send a second request and tap **Cancel and refund** under *Your requests* before an agent takes it.
 
-### Prerequisites
-
-Before installing, you need to download the following libraries and place them in the `lib/` folder:
-
-1. **ethers.js** (v5.7.2 or higher)
-   - Download from: https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js
-   - Save as: `lib/ethers.min.js`
-
-2. **QRCode.js**
-   - Download from: https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
-   - Save as: `lib/qrcode.min.js`
-
-### Steps
-
-1. **Download Libraries**
-   ```bash
-   cd lib
-   
-   # Download ethers.js
-   curl -o ethers.min.js https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js
-   
-   # Download QRCode.js
-   curl -o qrcode.min.js https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
-   ```
-
-2. **Create Icons**
-   
-   Create PNG icons in the `icons/` folder:
-   - `icon16.png` (16x16px)
-   - `icon32.png` (32x32px)
-   - `icon48.png` (48x48px)
-   - `icon128.png` (128x128px)
-   
-   Use the 🔥 emoji or create custom FOGO branding.
-
-3. **Load Extension in Browser**
-
-   **Chrome/Brave/Edge:**
-   - Open `chrome://extensions/`
-   - Enable "Developer mode"
-   - Click "Load unpacked"
-   - Select the `fogo-wallet-extension` folder
-
-   **Firefox:**
-   - Open `about:debugging#/runtime/this-firefox`
-   - Click "Load Temporary Add-on"
-   - Select `manifest.json` from the extension folder
-
-## Configuration
-
-### FOGO Chain Setup
-
-Update the FOGO Chain configuration in `wallet.js`:
-
-```javascript
-fogo: {
-  name: 'FOGO Chain',
-  chainId: '0x1234', // Replace with actual FOGO chain ID
-  rpcUrl: 'https://rpc.fogochain.com', // Replace with actual RPC URL
-  symbol: 'FOGO',
-  explorer: 'https://explorer.fogochain.com' // Replace with actual explorer URL
-}
-```
-
-### Integration Requirements
-
-For production deployment, you'll need to integrate:
-
-1. **Price APIs** - For token/crypto prices (CoinGecko, CoinMarketCap)
-2. **NFT Indexers** - Alchemy, Moralis, or similar for NFT data
-3. **Transaction History** - Etherscan/BSCScan APIs or similar
-4. **DEX Integration** - Uniswap/PancakeSwap routers for swaps
-5. **Staking Contract** - FOGO Chain staking contract addresses
-
-## Usage
-
-### First Time Setup
-
-1. Click the extension icon
-2. Choose "Create New Wallet" or "Import Existing Wallet"
-3. Save your seed phrase securely (for new wallets)
-4. Start using the wallet!
-
-### Connecting to DApps
-
-The wallet automatically injects `window.ethereum` and `window.fogo` providers. DApps can connect using:
-
-```javascript
-// Request connection
-const accounts = await window.ethereum.request({ 
-  method: 'eth_requestAccounts' 
-});
-
-// Or using FOGO provider directly
-const accounts = await window.fogo.request({ 
-  method: 'eth_requestAccounts' 
-});
-```
-
-### Switching Networks
-
-Use the network dropdown in the wallet header to switch between:
-- FOGO Chain
-- Ethereum
-- BSC
-- Polygon
-- Arbitrum
-- Base
-
-## Security Notes
-
-⚠️ **Important Security Considerations:**
-
-1. **Seed Phrase Storage**: Current implementation uses simple encoding. For production, implement proper encryption (AES-256-GCM).
-
-2. **Private Key Handling**: Never log or expose private keys. Consider using hardware wallet integration.
-
-3. **Transaction Approval**: The current approval system is simplified. Implement comprehensive approval UI with gas estimation, security warnings, etc.
-
-4. **Content Security**: Validate all user inputs and transaction parameters.
-
-5. **HTTPS Only**: Only interact with HTTPS websites to prevent MITM attacks.
-
-## Development
-
-### File Structure
+## How it works
 
 ```
-fogo-wallet-extension/
-├── manifest.json         # Extension configuration
-├── popup.html           # Main wallet UI
-├── styles.css           # Styling
-├── wallet.js            # Core wallet logic
-├── popup.js             # UI interactions
-├── background.js        # Service worker
-├── content.js           # Content script (bridge)
-├── inpage.js            # window.ethereum provider
-├── lib/
-│   ├── ethers.min.js   # Ethereum library
-│   └── qrcode.min.js   # QR code generation
-└── icons/
-    ├── icon16.png
-    ├── icon32.png
-    ├── icon48.png
-    └── icon128.png
+ Sender (abroad)            NEAR testnet                         Agent (Nigeria)
+ ──────────────             ────────────                         ───────────────
+ ft_transfer_call ──USDC──▶ sendam contract ◀── claim ─────────── takes the job
+   msg: meter, ₦, expiry,     request: Open → Claimed
+   sha256(family secret)                                          "Pay the bill"
+                                                                       │
+                            verifier (/api/fulfil) ◀───────────────────┘
+                              1. VTpass: requery, else pay (fixed request id)
+                              2. check: delivered, same meter, same naira
+                              3. confirm(id, agent, ref) ──▶ contract pays agent
+
+ Family opens link ──▶ /api/token: proves the secret matches the on-chain hash
+                       ──▶ VTpass requery ──▶ electricity token shown
 ```
 
-### Testing
+**What the contract guarantees** (`contracts/sendam`):
 
-1. Test wallet creation and import
-2. Test sending/receiving on testnet first
-3. Test DApp connectivity with popular DApps
-4. Test network switching
-5. Test token additions
-6. Test NFT display
-7. Test swap functionality
+- Money only goes to the agent named in a confirmed claim, or back to the sender.
+- A claim reserves a request for 30 minutes, so two agents never pay the same bill.
+- Only the configured verifier can confirm, and only for the agent holding the claim.
+- If the payout transfer fails, the request returns to its previous state, so funds are never stranded.
+- After the deadline, anyone can trigger the refund, and it can only go to the sender.
+- The electricity token is never on chain. Only the SHA-256 of a secret in the family's link is stored; the token is fetched by proving that secret.
 
-### Adding New Networks
+**Contract interface:** `ft_on_transfer` (create a request from USDC sent with `ft_transfer_call`), `claim`, `release`, `confirm` (verifier only), `refund`, `set_verifier` (owner only); views `get_request`, `list_requests`, `list_open`, `list_by_account`, `get_config`. Every change logs a NEP-297 event under the `sendam` standard.
 
-Edit the `networks` object in `wallet.js`:
+**NEAR features used:** a Rust contract (near-sdk 5), NEP-141 fungible tokens with `ft_transfer_call`, cross-contract calls with callbacks, NEP-297 events, NEAR Wallet Selector, and testnet RPC from the browser, plus a live dry-run quote from the NEAR Intents 1Click API.
 
-```javascript
-customNetwork: {
-  name: 'Custom Network',
-  chainId: '0xABC',
-  rpcUrl: 'https://rpc.custom.com',
-  symbol: 'CUSTOM',
-  explorer: 'https://explorer.custom.com'
-}
+## What is real, and what is not yet
+
+- **Real:** the contract and its rules; wallet signing; the verifier's checks; buying and looking up tokens through the VTpass **sandbox** (test meters, test tokens).
+- **Test money:** testnet and a test USDC token anyone can mint with `faucet`. The next step is real USDC on NEAR mainnet, funded from any chain through NEAR Intents.
+- **NEAR Intents, a live quote only:** the send page's *From another chain* panel calls the real NEAR Intents 1Click API (`lib/intents.js`, `/api/intents`) for what it costs to deliver the request's USDC on NEAR from USDC on Base, Arbitrum or Ethereum. Intents has no testnet, so this is a **mainnet quote requested as a dry run**: nothing is charged and no deposit address is created. Sendam does not yet execute an Intents swap; the escrow in this demo is funded with test USDC. `npm run intents:check` prints the API's raw answers.
+- **One verifier, one demo agent account:** in this demo a single service both holds the demo agent's VTpass sandbox key and verifies payments, so any agent who claims is effectively using that account. In production each agent's own bill-provider key would be sealed in a secure enclave (TEE), and the verifier would be attested code.
+- **Electricity only:** airtime, data and school fees fit the same pattern.
+- **Not a licensed service:** a real launch needs licensed partners to move money into and out of Nigeria.
+
+The VTpass client was written from VTpass's published API documentation. **Simulated bill provider:** with `VTPASS_MODE=simulate` the verifier uses `lib/vtpass-sim.js` instead of VTpass. It answers in VTpass's response shapes (test meter `1111111111111`, a test token derived from the purchase id), so the contract, the verifier's checks and the family link all run unchanged; it cannot check amounts. The hosted demo uses it while the author's VTpass sandbox keys await activation, and switches back to the real sandbox by removing that one setting.
+
+## The interface
+
+- **Every screen tells the same story:** a prepaid meter's green screen shows the state (the meter being checked, an agent paying, the token typing itself in), and the sender gets a ticket with a QR code of the family's link and a tracker that follows the chain live.
+- **The background** (`js/backdrop.js`) is a custom WebGL shader of liquid light with rays from a light source, over a real fluid simulation (advection, vorticity, pressure) that the cursor stirs. The light flickers on when a page opens. It renders below screen resolution, lowers its quality if frames run slow, pauses in hidden tabs, draws a still frame for reduced motion, and falls back to plain CSS without WebGL.
+- Accessibility is checked with axe on every page; motion respects `prefers-reduced-motion`.
+- The pages load no third-party scripts, styles or fonts; a Content-Security-Policy enforces it. The `/api` endpoints are rate-limited per visitor.
+
+## Run the tests
+
+```bash
+npm install
 ```
 
-## API Integration Examples
-
-### Price Feeds (CoinGecko)
-
-```javascript
-async function getTokenPrice(tokenAddress) {
-  const response = await fetch(
-    `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
-  );
-  return await response.json();
-}
+```bash
+npm run test:contracts
 ```
 
-### NFT Data (Alchemy)
+25 Rust unit tests: request creation and validation, claims and lapsed claims, confirmation, double-payment refusal, refunds, failed-payout recovery, listings and the test token's faucet.
 
-```javascript
-async function getNFTs(address) {
-  const response = await fetch(
-    `https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY/getNFTs?owner=${address}`
-  );
-  return await response.json();
-}
+```bash
+npm test
 ```
 
-## Troubleshooting
+14 tests of the verifier and services: Lagos-time request ids, reading VTpass answers, paying once and never twice, pending and failed payments, meter and amount mismatches, the meter lookup, the token only for the right secret, the simulated bill provider, the NEAR Intents quote (dry run, fallbacks, failures), and the per-visitor rate limit.
 
-**Extension not loading:**
-- Check that all required files are present
-- Verify manifest.json is valid
-- Check browser console for errors
+```bash
+npm run test:e2e
+```
 
-**DApps not connecting:**
-- Refresh the DApp page after installing extension
-- Check that content script is injecting properly
-- Verify window.ethereum is available in console
+13 checks in a real browser (needs Playwright): the whole flow from sender to agent to family, the meter lookup, the desktop layout, bad input and an unknown meter, a wrong or missing link, a refund, accessibility (axe) on every page, and no console errors. NEAR and VTpass are simulated here, but the `/api` endpoints run the real verifier code.
 
-**Transactions failing:**
-- Ensure sufficient balance for gas
-- Check network RPC is responding
-- Verify transaction parameters
+## Run it locally
 
-## Contributing
+```bash
+npm install
+```
 
-Contributions are welcome! Areas that need work:
+```bash
+npm run serve
+```
 
-1. Enhanced security (encryption, key management)
-2. Better gas estimation
-3. Hardware wallet support
-4. Multi-signature wallets
-5. Advanced DeFi integrations
-6. Mobile support
-7. Dark/light theme toggle
+Open http://localhost:4300. The site reads the contract names from `js/config.js`; the verifier reads its settings from `.env` (copy `.env.example`).
 
-## License
+## Deploy it yourself
 
-MIT License - See LICENSE file for details
+1. Install Rust, then NEAR's tools:
 
-## Disclaimer
+```bash
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/cargo-near/releases/latest/download/cargo-near-installer.sh | sh
+```
 
-This is a development wallet. Use at your own risk. Always test with small amounts first. Never share your seed phrase or private keys.
+```bash
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/near-cli-rs/releases/latest/download/near-cli-rs-installer.sh | sh
+```
 
-## Support
+2. Create a funded testnet account (the faucet pays for it):
 
-For issues and feature requests, please open an issue on the project repository.
+```bash
+near account create-account sponsor-by-faucet-service your-name.testnet autogenerate-new-keypair --signature-scheme ed25519 save-to-legacy-keychain network-config testnet create
+```
 
----
+3. Deploy the contracts and write the settings:
 
-**Built for FOGO Chain 🔥**
+```bash
+npm run deploy -- your-name.testnet
+```
+
+It creates `usdc.`, `sendam.` and `verifier.` sub-accounts, deploys both contracts, updates `js/config.js` and writes `.env`. It needs about 8 NEAR; if you run short, top up from the testnet faucet.
+
+4. Create a free account at sandbox.vtpass.com and put its API key and secret key in `.env`. Until the keys are active (new keys can return "Invalid Credentials"), set `VTPASS_MODE=simulate` to use the simulated bill provider.
+5. On Vercel, import the repository (framework preset "Other"), add every variable from `.env` under Settings > Environment Variables, and deploy. Never commit `.env` or paste the verifier key anywhere public.
+
+## Layout
+
+- `contracts/sendam`: the Sendam contract and its tests
+- `contracts/mock-usdc`: the test USDC token
+- `lib/`: the verifier (VTpass client, NEAR client, the fulfil and token logic)
+- `api/`: the HTTP endpoints (`fulfil`, `token`, `meter`, `intents`), as Vercel functions
+- `index.html`, `send.html`, `agent.html`, `track.html`, `js/`, `css/`: the site
+- `src/wallet-entry.js`: the wallet connector, bundled into `vendor/wallet.js` by `npm run vendor`
+- `scripts/`: local server and deployment
+- `test/`, `test-e2e/`: tests
+
+## Disclosure
+
+All code here was written during the hackathon window, from 11 November 2026. The icons and parts of the front-end helpers (`js/ui.js`) were adapted from FastLane, an earlier project by the same author written on 10–11 November 2026, after the hackathon was announced.
+
+Built with AI assistance (Claude Code). Libraries: near-sdk and near-contract-standards (Rust), near-api-js, @near-wallet-selector (core, modal-ui, my-near-wallet, meteor-wallet, intear-wallet), @near-js/transactions, qrcode-generator (the QR code on the ticket), buffer, util and events (browser polyfills), esbuild, Playwright and axe-core (tests), and the Geist and Geist Mono fonts (OFL 1.1).
+
+## Licence
+
+MIT. See `LICENSE`.

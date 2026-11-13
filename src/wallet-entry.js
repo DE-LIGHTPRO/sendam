@@ -12,7 +12,7 @@ export async function createWallet({ network, contractId }) {
     network,
     modules: [setupMyNearWallet(), setupMeteorWallet(), setupIntearWallet()],
   });
-  const modal = setupModal(selector, { contractId, description: 'Connect a NEAR wallet to use Sendam.' });
+  const modal = setupModal(selector, { contractId, theme: 'light', description: 'Connect a NEAR wallet to use Sendam.' });
   const listeners = new Set();
   selector.store.observable.subscribe(() => listeners.forEach((fn) => fn(accountId())));
   function accountId() {

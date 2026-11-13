@@ -56,7 +56,7 @@ function draw() {
   const holding = mine.filter((r) => r.status.state === 'claimed' && r.status.agent === account && r.status.until_ms > now);
   const done = mine.filter((r) => r.status.state === 'fulfilled' && r.status.agent === account);
   $('#n-open').textContent = String(open.length);
-  $('#n-mine').textContent = String(holding.length);
+  $('#n-mine').textContent = String(holding.length + done.length);
   $('#done-count').textContent = String(done.length);
   let html;
   if (tab === 'open') {
@@ -202,6 +202,7 @@ $('#register').addEventListener('click', async () => {
 });
 $('#back-desk').addEventListener('click', () => { show('desk'); refresh(); drawBalance(); });
 $('#connect').addEventListener('click', connect);
+$('#market-rate').textContent = naira(MARKET_RATE);
 
 w = await mountAccount((id) => {
   account = id;

@@ -44,7 +44,71 @@ function drawQuote() {
   $('#q-expiry').textContent = `after ${$('#expiry').selectedOptions[0].textContent}`;
   document.querySelectorAll('#presets [data-n]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.n) === nairaValue())));
   drawWho();
+  scheduleIntents();
 }
+
+// ---- Pay from another chain: a live NEAR Intents quote ---------------------------------
+// Asks the real 1Click API what it costs to land this many USDC on NEAR from another chain.
+// It is a dry run on mainnet, shown beside the testnet demo; if it cannot be fetched, the
+// panel says so and the rest of the page is unaffected.
+let chain = 'base';
+let intentsTimer = 0;
+let intentsSeq = 0;
+const CHAINS = ['base', 'arb', 'eth'];
+const quotes = new Map(); // "chain:amount" -> { at, body }, kept for half a minute
+const fresh = (key) => { const hit = quotes.get(key); return hit && Date.now() - hit.at < 30_000 ? hit.body : null; };
+
+async function fetchIntents(from, usdc) {
+  const key = `${from}:${usdc}`;
+  const known = fresh(key);
+  if (known) return known;
+  let body = null;
+  try {
+    const res = await fetch('api/intents', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ usdc, from }) });
+    if (res.ok) body = await res.json();
+  } catch { /* shown as unavailable */ }
+  if (body && body.payUsdc > 0) quotes.set(key, { at: Date.now(), body });
+  return body && body.payUsdc > 0 ? body : null;
+}
+
+function showIntents(body) {
+  const out = $('#ac-out');
+  out.dataset.state = 'ok';
+  const time = body.seconds ? ` · about ${body.seconds < 90 ? `${body.seconds} seconds` : `${Math.round(body.seconds / 60)} minutes`}` : '';
+  out.replaceChildren(
+    Object.assign(document.createElement('b'), { textContent: `${body.payUsdc.toFixed(2)} USDC` }),
+    document.createTextNode(` from ${body.fromLabel} delivers ${body.receiveUsdc.toFixed(2)} USDC on NEAR${time}`),
+  );
+}
+
+function scheduleIntents() {
+  clearTimeout(intentsTimer);
+  intentsTimer = setTimeout(drawIntents, 350);
+}
+async function drawIntents() {
+  const q = quote();
+  const out = $('#ac-out');
+  if (!q) { out.dataset.state = ''; out.textContent = 'Enter an amount to see a quote.'; return; }
+  const usdc = q.total;
+  const seq = ++intentsSeq;
+  const known = fresh(`${chain}:${usdc}`);
+  if (known) showIntents(known);
+  else if (out.dataset.state === 'ok') out.dataset.state = 'refreshing'; // keep the last figure, dimmed
+  else { out.dataset.state = 'loading'; out.textContent = 'Getting a live quote…'; }
+  const body = known || await fetchIntents(chain, usdc);
+  if (seq !== intentsSeq) return; // a newer request has started
+  if (!body) { out.dataset.state = 'off'; out.textContent = 'The live quote is unavailable right now.'; return; }
+  showIntents(body);
+  // Warm the other chains, so switching between them is instant.
+  for (const other of CHAINS) if (other !== chain) fetchIntents(other, usdc);
+}
+document.querySelector('.ac-chips').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-chain]');
+  if (!b) return;
+  chain = b.dataset.chain;
+  document.querySelectorAll('.ac-chip').forEach((c) => c.setAttribute('aria-pressed', String(c === b)));
+  drawIntents();
+});
 
 // ---- Meter check ------------------------------------------------------------------
 // Looks up the name on the meter as it is typed, the way Nigerian bill apps do, so a

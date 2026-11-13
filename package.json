@@ -14,7 +14,6 @@
   "devDependencies": {
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
-    "@fontsource/instrument-serif": "^5.3.0",
     "@near-wallet-selector/core": "^10.1.4",
     "@near-wallet-selector/intear-wallet": "^10.1.4",
     "@near-wallet-selector/meteor-wallet": "^10.1.4",
@@ -33,7 +32,8 @@
     "test:contracts": "cd contracts && cargo test",
     "test:e2e": "node test-e2e/run.cjs",
     "build:contracts": "cd contracts && cargo near build non-reproducible-wasm --manifest-path sendam/Cargo.toml && cargo near build non-reproducible-wasm --manifest-path mock-usdc/Cargo.toml",
-    "vendor": "esbuild src/wallet-entry.js --bundle --format=esm --minify --target=es2020 --define:global=globalThis --outfile=vendor/wallet.js && esbuild src/qr-entry.js --bundle --format=esm --minify --target=es2020 --outfile=vendor/qr.js && cp node_modules/@near-wallet-selector/modal-ui/styles.css vendor/wallet-modal.css",
-    "deploy": "bash scripts/deploy.sh"
+    "vendor": "esbuild src/wallet-entry.js --bundle --format=esm --minify --target=es2020 --define:global=globalThis --outfile=vendor/wallet.js && esbuild src/qr-entry.js --bundle --format=esm --minify --target=es2020 --outfile=vendor/qr.js && node scripts/vendor-css.mjs",
+    "deploy": "bash scripts/deploy.sh",
+    "intents:check": "node scripts/intents-check.mjs"
   }
 }

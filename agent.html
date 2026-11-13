@@ -7,6 +7,13 @@
 <meta name="theme-color" content="#f4f2ed">
 <title>Agent desk | Sendam</title>
 <meta name="description" content="Earn USDC by paying electricity bills in naira for families abroad.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sendam">
+<meta property="og:title" content="Agent desk | Sendam">
+<meta property="og:description" content="Earn USDC by paying electricity bills in naira for families abroad.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Agent desk | Sendam">
+<meta name="twitter:description" content="Earn USDC by paying electricity bills in naira for families abroad.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
@@ -47,12 +54,11 @@
       <div class="preview" aria-hidden="true">
         <div class="card job preview-b">
           <div class="job-top"><div><span class="job-label">You pay</span><div class="big">₦5,000</div></div><div class="earn"><span>You earn</span><b>≈ ₦162</b></div></div>
+        </div>
         <div class="card job preview-a">
           <div class="job-top"><div><span class="job-label">You pay</span><div class="big">₦20,000</div><div class="small muted">Ibadan Electric (IBEDC)<span class="mono">Meter 111•••••••111</span></div></div><div class="earn"><span>You earn</span><b>≈ ₦615</b></div></div>
           <div class="job-meta"><span>You get <b>13.30 USDC</b> ≈ ₦20,615</span><span>23 h left</span></div>
           <span class="btn primary block">Take this job</span>
-        </div>
-
         </div>
       </div>
     </div>
@@ -79,7 +85,7 @@
       <button type="button" role="tab" id="tab-mine" aria-selected="false" aria-controls="panel">My jobs <span class="chip neutral" id="n-mine">0</span></button>
     </div>
     <div id="panel" class="job-list" role="tabpanel" aria-labelledby="tab-open"></div>
-    <p class="hint">Updates every 10 seconds. Earnings are estimated at ₦1,550 per USDC, the demo's market rate.</p>
+    <p class="hint">Updates every 10 seconds. Earnings are estimated at <span id="market-rate">₦1,550</span> per USDC, the demo's market rate.</p>
   </section>
 
   <section data-view="paying" hidden>

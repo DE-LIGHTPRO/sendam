@@ -1,0 +1,8 @@
+# Not needed to serve the site or its /api functions.
+contracts
+test
+test-e2e
+src
+scripts
+*.md
+!README.md
