@@ -15,6 +15,8 @@
 <meta name="twitter:title" content="Sendam: send light home">
 <meta name="twitter:description" content="Pay a prepaid electricity meter in Nigeria from anywhere. Lock USDC on NEAR; a local agent pays the bill in naira and is paid only once the electricity company confirms it.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="vendor/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="vendor/fonts/geist-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
@@ -28,7 +30,8 @@
       <a href="#how">How it works</a>
       <a href="#guarantees">Guarantees</a>
       <a href="#agents">For agents</a>
-      <a href="#status">Status</a>
+      <a href="#live">Live</a>
+      <a href="#faq">Questions</a>
     </nav>
     <a class="btn sm primary" href="send">Send a bill</a>
   </div>
@@ -205,6 +208,29 @@
     </div>
   </section>
 
+  <!-- Live: read straight from the contract. -->
+  <section class="l-section" id="live">
+    <div class="l-wrap">
+      <div class="l-head reveal">
+        <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>Live on NEAR testnet</p>
+        <h2>Every bill is <em>on the record.</em></h2>
+        <p class="l-sub">These numbers are read from the Sendam contract as you load this page. Nothing here is typed in by us, and anyone can check it on the explorer.</p>
+      </div>
+      <div class="live-grid">
+        <dl class="live-stats reveal" id="live-stats" aria-live="polite">
+          <div><dt>Bills sent</dt><dd id="ls-sent">…</dd></div>
+          <div><dt>Bills paid</dt><dd id="ls-paid">…</dd></div>
+          <div><dt>Paid out to agents</dt><dd id="ls-usdc">…</dd></div>
+          <div><dt>Refunded to senders</dt><dd id="ls-refunded">…</dd></div>
+        </dl>
+        <div class="live-feed reveal">
+          <div class="lf-head"><span class="eyebrow">Latest requests</span><a id="live-explorer" target="_blank" rel="noopener">Open the contract on the explorer</a></div>
+          <ol class="lf-list" id="live-feed"><li class="lf-empty">Reading the contract…</li></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Status. -->
   <section class="l-section" id="status">
     <div class="l-wrap s-grid">
@@ -219,6 +245,24 @@
         <div class="status-row reveal"><span class="chip neutral">Next</span><h3>Real money</h3><p>Real USDC on NEAR mainnet, paid from any chain through NEAR Intents. The send page already shows a live Intents quote for it.</p></div>
         <div class="status-row reveal"><span class="chip neutral">Next</span><h3>Verified agents</h3><p>Each agent's bill-provider key sealed in a secure enclave, so the verifier is attested code.</p></div>
         <div class="status-row reveal"><span class="chip warn">Needed</span><h3>Licensed partners</h3><p>A real launch needs licensed partners to move money into and out of Nigeria.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions people ask before trusting it. -->
+  <section class="l-section tint" id="faq">
+    <div class="l-wrap faq-grid">
+      <div class="l-head reveal">
+        <p class="eyebrow">Questions</p>
+        <h2>The things people ask <em>first.</em></h2>
+      </div>
+      <div class="faq reveal">
+        <details><summary>Who holds my money while I wait?</summary><p>A contract on NEAR, not Sendam and not the agent. It can only release the USDC to the agent whose payment was confirmed, or return it to you.</p></details>
+        <details><summary>What if no agent pays the bill?</summary><p>You choose a deadline when you send (24 hours by default). You can cancel any time before an agent takes it, and after the deadline anyone can trigger the refund, which can only go back to your wallet.</p></details>
+        <details><summary>Does my family need a wallet or an app?</summary><p>No. They open the link you send, watch the payment arrive, and read the token off the screen. The link is private: only a fingerprint of it is stored on chain.</p></details>
+        <details><summary>What does it cost?</summary><p>You set the exchange rate and a tip for the agent, and see the total in USDC before you lock anything. Sendam adds no fee in this prototype.</p></details>
+        <details><summary>How do I know the agent really paid?</summary><p>The agent is not paid on their word. A verifier checks the purchase with the bill provider, matching the meter and the amount, before it tells the contract to release the money.</p></details>
+        <details><summary>Is this real money?</summary><p>Not yet. This prototype runs on NEAR testnet with test USDC, and the bill provider runs in a sandbox or simulated mode. The README lists exactly what is real and what comes next.</p></details>
       </div>
     </div>
   </section>

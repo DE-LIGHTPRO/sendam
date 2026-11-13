@@ -219,3 +219,45 @@ if (!calm && journey) {
     if (onScreen && !started) { started = true; setTimeout(play, 900); }
   }, { threshold: 0.35 }).observe(journey);
 }
+
+// ---- Live record: totals and the latest requests, read from the contract ----------------
+// A dynamic import, so the rest of the landing page never waits on (or breaks with) the chain.
+(async () => {
+  const feed = document.getElementById('live-feed');
+  if (!feed) return;
+  const set = (id, text) => { document.getElementById(id).textContent = text; };
+  try {
+    const [{ view, naira, stateOf, providerName, maskMeter, fromUnits }, { CONTRACT, EXPLORER }] = await Promise.all([import('./chain.js'), import('./config.js')]);
+    document.getElementById('live-explorer').href = `${EXPLORER}/address/${CONTRACT}`;
+    const [config, list] = await Promise.all([view('get_config'), view('list_requests', { limit: 100 })]);
+    const paid = list.filter((r) => r.status.state === 'fulfilled');
+    const refunded = list.filter((r) => r.status.state === 'refunded');
+    const sum = (rows) => fromUnits(rows.reduce((t, r) => t + BigInt(r.amount), 0n).toString());
+    set('ls-sent', String(Math.max(0, Number(config.next_id) - 1)));
+    set('ls-paid', String(paid.length));
+    document.getElementById('ls-usdc').innerHTML = `${sum(paid)}<small>USDC</small>`;
+    document.getElementById('ls-refunded').innerHTML = `${sum(refunded)}<small>USDC</small>`;
+    const ago = (ms) => {
+      const m = Math.max(0, Math.round((Date.now() - ms) / 60000));
+      if (m < 1) return 'just now';
+      if (m < 60) return `${m} min ago`;
+      const h = Math.round(m / 60);
+      return h < 48 ? `${h} h ago` : `${Math.round(h / 24)} days ago`;
+    };
+    const words = { open: 'Waiting for an agent', claimed: 'An agent is paying', paid: 'Paid and settled', refunded: 'Refunded to the sender', expired: 'Expired, refundable' };
+    feed.replaceChildren(...(list.length ? list.slice(0, 6) : []).map((r) => {
+      const st = stateOf(r);
+      const li = document.createElement('li');
+      const amount = Object.assign(document.createElement('b'), { textContent: naira(r.naira) });
+      const where = Object.assign(document.createElement('span'), { className: 'lf-where', textContent: `${providerName(r.provider).replace(/\s*\(.*\)$/, '')} · meter ${maskMeter(r.meter)}` });
+      const when = Object.assign(document.createElement('span'), { className: 'lf-when', textContent: ago(r.status.at_ms || r.created_ms) });
+      const state = Object.assign(document.createElement('span'), { className: `lf-state ${st}`, textContent: words[st] });
+      li.append(amount, where, when, state);
+      return li;
+    }));
+    if (!list.length) feed.replaceChildren(Object.assign(document.createElement('li'), { className: 'lf-empty', textContent: 'No requests yet. Send the first one.' }));
+  } catch {
+    ['ls-sent', 'ls-paid', 'ls-usdc', 'ls-refunded'].forEach((id) => set(id, '–'));
+    feed.replaceChildren(Object.assign(document.createElement('li'), { className: 'lf-empty', textContent: 'NEAR could not be reached just now. The explorer link above shows the same record.' }));
+  }
+})();

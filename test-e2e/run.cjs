@@ -382,6 +382,21 @@ async function step(name, fn) {
       }
     });
 
+    await step('the landing page shows the live record from the contract', async () => {
+      const page = await open(null, '/', { width: 1440, height: 900 });
+      await page.waitForFunction(() => document.querySelector('#ls-sent').textContent === '2');
+      assert.equal(await page.locator('#ls-paid').textContent(), '1');
+      assert.equal(await page.locator('#ls-usdc').textContent(), '13.30USDC');
+      assert.equal(await page.locator('#ls-refunded').textContent(), '3.33USDC');
+      assert.equal(await page.locator('#live-feed li').count(), 2);
+      assert.match(await page.locator('#live-feed li').first().textContent(), /₦5,000.*Refunded to the sender/);
+      assert.match(await page.locator('#live-explorer').getAttribute('href'), /nearblocks\.io\/address\//);
+      await page.locator('#faq summary').first().click();
+      await page.getByText('A contract on NEAR, not Sendam and not the agent.', { exact: false }).waitFor();
+      await shot(page, '9-landing-live');
+      await page.context().close();
+    });
+
     await step('no page logged an error', async () => {
       assert.deepEqual(errors, []);
     });

@@ -706,3 +706,9 @@ body::after {
 @media (prefers-reduced-motion: no-preference) { .ac-out[data-state="loading"] { animation: lcd-blink 1.2s ease-in-out infinite alternate; } }
 .ac-out { transition: opacity 0.25s; }
 .ac-out[data-state="refreshing"] { opacity: 0.45; }
+
+/* Proof links. */
+.t-proof { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 13.5px; color: #f6c36a; text-decoration: none; border-bottom: 1px solid rgba(246, 195, 106, 0.4); padding-bottom: 2px; }
+.t-proof .icon { width: 14px; height: 14px; }
+.t-proof:hover { border-color: #f6c36a; }
+.hint a { color: var(--ink); }

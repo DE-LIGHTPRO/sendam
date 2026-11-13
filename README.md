@@ -69,6 +69,7 @@ The VTpass client was written from VTpass's published API documentation. **Simul
 
 - **Every screen tells the same story:** a prepaid meter's green screen shows the state (the meter being checked, an agent paying, the token typing itself in), and the sender gets a ticket with a QR code of the family's link and a tracker that follows the chain live.
 - **The background** (`js/backdrop.js`) is a custom WebGL shader of liquid light with rays from a light source, over a real fluid simulation (advection, vorticity, pressure) that the cursor stirs. The light flickers on when a page opens. It renders below screen resolution, lowers its quality if frames run slow, pauses in hidden tabs, draws a still frame for reduced motion, and falls back to plain CSS without WebGL.
+- **Public record:** the landing page's *Live* section reads totals and the latest requests straight from the contract, and the ticket and the family page link to the NEAR explorer, so every claim on the site can be checked.
 - Accessibility is checked with axe on every page; motion respects `prefers-reduced-motion`.
 - The pages load no third-party scripts, styles or fonts; a Content-Security-Policy enforces it. The `/api` endpoints are rate-limited per visitor.
 
@@ -94,7 +95,7 @@ npm test
 npm run test:e2e
 ```
 
-13 checks in a real browser (needs Playwright): the whole flow from sender to agent to family, the meter lookup, the desktop layout, bad input and an unknown meter, a wrong or missing link, a refund, accessibility (axe) on every page, and no console errors. NEAR and VTpass are simulated here, but the `/api` endpoints run the real verifier code.
+14 checks in a real browser (needs Playwright): the whole flow from sender to agent to family, the meter lookup, the desktop layout, bad input and an unknown meter, a wrong or missing link, a refund, accessibility (axe) on every page, and no console errors. NEAR and VTpass are simulated here, but the `/api` endpoints run the real verifier code.
 
 ## Run it locally
 

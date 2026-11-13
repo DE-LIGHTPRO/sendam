@@ -1,7 +1,9 @@
 import { view, naira, providerName, stateOf, timeLeft } from './chain.js';
+import { CONTRACT, EXPLORER } from './config.js';
 import { $, show, copyText } from './ui.js';
 
 const id = Number(new URLSearchParams(location.search).get('id'));
+$('#t-proof').href = `${EXPLORER}/address/${CONTRACT}`;
 const secret = location.hash.replace(/^#/, '').replace(/^s=/, '');
 let timer = 0;
 let tokenShown = false;

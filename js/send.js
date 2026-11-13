@@ -1,4 +1,4 @@
-import { CONTRACT, USDC, PROVIDERS, SUGGESTED_RATE, SUGGESTED_TIP } from './config.js';
+import { CONTRACT, USDC, PROVIDERS, SUGGESTED_RATE, SUGGESTED_TIP, EXPLORER } from './config.js';
 import { view, eventsOf, eventsFromOutcome, toUnits, usd, naira, maskMeter, timeLeft, stateOf, providerName } from './chain.js';
 import { $, escapeHtml, icon, show, toast, copyText, confirmDialog } from './ui.js';
 import { mountAccount, explain, connect } from './session.js';
@@ -86,6 +86,8 @@ function scheduleIntents() {
   intentsTimer = setTimeout(drawIntents, 350);
 }
 async function drawIntents() {
+  // Only once the form is on screen: no quotes are requested before a wallet is connected.
+  if (document.querySelector('[data-view="form"]').hidden) return;
   const q = quote();
   const out = $('#ac-out');
   if (!q) { out.dataset.state = ''; out.textContent = 'Enter an amount to see a quote.'; return; }
@@ -191,7 +193,7 @@ async function drawMine() {
     const canRefund = st === 'open' || st === 'expired';
     const link = secrets[r.id] ? `track?id=${r.id}#${secrets[r.id]}` : `track?id=${r.id}`;
     return `<div class="card job" data-id="${r.id}">
-      <div class="job-top"><div><div class="big">${naira(r.naira)}</div><div class="small muted">${escapeHtml(providerName(r.provider))} · meter ${maskMeter(r.meter)}</div></div><span class="chip ${tone}">${text}</span></div>
+      <div class="job-top"><div><div class="big">${naira(r.naira)}</div><div class="small muted">${escapeHtml(providerName(r.provider))} · meter ${escapeHtml(maskMeter(r.meter))}</div></div><span class="chip ${tone}">${text}</span></div>
       <div class="job-meta"><span>Locked <b>${usd(r.amount)}</b></span>${st === 'open' ? `<span>${timeLeft(r.expires_ms)}</span>` : ''}</div>
       <div class="row">
         <a class="btn sm" href="${link}">Track</a>
@@ -265,7 +267,7 @@ async function watchTicket(id) {
   ticketTimer = setTimeout(() => watchTicket(id), 8000);
 }
 
-function finish(id, secret) {
+function finish(id, secret, txHash = '') {
   remember(id, secret);
   localStorage.removeItem(PENDING);
   const link = new URL(`track?id=${id}#${secret}`, location.href).href;
@@ -277,6 +279,8 @@ function finish(id, secret) {
   $('#open-track').href = link;
   $('#whatsapp').href = 'https://wa.me/?text=' + encodeURIComponent(`I've paid for electricity for you. Open this link to follow it and get the token: ${link}`);
   $('#copy-link').onclick = () => copyText(link, 'Link copied');
+  // Proof: the locking transaction when the wallet reports it, otherwise the contract itself.
+  $('#t-proof').href = txHash ? `${EXPLORER}/txns/${txHash}` : `${EXPLORER}/address/${CONTRACT}`;
   $('#t-qr').innerHTML = '';
   import('../vendor/qr.js').then(({ qrSvg }) => { $('#t-qr').innerHTML = qrSvg(link); }).catch(() => {});
   show('sent');
@@ -313,7 +317,7 @@ $('#form').addEventListener('submit', async (e) => {
     if (!outcome) return; // the wallet redirected away; we pick up on return
     const created = eventsFromOutcome(outcome).find((ev) => ev.event === 'create');
     if (!created) throw new Error('The transaction went through, but the request was not created. Your USDC was returned.');
-    finish(created.data[0].id, secret);
+    finish(created.data[0].id, secret, outcome?.transaction?.hash || outcome?.transaction_outcome?.id || '');
   } catch (err) {
     localStorage.removeItem(PENDING);
     show('form');
@@ -337,7 +341,7 @@ async function resumeAfterRedirect() {
   show('sending');
   try {
     const created = (await eventsOf(hash, account)).find((ev) => ev.event === 'create');
-    if (created) { finish(created.data[0].id, pending.secret); return true; }
+    if (created) { finish(created.data[0].id, pending.secret, hash); return true; }
   } catch { /* fall through */ }
   localStorage.removeItem(PENDING);
   toast('The request was not created. Check your wallet history.', 'warn');
@@ -392,4 +396,5 @@ w = await mountAccount(async (id) => {
   show('form');
   drawBalance();
   drawMine();
+  scheduleIntents();
 });
