@@ -47,6 +47,46 @@ function drawQuote() {
   scheduleIntents();
 }
 
+// ---- Saved recipients -------------------------------------------------------------------
+// Meters this sender has paid before, kept only in this browser, so next month is one tap.
+const SAVED = 'sendam.recipients';
+const savedList = () => { try { return JSON.parse(localStorage.getItem(SAVED) || '[]').filter((r) => r && /^\d{6,20}$/.test(r.meter)); } catch { return []; } };
+const storeSaved = (list) => { try { localStorage.setItem(SAVED, JSON.stringify(list.slice(0, 6))); } catch { /* private window: nothing is kept */ } };
+
+function saveRecipient(provider, meter, name) {
+  const rest = savedList().filter((r) => !(r.provider === provider && r.meter === meter));
+  const known = savedList().find((r) => r.provider === provider && r.meter === meter);
+  storeSaved([{ provider, meter, name: name || known?.name || '' }, ...rest]);
+  drawSaved();
+}
+
+function drawSaved() {
+  const list = savedList();
+  $('#saved').hidden = !list.length;
+  $('#saved-list').replaceChildren(...list.map((r) => {
+    const short = (providerName(r.provider).match(/\(([^)]+)\)/) || [, providerName(r.provider)])[1];
+    const row = Object.assign(document.createElement('div'), { className: 'saved-item' });
+    const use = Object.assign(document.createElement('button'), { type: 'button', className: 'saved-chip' });
+    use.append(
+      Object.assign(document.createElement('b'), { textContent: r.name || 'Saved meter' }),
+      Object.assign(document.createElement('span'), { textContent: `${short} · ${maskMeter(r.meter)}` }),
+    );
+    use.addEventListener('click', () => {
+      $('#provider').value = r.provider;
+      $('#meter').value = r.meter;
+      if (r.name) lookups.set(`${r.provider}:${r.meter}`, lookups.get(`${r.provider}:${r.meter}`) || { found: true, name: r.name, address: '', fromSaved: true });
+      drawQuote();
+      lookUp(); // still checked live, so a meter that has since changed is caught
+      $('#naira').focus();
+    });
+    const forget = Object.assign(document.createElement('button'), { type: 'button', className: 'saved-forget', textContent: '×' });
+    forget.setAttribute('aria-label', `Forget ${r.name || 'this saved meter'}`);
+    forget.addEventListener('click', () => { storeSaved(savedList().filter((x) => !(x.provider === r.provider && x.meter === r.meter))); drawSaved(); });
+    row.append(use, forget);
+    return row;
+  }));
+}
+
 // ---- Pay from another chain: a live NEAR Intents quote ---------------------------------
 // Asks the real 1Click API what it costs to land this many USDC on NEAR from another chain.
 // It is a dry run on mainnet, shown beside the testnet demo; if it cannot be fetched, the
@@ -144,7 +184,7 @@ function drawCheck() {
 async function lookUp() {
   const key = lookupKey();
   const [provider, meter] = key.split(':');
-  if (!/^\d{6,20}$/.test(meter) || lookups.has(key)) return drawCheck();
+  if (!/^\d{6,20}$/.test(meter) || (lookups.has(key) && !lookups.get(key).fromSaved)) return drawCheck();
   drawCheck();
   let res;
   try {
@@ -240,7 +280,11 @@ function countUp(el, to, ms = 900) {
 function drawTicket(r) {
   const short = (providerName(r.provider).match(/\(([^)]+)\)/) || [, providerName(r.provider)])[1];
   const who = lookups.get(`${r.provider}:${r.meter}`);
-  if (!ticketShown) { countUp($('#t-naira'), r.naira); ticketShown = true; }
+  if (!ticketShown) {
+    countUp($('#t-naira'), r.naira);
+    ticketShown = true;
+    saveRecipient(r.provider, r.meter, who?.found ? who.name : ''); // remembered for next time
+  }
   $('#t-for').textContent = `for ${who?.found ? who.name : 'the family'} · ${short} · meter ${maskMeter(r.meter)}`;
   $('#t-usdc').textContent = usd(r.amount);
   const st = stateOf(r);
@@ -384,6 +428,7 @@ $('#faucet').addEventListener('click', async () => {
     btn.textContent = label;
   }
 });
+drawSaved();
 $('#refresh-mine').addEventListener('click', () => { drawMine(); drawBalance(); });
 $('#another').addEventListener('click', () => { clearTimeout(ticketTimer); show('form'); drawMine(); drawBalance(); });
 $('#connect').addEventListener('click', connect);

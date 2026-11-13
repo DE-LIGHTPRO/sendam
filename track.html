@@ -40,26 +40,27 @@
   <section data-view="track">
     <div class="track-grid">
       <div>
+        <div class="lang" id="lang" role="group" aria-label="Language"></div>
         <div class="page-head">
-          <p class="eyebrow">Sendam · for your home</p>
+          <p class="eyebrow" data-t="eyebrow">Sendam · for your home</p>
           <h1 id="t-title">Electricity for <em>your home</em></h1>
           <p id="t-sub">Looking up your electricity payment…</p>
         </div>
         <div class="track-facts">
-          <div><span>Amount</span><b id="t-naira">…</b></div>
-          <div><span>Meter</span><b class="mono" id="t-meter">…</b></div>
-          <div><span>Company</span><b id="t-provider">…</b></div>
+          <div><span data-t="amount">Amount</span><b id="t-naira">…</b></div>
+          <div><span data-t="meter">Meter</span><b class="mono" id="t-meter">…</b></div>
+          <div><span data-t="company">Company</span><b id="t-provider">…</b></div>
         </div>
     <div class="card">
       <ol class="timeline" id="timeline">
-        <li data-step="funded"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>Paid for by your family</b><span>The money is held safely until the bill is paid.</span></div></li>
-        <li data-step="claimed"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>An agent is paying it</b><span>A local agent has taken the request.</span></div></li>
-        <li data-step="paid"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b>Bill paid</b><span>The electricity company has confirmed the payment.</span></div></li>
+        <li data-step="funded"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b data-t="s1">Paid for by your family</b><span data-t="s1d">The money is held safely until the bill is paid.</span></div></li>
+        <li data-step="claimed"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b data-t="s2">An agent is paying it</b><span data-t="s2d">A local agent has taken the request.</span></div></li>
+        <li data-step="paid"><span class="dot"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#check"/></svg></span><div><b data-t="s3">Bill paid</b><span data-t="s3d">The electricity company has confirmed the payment.</span></div></li>
       </ol>
     </div>
         <div class="note warn" id="t-note" hidden><svg class="icon" aria-hidden="true"><use href="img/icons.svg#info"/></svg><span></span></div>
-        <p class="hint" id="t-live">Updates by itself. You can leave this page open.</p>
-        <p class="hint"><a id="t-proof" target="_blank" rel="noopener">See the public record of this payment on the NEAR explorer</a></p>
+        <p class="hint" id="t-live" data-t="live">Updates by itself. You can leave this page open.</p>
+        <p class="hint"><a id="t-proof" target="_blank" rel="noopener" data-t="proof">See the public record of this payment on the NEAR explorer</a></p>
       </div>
       <div class="track-side">
         <div class="lcd" id="t-lcd" aria-hidden="true">
@@ -68,11 +69,11 @@
           <div class="lcd-bar"><i id="t-lcd-bar"></i></div>
         </div>
     <div class="card token-card" id="token-card" hidden>
-      <b>Your electricity token</b>
-      <p class="small muted">Type these numbers into the meter keypad, then press Enter.</p>
+      <b data-t="tokenTitle">Your electricity token</b>
+      <p class="small muted" data-t="tokenHow">Type these numbers into the meter keypad, then press Enter.</p>
       <div class="token" id="token"></div>
-      <div class="kv"><span>Units</span><b id="units"></b></div>
-      <button class="btn block" type="button" id="copy-token"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg>Copy token</button>
+      <div class="kv"><span data-t="units">Units</span><b id="units"></b></div>
+      <button class="btn block" type="button" id="copy-token"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#copy"/></svg><span data-t="copy">Copy token</span></button>
     </div>
       </div>
     </div>
@@ -80,8 +81,8 @@
   <section data-view="missing" hidden>
     <div class="lost-in">
       <div class="lcd" aria-hidden="true"><div class="lcd-row"><span>Request</span><span>No signal</span></div><div class="lcd-main"><span class="blink">NOT FOUND</span></div></div>
-      <h1>We could not find that request</h1>
-      <p>Check that you opened the whole link you were sent. It is long, and some apps cut it short.</p>
+      <h1 data-t="missingTitle">We could not find that request</h1>
+      <p data-t="missingText">Check that you opened the whole link you were sent. It is long, and some apps cut it short.</p>
     </div>
   </section>
 </main>

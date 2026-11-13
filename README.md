@@ -70,6 +70,8 @@ The VTpass client was written from VTpass's published API documentation. **Simul
 - **Every screen tells the same story:** a prepaid meter's green screen shows the state (the meter being checked, an agent paying, the token typing itself in), and the sender gets a ticket with a QR code of the family's link and a tracker that follows the chain live.
 - **The background** (`js/backdrop.js`) is a custom WebGL shader of liquid light with rays from a light source, over a real fluid simulation (advection, vorticity, pressure) that the cursor stirs. The light flickers on when a page opens. It renders below screen resolution, lowers its quality if frames run slow, pauses in hidden tabs, draws a still frame for reduced motion, and falls back to plain CSS without WebGL.
 - **Public record:** the landing page's *Live* section reads totals and the latest requests straight from the contract, and the ticket and the family page link to the NEAR explorer, so every claim on the site can be checked.
+- **Saved recipients:** a meter the sender has paid is remembered in their own browser and filled in with one tap next time (and still checked live). Nothing about it is sent to a server.
+- **The family's page in three languages:** English, Yorùbá and Nigerian Pidgin, chosen with a switch and remembered on the device. Every sentence is in `js/track-i18n.js`. The Yorùbá and Pidgin were drafted with AI assistance and are to be proofread by a native speaker before a real launch.
 - Accessibility is checked with axe on every page; motion respects `prefers-reduced-motion`.
 - The pages load no third-party scripts, styles or fonts; a Content-Security-Policy enforces it. The `/api` endpoints are rate-limited per visitor.
 

@@ -252,6 +252,16 @@ async function step(name, fn) {
       await page.getByRole('button', { name: 'Pay another bill' }).click();
       await page.locator('#mine .job').first().waitFor();
       assert.match(await page.locator('#mine').textContent(), /Waiting for an agent/);
+      // The meter just paid is remembered on this device, and one tap fills it in again.
+      const savedChip = page.locator('#saved-list .saved-chip').first();
+      assert.match(await savedChip.textContent(), /TESTMETER1.*IBEDC · 111•+111/);
+      await shot(page, '2b-saved-recipient');
+      await page.locator('#meter').fill('');
+      await savedChip.click();
+      assert.equal(await page.locator('#meter').inputValue(), '1111111111111');
+      await page.locator('#meter-check[data-state="found"]').waitFor();
+      await page.getByRole('button', { name: 'Forget TESTMETER1' }).click();
+      assert.ok(await page.locator('#saved').isHidden(), 'a saved meter can be forgotten');
       await page.context().close();
     });
 
@@ -329,6 +339,17 @@ async function step(name, fn) {
       assert.equal(await family.locator('#token').textContent(), '4321 8765 2109 6543 0987');
       assert.equal(await family.locator('#units').textContent(), '64.5 kWh');
       await shot(family, '6-family-token');
+      // The same page in Yorùbá and in Pidgin, and back.
+      await family.getByRole('button', { name: 'Yorùbá' }).click();
+      assert.equal(await family.locator('#t-title').textContent(), 'Iná mànàmáná fún ilé rẹ');
+      assert.equal(await family.locator('#t-sub').textContent(), 'A ti san owó iná náà. Tókìn rẹ ti ṣetán.');
+      assert.equal(await family.evaluate(() => document.documentElement.lang), 'yo');
+      assert.equal(await family.locator('#token').textContent(), '4321 8765 2109 6543 0987', 'the token itself never changes');
+      await shot(family, '6b-family-yoruba');
+      await family.getByRole('button', { name: 'Pidgin' }).click();
+      assert.equal(await family.locator('#t-sub').textContent(), 'Dem don pay the bill. Your token don ready.');
+      await family.getByRole('button', { name: 'English' }).click();
+      assert.equal(await family.locator('#t-title').textContent(), 'Electricity for your home');
       assert.ok(await family.locator('#timeline [data-step="paid"]').evaluate((el) => el.classList.contains('done')));
     });
 

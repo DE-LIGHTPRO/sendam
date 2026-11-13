@@ -1,4 +1,5 @@
-import { view, naira, providerName, stateOf, timeLeft } from './chain.js';
+import { view, naira, providerName, stateOf } from './chain.js';
+import { LANGS, TEXT } from './track-i18n.js';
 import { CONTRACT, EXPLORER } from './config.js';
 import { $, show, copyText } from './ui.js';
 
@@ -9,6 +10,28 @@ let timer = 0;
 let tokenShown = false;
 let badLink = false;
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---- Language: English, Yorùbá or Pidgin, remembered on this device --------------------
+const stored = (() => { try { return localStorage.getItem('sendam.lang'); } catch { return null; } })();
+let lang = TEXT[stored] ? stored : (navigator.language || '').toLowerCase().startsWith('yo') ? 'yo' : 'en';
+let T = TEXT[lang];
+let lastReq = null;   // the request as last read, so a language change can redraw it
+let lastNote = null;  // [key, extra] of the note on screen, for the same reason
+
+function applyLanguage() {
+  T = TEXT[lang];
+  document.documentElement.lang = lang === 'pcm' ? 'pcm' : lang;
+  for (const el of document.querySelectorAll('[data-t]')) el.textContent = T[el.dataset.t];
+  $('#t-title').innerHTML = T.title; // fixed text from track-i18n.js, with its own <em>
+  for (const b of document.querySelectorAll('#lang button')) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+  if (lastReq) describe(lastReq); else $('#t-sub').textContent = T.loading;
+  if (lastNote) note(...lastNote);
+}
+$('#lang').replaceChildren(...LANGS.map(([code, name]) => Object.assign(document.createElement('button'), { type: 'button', textContent: name, lang: code === 'pcm' ? 'pcm' : code, onclick() {
+  lang = code;
+  try { localStorage.setItem('sendam.lang', code); } catch { /* the choice just will not be remembered */ }
+  applyLanguage();
+} })).map((b, i) => { b.dataset.lang = LANGS[i][0]; return b; }));
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // The meter display beside the progress: it shows the state, then types the token in.
@@ -41,9 +64,24 @@ function mark(stepName, state) {
   li.classList.toggle('now', state === 'now');
 }
 
-function note(text) {
+/** Shows a note by its key in the language file (or hides it with no key). */
+function note(key, extra) {
+  lastNote = key ? [key, extra] : null;
+  const text = !key ? '' : typeof T[key] === 'function' ? T[key](extra) : T[key];
   $('#t-note').hidden = !text;
-  $('#t-note span').textContent = text || '';
+  $('#t-note span').textContent = text;
+}
+
+/** The sentence under the heading, for a request's current state. */
+function describe(req) {
+  const st = stateOf(req);
+  $('#t-sub').textContent = {
+    open: () => T.open(T.left(req.expires_ms - Date.now())),
+    claimed: () => T.claimed,
+    paid: () => (secret ? T.paid : T.paidNoLink),
+    refunded: () => T.refunded,
+    expired: () => T.expired,
+  }[st]();
 }
 
 async function collect() {
@@ -54,19 +92,19 @@ async function collect() {
     if (res.status === 403) {
       // A wrong link will not become right by retrying; say so once and stop.
       badLink = true;
-      return note(`${body.error}. Ask the sender to send the link again.`);
+      return note('badLink', body.error);
     }
-    if (!res.ok) return note(body.error || 'The token could not be fetched yet. Retrying.');
+    if (!res.ok) return note('tokenLater');
     tokenShown = true;
-    note('');
+    note();
     $('#token').textContent = body.token;
     $('#units').textContent = body.units || '-';
     $('#token-card').hidden = false;
     $('#t-live').hidden = true;
-    $('#copy-token').onclick = () => copyText(body.token.replace(/\s/g, ''), 'Token copied');
+    $('#copy-token').onclick = () => copyText(body.token.replace(/\s/g, ''), T.copied);
     typeToken(body.token, body.units);
   } catch {
-    note('Could not reach the token service. Retrying.');
+    note('noToken');
   }
 }
 
@@ -76,11 +114,13 @@ async function refresh() {
   try {
     req = await view('get_request', { id });
   } catch {
-    note('Could not reach NEAR. Retrying.');
+    note('noNear');
     timer = setTimeout(refresh, 8000);
     return;
   }
   if (!req) return show('missing');
+  if (lastNote?.[0] === 'noNear') note();
+  lastReq = req;
   show('track');
   $('#t-meter').textContent = req.meter;
   $('#t-provider').textContent = providerName(req.provider).replace(/\s*\(.*\)$/, '');
@@ -99,18 +139,12 @@ async function refresh() {
   mark('funded', 'done');
   mark('claimed', st === 'claimed' ? 'now' : st === 'paid' ? 'done' : '');
   mark('paid', st === 'paid' ? 'done' : '');
-  const sub = {
-    open: `Waiting for a local agent to take it. ${timeLeft(req.expires_ms)} before it is refunded.`,
-    claimed: 'A local agent is paying the bill now.',
-    paid: secret ? 'The bill is paid. Your token is ready.' : 'The bill is paid. Open the full link you were sent to see the token.',
-    refunded: 'This request was cancelled and the money went back to the sender.',
-    expired: 'No agent took this request in time. The sender can get the money back.',
-  }[st];
-  $('#t-sub').textContent = sub;
+  describe(req);
   $('#t-live').hidden = badLink || (['paid', 'refunded', 'expired'].includes(st) && (tokenShown || !secret || st !== 'paid'));
   if (st === 'paid') await collect();
   if (!['refunded', 'expired'].includes(st) && !tokenShown && !badLink) timer = setTimeout(refresh, 5000);
 }
 
+applyLanguage();
 if (!Number.isSafeInteger(id) || id < 1) show('missing');
 else refresh();
